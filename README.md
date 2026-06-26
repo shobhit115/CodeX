@@ -35,26 +35,47 @@ Prerequisites
 
 - Node.js >= 18
 - npm or yarn
+- Docker & Docker Compose (optional, but recommended for full-stack runs)
+- MongoDB Atlas account (or use the provided local Docker MongoDB)
+- Cloudinary account (for image uploads)
 
 Quick start
 
-1. Clone the repository:
+### Method 1: Using Docker (Recommended)
 
+The easiest way to run the entire stack (Frontend, Backend, and MongoDB) is with Docker Compose.
+
+1. Clone the repository:
 ```bash
-git clone https://github.com/<your-org>/codex.git
-cd codex
+git clone https://github.com/QuCodeXClub/CodeX.git
+cd CodeX
 ```
 
-2. Run the backend:
+2. Configure environment variables:
+Copy `Backend/.env.sample` to `Backend/.env` and fill in your Cloudinary credentials (the `MONGODB_URI` will automatically be overridden by Docker).
 
+3. Start the application:
+```bash
+docker-compose up --build
+```
+- Frontend will be at `http://localhost:5173`
+- Backend API will be at `http://localhost:5000`
+- MongoDB will run locally on port `27017`
+
+---
+
+### Method 2: Running Locally (Native npm)
+
+1. **Backend Setup**:
 ```bash
 cd Backend
+cp .env.sample .env  # Fill in your MONGODB_URI and Cloudinary keys
 npm install
-npm start
+npm run dev
 ```
 
-3. Run the frontend in a separate terminal:
-
+2. **Frontend Setup**:
+Open a new terminal:
 ```bash
 cd Frontend
 npm install
@@ -63,8 +84,9 @@ npm run dev
 
 Development notes
 
-- The Frontend uses Vite and serves on the default Vite port (usually `5173`). The Backend runs via `node src/server.js` by default — update `Backend/src/server.js` to configure ports or environment variables.
-- Environment variables: set `DATABASE_URL`, `PORT` (for backend), and any OAuth/JWT secrets as needed in `.env` files (not checked into source).
+- The Frontend uses Vite and serves on `5173`. The Backend runs via `nodemon` on `5000`.
+- Environment variables: Must be set in `Backend/.env` (MongoDB, Cloudinary, CORS).
+- For a more detailed backend setup, please refer to the [Backend Setup Guide](./Backend/SETUP_GUIDE.md).
 
 Contributing
 
