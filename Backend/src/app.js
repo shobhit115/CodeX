@@ -7,6 +7,7 @@ import compression from "compression";
 import rateLimit from "express-rate-limit";
 import mongoSanitize from "express-mongo-sanitize";
 import { errorHandler } from "./middlewares/error.middleware.js";
+import swaggerUi from "swagger-ui-express";
 
 const app = express();
 
@@ -24,8 +25,6 @@ const limiter = rateLimit({
 });
 app.use("/api", limiter);
 
-// Data Sanitization against NoSQL query injection
-app.use(mongoSanitize());
 
 // Compression for better performance
 app.use(compression());
@@ -43,6 +42,26 @@ app.use(express.urlencoded({ extended: true, limit: "16kb" }));
 app.use(express.static("public"));
 app.use(cookieParser());
 
+// Data Sanitization against NoSQL query injection (custom wrapper to bypass Express 4.19+ req.query getter bug)
+app.use((req, res, next) => {
+  ['body', 'params', 'headers', 'query'].forEach((k) => {
+    if (req[k]) {
+      const sanitized = mongoSanitize.sanitize(req[k]);
+      if (k === 'query') {
+        Object.defineProperty(req, 'query', {
+          value: sanitized,
+          writable: true,
+          configurable: true,
+          enumerable: true
+        });
+      } else {
+        req[k] = sanitized;
+      }
+    }
+  });
+  next();
+});
+
 // routes import
 import healthcheckRouter from "./routes/healthcheck.routes.js";
 import adminRouter from "./routes/admin.routes.js";
@@ -52,7 +71,6 @@ import eventRouter from "./routes/event.routes.js";
 import teamRouter from "./routes/team.routes.js";
 import certificateRouter from "./routes/certificate.routes.js";
 import contactRouter from "./routes/contact.routes.js";
-import faqRouter from "./routes/faq.routes.js";
 
 // routes declaration
 app.use("/api/v1/healthcheck", healthcheckRouter);
@@ -63,7 +81,18 @@ app.use("/api/v1/events", eventRouter);
 app.use("/api/v1/teams", teamRouter);
 app.use("/api/v1/certificates", certificateRouter);
 app.use("/api/v1/contact", contactRouter);
-app.use("/api/v1/faqs", faqRouter);
+
+// swagger api documentation (only in development)
+if (process.env.NODE_ENV !== 'production') {
+  app.use("/docs", express.static("docs"));
+  app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(null, {
+    swaggerOptions: {
+      url: '/docs/openapi.yaml'
+    },
+    customCss: '.swagger-ui .topbar { display: none }',
+    customSiteTitle: "CodeX API Documentation"
+  }));
+}
 
 // error handling middleware (should be added after all routes)
 app.use(errorHandler);

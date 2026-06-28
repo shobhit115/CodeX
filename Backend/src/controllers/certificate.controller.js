@@ -4,6 +4,7 @@ import { ApiResponse } from '../utils/ApiResponse.js';
 import { asyncHandler } from '../utils/asyncHandler.js';
 import { uploadOnCloudinary } from '../utils/cloudinary.js';
 import { sendEmail } from '../utils/sendEmail.js';
+import { certificateEmail } from '../utils/emailTemplates.js';
 import crypto from 'crypto';
 
 const generateBulkCertificates = asyncHandler(async (req, res) => {
@@ -56,16 +57,12 @@ const generateBulkCertificates = asyncHandler(async (req, res) => {
     // Send email with certificate link
     const verificationLink = `${process.env.FRONTEND_URL}/verify-certificate/${certificateId}`;
     
-    const message = `
-      <h2>Certificate of Participation</h2>
-      <p>Dear ${student.name},</p>
-      <p>Congratulations on participating in <strong>${eventName}</strong>.</p>
-      <p>Your certificate is ready. You can view, download, and verify it using the link below:</p>
-      <a href="${verificationLink}" style="display:inline-block;padding:10px 20px;background:#06b6d4;color:white;text-decoration:none;border-radius:5px;">View Certificate</a>
-      <br /><br />
-      <p>Or use this verification ID directly on our website: <strong>${certificateId}</strong></p>
-      <p>Best regards,<br/>The CodeX Team</p>
-    `;
+    const message = certificateEmail({
+      studentName: student.name,
+      eventName,
+      certificateId,
+      verificationLink,
+    });
 
     // Send async without blocking
     sendEmail({

@@ -3,23 +3,25 @@ import { ApiError } from '../utils/ApiError.js';
 import { ApiResponse } from '../utils/ApiResponse.js';
 import { asyncHandler } from '../utils/asyncHandler.js';
 import { sendEmail } from '../utils/sendEmail.js';
+import { adminOtpEmail } from '../utils/emailTemplates.js';
 
 import { Session } from '../models/session.model.js';
+import { Token } from '../models/token.model.js';
 import ms from 'ms';
 import { UAParser } from 'ua-parser-js';
 
 const generateAuthSession = async (adminId, req) => {
   try {
     const admin = await Admin.findById(adminId);
-    
+
     // Parse user agent
     const rawUserAgent = req.headers['user-agent'] || '';
     const parser = new UAParser(rawUserAgent);
     const parsedUA = parser.getResult();
-    
+
     const os = `${parsedUA.os.name || ''} ${parsedUA.os.version || ''}`.trim() || 'Unknown OS';
     const browser = `${parsedUA.browser.name || ''} ${parsedUA.browser.version || ''}`.trim() || 'Unknown Browser';
-    const deviceType = parsedUA.device.type ? 
+    const deviceType = parsedUA.device.type ?
       parsedUA.device.type.charAt(0).toUpperCase() + parsedUA.device.type.slice(1) : 'Desktop';
 
     // Create a new session to get an ID
@@ -35,7 +37,7 @@ const generateAuthSession = async (adminId, req) => {
     });
 
     const token = admin.generateAuthToken(session._id);
-    
+
     // Update session with the real token
     session.token = token;
     await session.save();
@@ -64,21 +66,31 @@ const loginAdmin = asyncHandler(async (req, res) => {
   if (!isPasswordValid) {
     throw new ApiError(401, 'Invalid credentials');
   }
-
+  const existingOtp = await Token.findOne({
+    userId: admin._id,
+    userType: 'Admin',
+    type: 'AUTH_OTP',
+  });
+  if (existingOtp) {
+    return res.status(200).json(
+      new ApiResponse(200, {}, 'OTP already sent,Please check your email')
+    );
+  }
   // Generate OTP
   const otp = Math.floor(100000 + Math.random() * 900000).toString();
-  const otpExpiry = Date.now() + 10 * 60 * 1000; // 10 minutes
 
-  admin.otp = otp;
-  admin.otpExpiry = otpExpiry;
-  await admin.save({ validateBeforeSave: false });
+  // Create new OTP token in the db
+  await Token.create({
+    userId: admin._id,
+    userType: 'Admin',
+    token: otp,
+    type: 'AUTH_OTP',
+    description: 'Auth OTP',
+    expiresAt: new Date(Date.now() + 10 * 60 * 1000), // 10 minutes
+  });
 
   // Send OTP via Email
-  const message = `
-    <h2>CodeX Admin Login OTP</h2>
-    <p>Your OTP for admin login is <strong>${otp}</strong>. It is valid for 10 minutes.</p>
-    <p>If you did not request this, please ignore this email.</p>
-  `;
+  const message = adminOtpEmail(otp);
 
   try {
     await sendEmail({
@@ -87,9 +99,8 @@ const loginAdmin = asyncHandler(async (req, res) => {
       message,
     });
   } catch (error) {
-    admin.otp = undefined;
-    admin.otpExpiry = undefined;
-    await admin.save({ validateBeforeSave: false });
+    // If email fails, delete the token we just created
+    await Token.deleteMany({ userId: admin._id, userType: 'Admin', type: 'AUTH_OTP' });
     throw new ApiError(500, 'Error sending OTP email');
   }
 
@@ -111,14 +122,25 @@ const verifyOtp = asyncHandler(async (req, res) => {
     throw new ApiError(404, 'Admin not found');
   }
 
-  if (admin.otp !== otp || admin.otpExpiry < Date.now()) {
+  const tokenDoc = await Token.findOne({
+    userId: admin._id,
+    userType: 'Admin',
+    type: 'AUTH_OTP',
+  });
+
+  if (!tokenDoc) {
+    throw new ApiError(400, 'OTP not requested or has expired');
+  }
+
+  const isOtpValid = await tokenDoc.isTokenCorrect(otp);
+
+  // Since MongoDB TTL thread runs every 60 seconds, we manually check the expiry as a fallback
+  if (!isOtpValid || tokenDoc.expiresAt < new Date()) {
     throw new ApiError(400, 'Invalid or expired OTP');
   }
 
   // OTP is correct, clear it
-  admin.otp = undefined;
-  admin.otpExpiry = undefined;
-  await admin.save({ validateBeforeSave: false });
+  await Token.deleteOne({ _id: tokenDoc._id });
 
   // Generate Session Token
   const token = await generateAuthSession(admin._id, req);

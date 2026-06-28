@@ -26,12 +26,6 @@ const adminSchema = new mongoose.Schema(
     profilePhoto: {
       type: String,
     },
-    otp: {
-      type: String,
-    },
-    otpExpiry: {
-      type: Date,
-    },
   },
   { timestamps: true }
 );
