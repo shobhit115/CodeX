@@ -1,7 +1,7 @@
-import dotenv from "dotenv";
+import "dotenv/config";
 
 process.on("uncaughtException", (err) => {
-  console.log("UNCAUGHT EXCEPTION! 💥 Shutting down...");
+  console.log("UNCAUGHT EXCEPTION! Shutting down...");
   console.log(err.name, err.message);
   process.exit(1);
 });
@@ -10,9 +10,7 @@ import connectDB from "./config/db.js";
 import app from "./app.js";
 import { seedAdmin } from "./utils/seedAdmin.js";
 
-dotenv.config({
-  path: "./.env",
-});
+
 
 const PORT = process.env.PORT || 5000;
 let server;
@@ -29,7 +27,7 @@ connectDB()
   });
 
 process.on("unhandledRejection", (err) => {
-  console.log("UNHANDLED REJECTION! 💥 Shutting down...");
+  console.log("UNHANDLED REJECTION! Shutting down...");
   console.log(err.name, err.message);
   if (server) {
     server.close(() => {

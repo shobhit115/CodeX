@@ -36,6 +36,11 @@ const certificateSchema = new mongoose.Schema(
       required: [true, "Certificate ID is required"],
       unique: true, // Used for verification link
     },
+    position: {
+      type: String,
+      enum: ['Participant', 'Winner', '1st Runner-up', '2nd Runner-up', 'Volunteer', 'Organizer', 'Other'],
+      default: 'Participant'
+    },
     issuedAt: {
       type: Date,
       default: Date.now,

@@ -20,6 +20,10 @@ export const verifyJWT = asyncHandler(async (req, res, next) => {
       throw new ApiError(401, 'Invalid session token format');
     }
 
+    if (decodedToken?.role !== 'Admin') {
+      throw new ApiError(403, 'Access denied. Admin resources only.');
+    }
+
     const session = await Session.findById(decodedToken.sessionId);
 
     if (!session || session.token !== token) {
