@@ -50,6 +50,7 @@ const generateBulkCertificates = asyncHandler(async (req, res) => {
       coordinatorName,
       signatureImage: signatureImage.url,
       certificateId,
+      position: student.position || 'Participant',
     });
 
     createdCertificates.push(cert);
@@ -62,6 +63,7 @@ const generateBulkCertificates = asyncHandler(async (req, res) => {
       eventName,
       certificateId,
       verificationLink,
+      position: student.position || 'Participant',
     });
 
     // Send async without blocking

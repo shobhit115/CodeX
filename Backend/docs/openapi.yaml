@@ -284,11 +284,11 @@ paths:
       responses:
         "200":
           description: Profile updated
-  /admin/change-password:
+  /admin/request-password-change:
     post:
       tags:
         - Admin
-      summary: Change admin password
+      summary: Request password change (sends OTP)
       security:
         - cookieAuth: []
       requestBody:
@@ -299,19 +299,43 @@ paths:
               type: object
               required:
                 - oldPassword
-                - newPassword
               properties:
                 oldPassword:
                   type: string
                   example: admin123
+      responses:
+        "200":
+          description: OTP sent to admin email
+        "400":
+          description: Invalid old password
+  /admin/change-password:
+    post:
+      tags:
+        - Admin
+      summary: Verify OTP and change admin password
+      security:
+        - cookieAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - newPassword
+                - otp
+              properties:
                 newPassword:
                   type: string
                   example: newSecurePass!
+                otp:
+                  type: string
+                  example: "123456"
       responses:
         "200":
-          description: Password changed
+          description: Password changed successfully
         "400":
-          description: Invalid old password
+          description: Invalid or expired OTP
   /admin/sessions:
     get:
       tags:
@@ -627,8 +651,8 @@ paths:
                   example: Dr. Smith
                 studentsStr:
                   type: string
-                  example: '[{"name":"John","email":"john@test.com"}]'
-                  description: JSON stringified array of {name, email}
+                  example: '[{"name":"John","email":"john@test.com","position":"Winner"}]'
+                  description: JSON stringified array of {name, email, position}
                 signatureImage:
                   type: string
                   format: binary

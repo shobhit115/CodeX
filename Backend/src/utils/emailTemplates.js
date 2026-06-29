@@ -189,6 +189,45 @@ const adminOtpEmail = (otp) =>
   });
 
 /**
+ * Password Change OTP Email
+ */
+const passwordChangeOtpEmail = (otp) =>
+  emailLayout({
+    preheader: `Your CodeX password change OTP is ${otp}`,
+    body: `
+      ${kicker('// security_verification')}
+      ${heading('Password Change OTP')}
+      ${paragraph('You requested to change your admin password. Your one-time password is:')}
+
+      <table role="presentation" cellpadding="0" cellspacing="0" style="margin:20px 0 28px;">
+        <tr>
+          <td style="padding:16px 32px;background-color:${BRAND.panel};font-family:'Oswald',Arial,sans-serif;font-size:36px;letter-spacing:0.3em;color:${BRAND.accent};text-align:center;">
+            ${otp}
+          </td>
+        </tr>
+      </table>
+
+      ${paragraph('This OTP is valid for <strong>10 minutes</strong>. If you did not request to change your password, please secure your account immediately.')}
+      ${darkBadge('expires: 10 min')}
+    `,
+  });
+
+/**
+ * Password Changed Success Email
+ */
+const passwordChangedSuccessEmail = () =>
+  emailLayout({
+    preheader: `Your CodeX password was successfully changed`,
+    body: `
+      ${kicker('// security_update')}
+      ${heading('Password Changed')}
+      ${paragraph('Your CodeX admin account password has been successfully updated.')}
+      ${paragraph('If you did not make this change, please contact another administrator or the support team immediately to recover your account.')}
+      ${darkBadge('status: updated')}
+    `,
+  });
+
+/**
  * Registration Approved Email
  */
 const registrationApprovedEmail = (studentName) =>
@@ -223,17 +262,18 @@ const registrationRejectedEmail = (studentName) =>
 /**
  * Certificate Email
  */
-const certificateEmail = ({ studentName, eventName, certificateId, verificationLink }) =>
+const certificateEmail = ({ studentName, eventName, certificateId, verificationLink, position = 'Participant' }) =>
   emailLayout({
-    preheader: `Your certificate for ${eventName} is ready — Verify ID: ${certificateId}`,
+    preheader: `Your ${position} certificate for ${eventName} is ready — Verify ID: ${certificateId}`,
     body: `
       ${kicker('// certificate_issued')}
       ${heading('Certificate Ready.')}
       ${paragraph(`Dear <strong>${studentName}</strong>,`)}
-      ${paragraph(`Congratulations on participating in <strong>${eventName}</strong>. Your certificate has been generated and is ready for verification.`)}
+      ${paragraph(`Congratulations on your role as <strong>${position}</strong> in <strong>${eventName}</strong>. Your certificate has been generated and is ready for verification.`)}
 
       ${infoTable(
         infoRow('event', eventName) +
+        infoRow('position', position) +
         infoRow('certificate_id', certificateId)
       )}
 
@@ -253,6 +293,8 @@ export {
   infoTable,
   darkBadge,
   adminOtpEmail,
+  passwordChangeOtpEmail,
+  passwordChangedSuccessEmail,
   registrationApprovedEmail,
   registrationRejectedEmail,
   certificateEmail,
