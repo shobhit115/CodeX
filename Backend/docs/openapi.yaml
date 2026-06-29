@@ -152,26 +152,35 @@ components:
           format: binary
     TeamMember:
       type: object
+      required:
+        - academicYear
+        - subTeam
+        - name
+        - post
+        - photo
       properties:
+        academicYear:
+          type: string
+          example: "2025-2026"
+
+        subTeam:
+          type: string
+          enum:
+            - Core Team
+            - Tech Team
+            - Graphic Team
+
         name:
           type: string
           example: Jane Doe
-        role:
+
+        post:
           type: string
           example: Lead Developer
-        bio:
-          type: string
-          example: Full-stack engineer with 3 years of experience
+
         photo:
           type: string
           format: binary
-        socialLinks:
-          type: object
-          properties:
-            github:
-              type: string
-            linkedin:
-              type: string
     Contact:
       type: object
       required:
@@ -533,23 +542,36 @@ paths:
           multipart/form-data:
             schema:
               type: object
+              required:
+                - academicYear
+                - subTeam
+                - name
+                - post
+                - photo
               properties:
+                academicYear:
+                  type: string
+                  example: "2025-2026"
+
+                subTeam:
+                  type: string
+                  enum:
+                    - Core Team
+                    - Tech Team
+                    - Graphic Team
+                  example: Tech Team
+
                 name:
                   type: string
                   example: Jane Doe
-                role:
+
+                post:
                   type: string
                   example: Lead Developer
-                bio:
-                  type: string
-                  example: Full-stack engineer
+
                 photo:
                   type: string
                   format: binary
-                github:
-                  type: string
-                linkedin:
-                  type: string
       responses:
         "201":
           description: Team member added
