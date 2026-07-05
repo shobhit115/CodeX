@@ -3,10 +3,10 @@ import { ApiError } from '../utils/ApiError.js';
 import { ApiResponse } from '../utils/ApiResponse.js';
 import { asyncHandler } from '../utils/asyncHandler.js';
 import { sendEmail } from '../utils/sendEmail.js';
-
 import { Session } from '../models/session.model.js';
 import ms from 'ms';
 import { UAParser } from 'ua-parser-js';
+import mongoSanitize from 'express-mongo-sanitize';
 
 const generateAuthSession = async (adminId, req) => {
   try {
@@ -42,11 +42,14 @@ const generateAuthSession = async (adminId, req) => {
 
     return token;
   } catch (error) {
-    throw new ApiError(500, 'Something went wrong while generating session');
+    console.error("Session Generation Error:", error);
+    throw new ApiError(500, `Something went wrong while generating session: ${error.message}`);
   }
 };
 
 const loginAdmin = asyncHandler(async (req, res) => {
+  mongoSanitize.sanitize(req.body);
+
   const { email, password } = req.body;
 
   if (!email || !password) {
@@ -99,6 +102,8 @@ const loginAdmin = asyncHandler(async (req, res) => {
 });
 
 const verifyOtp = asyncHandler(async (req, res) => {
+  mongoSanitize.sanitize(req.body);
+
   const { email, otp } = req.body;
 
   if (!email || !otp) {
@@ -110,18 +115,13 @@ const verifyOtp = asyncHandler(async (req, res) => {
   if (!admin) {
     throw new ApiError(404, 'Admin not found');
   }
-
-  if (admin.otp !== otp || admin.otpExpiry < Date.now()) {
+  if (String(admin.otp) !== String(otp) || admin.otpExpiry < Date.now()) {
     throw new ApiError(400, 'Invalid or expired OTP');
   }
-
-  // OTP is correct, clear it
+  const token = await generateAuthSession(admin._id, req);
   admin.otp = undefined;
   admin.otpExpiry = undefined;
   await admin.save({ validateBeforeSave: false });
-
-  // Generate Session Token
-  const token = await generateAuthSession(admin._id, req);
 
   const loggedInAdmin = await Admin.findById(admin._id).select('-password -otp -otpExpiry');
 
@@ -237,4 +237,10 @@ const changePassword = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, {}, 'Password changed successfully'));
 });
 
-export { loginAdmin, verifyOtp, logoutAdmin, updateProfile, changePassword, getAdminSessions, killSession };
+const getCurrentAdmin = asyncHandler(async (req, res) => {
+  return res.status(200).json(
+    new ApiResponse(200, req.admin, 'Current admin fetched successfully')
+  );
+});
+
+export { loginAdmin, verifyOtp, logoutAdmin, updateProfile, changePassword, getAdminSessions, killSession, getCurrentAdmin };
