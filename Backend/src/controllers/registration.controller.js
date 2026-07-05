@@ -3,6 +3,7 @@ import { ApiError } from '../utils/ApiError.js';
 import { ApiResponse } from '../utils/ApiResponse.js';
 import { asyncHandler } from '../utils/asyncHandler.js';
 import { sendEmail } from '../utils/sendEmail.js';
+import { registrationApprovedEmail, registrationRejectedEmail } from '../utils/emailTemplates.js';
 
 // Get all registrations (Admin only)
 const getAllRegistrations = asyncHandler(async (req, res) => {
@@ -71,14 +72,7 @@ const updateRegistrationStatus = asyncHandler(async (req, res) => {
 
   // Send email notification
   if (status === 'APPROVED') {
-    const message = `
-      <h2>Welcome to CodeX!</h2>
-      <p>Dear ${registration.name},</p>
-      <p>Your registration for CodeX has been <strong>approved</strong>.</p>
-      <p>We are excited to have you onboard. Keep an eye out for upcoming events and announcements.</p>
-      <br />
-      <p>Best regards,<br/>The CodeX Team</p>
-    `;
+    const message = registrationApprovedEmail(registration.name);
     
     // We send email asynchronously without blocking the response
     sendEmail({
@@ -87,14 +81,7 @@ const updateRegistrationStatus = asyncHandler(async (req, res) => {
       message,
     }).catch(err => console.error("Failed to send approval email:", err));
   } else if (status === 'REJECTED') {
-      const message = `
-      <h2>CodeX Registration Update</h2>
-      <p>Dear ${registration.name},</p>
-      <p>We regret to inform you that your registration for CodeX could not be approved at this time.</p>
-      <p>If you believe this is a mistake, please contact our support team.</p>
-      <br />
-      <p>Best regards,<br/>The CodeX Team</p>
-    `;
+    const message = registrationRejectedEmail(registration.name);
 
     sendEmail({
       email: registration.email,

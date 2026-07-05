@@ -8,7 +8,7 @@ export const seedAdmin = async () => {
       const defaultPassword = process.env.ADMIN_PASSWORD || "admin123";
 
       await Admin.create({
-        name: "Super Admin",
+        name: "Admin",
         email: defaultEmail,
         password: defaultPassword,
       });

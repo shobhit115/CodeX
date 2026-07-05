@@ -26,12 +26,6 @@ const adminSchema = new mongoose.Schema(
     profilePhoto: {
       type: String,
     },
-    otp: {
-      type: String,
-    },
-    otpExpiry: {
-      type: Date,
-    },
   },
   { timestamps: true }
 );
@@ -52,6 +46,7 @@ adminSchema.methods.generateAuthToken = function (sessionId) {
       _id: this._id,
       email: this.email,
       sessionId: sessionId,
+      role: 'Admin',
     },
     process.env.ACCESS_TOKEN_SECRET,
     {
