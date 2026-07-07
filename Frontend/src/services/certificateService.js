@@ -1,9 +1,9 @@
-import axiosInstance from './axiosInstance';
+import axiosInstance from "./axiosInstance";
 
 class CertificateService {
   async generateBulkCertificates(formData) {
-    return axiosInstance.post('/certificates/generate-bulk', formData, {
-      headers: { 'Content-Type': 'multipart/form-data' },
+    return axiosInstance.post("/certificates/generate-bulk", formData, {
+      headers: { "Content-Type": "multipart/form-data" },
     });
   }
 

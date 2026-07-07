@@ -1,0 +1,156 @@
+{
+  "landing": {
+    "hero": {
+      "eyebrow": "init sequence complete // active status",
+      "titlePart1": "CODE",
+      "titlePart2": "X",
+      "quote": "\"Engineering the future, code by code.\"",
+      "description": "A high-frequency technical collective focused on protocol development, pixel-perfect UI architecture, and computational excellence.",
+      "ctaPrimary": "explore events",
+      "ctaSecondary": "learn more",
+      "stats": [
+        {
+          "label": "workshops_executed",
+          "value": "24+",
+          "text": "Hands-on sessions from low-level systems to UI architecture."
+        },
+        {
+          "label": "units_synchronized",
+          "value": "500+",
+          "text": "Students and professionals under one technical collective."
+        },
+        {
+          "label": "production_deployments",
+          "value": "10+",
+          "text": "Real-world systems built and shipped by collective members."
+        }
+      ]
+    },
+    "systemModules": {
+      "eyebrow": "system diagnostic // modules loaded",
+      "title": "Core Architectures",
+      "modules": [
+        {
+          "id": "01",
+          "module": "module_01: events_manager",
+          "status": "status: online",
+          "title": "Upcoming Events",
+          "description": "Workshops, hackathons, and seminars engineered for high-performance learning. Cross-disciplinary. Real impact."
+        },
+        {
+          "id": "02",
+          "module": "module_02: repository_viewer",
+          "status": "status: read_only",
+          "title": "Project Showcase",
+          "description": "Open-source builds, pixel-perfect UIs, and production-grade systems built by collective members."
+        },
+        {
+          "id": "03",
+          "module": "module_03: personnel_db",
+          "status": "status: encrypted",
+          "title": "Meet The Team",
+          "description": "Engineers, designers, and researchers bridging the gap between abstract logic and hardware reality."
+        }
+      ]
+    },
+    "commitSection": {
+      "eyebrow": "auth_required",
+      "title": "Write the next chapter.",
+      "description": "We are looking for high-performance individuals to bridge the gap between abstract logic and hardware reality. Ready to commit?",
+      "kicker": "// why codex?",
+      "benefits": [
+        "Access to a 100+ member collaborative network",
+        "Hands-on protocol development sessions",
+        "Direct mentorship from senior engineers",
+        "Pixel-perfect UI architecture workshops",
+        "Annual hackathon with real industry exposure",
+        "Open-source project contributions and live deployments"
+      ]
+    },
+    "gradientPulse": {
+      "text": "system.ready() // waiting for user_input..."
+    }
+  },
+  "faqs": [
+    {
+      "_id": "faq_1",
+      "question": "What is CodeX?",
+      "answer": "CodeX is a community of tech enthusiasts and developers aiming to foster innovation and learning.",
+      "isActive": true
+    },
+    {
+      "_id": "faq_2",
+      "question": "How can I join?",
+      "answer": "You can join by filling out the registration form on our website when recruitments are open.",
+      "isActive": true
+    },
+    {
+      "_id": "faq_3",
+      "question": "Do I need prior coding experience?",
+      "answer": "Not necessarily! We welcome beginners who are eager to learn, as well as experienced developers.",
+      "isActive": true
+    },
+    {
+      "_id": "faq_4",
+      "question": "Are there any membership fees?",
+      "answer": "No, joining CodeX is completely free for all students.",
+      "isActive": true
+    }
+  ],
+  "layout": {
+    "ticker": [
+      "HACKATHONS",
+      "OPEN SOURCE",
+      "PIXEL PERFECT",
+      "PROTOCOL DEV",
+      "100+ MEMBERS",
+      "WORKSHOPS"
+    ],
+    "footerText": "© 2026 Codex Collective. All systems nominal.",
+    "nav": [
+      { "label": "ABOUT", "path": "/about" },
+      { "label": "EVENTS", "path": "/events" },
+      { "label": "TEAM", "path": "/team" },
+      { "label": "RESOURCES", "path": "/resources" },
+      { "label": "FAQS", "path": "/faqs" }
+    ],
+    "meta": "EST. 2018 — VOL.07",
+    "cta": "JOIN US"
+  },
+  "register": {
+    "eyebrow": "REGISTRATION",
+    "titlePart1": "Join The",
+    "titlePart2": "Club",
+    "description": "Initialize your profile and secure your position in the CodeX network."
+  },
+  "resources": {
+    "eyebrow": "resources",
+    "title": "Student Resources"
+  },
+  "about": {
+    "eyebrow": "QU CodeX",
+    "title": "About CodeX",
+    "description": "CodeX is the official technical club of the Department of Computer Science & Engineering and Computer Applications at Quantum University, Roorkee.",
+    "mission": "Our mission is to serve as a hub for students passionate about programming, software development, and emerging technologies. We bridge the gap between abstract logic and hardware reality, providing students with opportunities to collaborate on real-world, live projects, and build professional portfolios.",
+    "activitiesTitle": "Key Activities & Focus Areas",
+    "activities": [
+      {
+        "title": "Technical Events",
+        "description": "We organize various activities including hackathons (such as the annual Q-Hackathon), coding marathons, technical quizzes, and project showcases."
+      },
+      {
+        "title": "Skill Development",
+        "description": "Members engage with a wide range of technologies, including Python, C++, React JS, Flutter, Android development, AI, ML, IoT, Cybersecurity, and UI/UX design."
+      },
+      {
+        "title": "CodeFest Series",
+        "description": "An exclusive series to foster collaboration and allow students to demonstrate their expertise in specialized domains."
+      }
+    ],
+    "contact": "Contact us at codex.club@quantumeducation.in or follow us on Instagram @codexclub"
+  },
+  "error": {
+    "defaultMessage": "Something went wrong!",
+    "buttonText": "Return to Base"
+  }
+}

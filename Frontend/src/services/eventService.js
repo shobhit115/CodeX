@@ -1,13 +1,13 @@
-import axiosInstance from './axiosInstance';
+import axiosInstance from "./axiosInstance";
 
 class EventService {
   async getEvents() {
-    return axiosInstance.get('/events');
+    return axiosInstance.get("/events");
   }
 
   async createEvent(formData) {
-    return axiosInstance.post('/events', formData, {
-      headers: { 'Content-Type': 'multipart/form-data' },
+    return axiosInstance.post("/events", formData, {
+      headers: { "Content-Type": "multipart/form-data" },
     });
   }
 

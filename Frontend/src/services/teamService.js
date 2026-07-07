@@ -1,13 +1,13 @@
-import axiosInstance from './axiosInstance';
+import axiosInstance from "./axiosInstance";
 
 class TeamService {
   async getTeamMembers(params = {}) {
-    return axiosInstance.get('/teams', { params });
+    return axiosInstance.get("/teams", { params });
   }
 
   async addTeamMember(formData) {
-    return axiosInstance.post('/teams', formData, {
-      headers: { 'Content-Type': 'multipart/form-data' },
+    return axiosInstance.post("/teams", formData, {
+      headers: { "Content-Type": "multipart/form-data" },
     });
   }
 
@@ -17,7 +17,7 @@ class TeamService {
 
   async updateTeamMember(id, formData) {
     return axiosInstance.patch(`/teams/${id}`, formData, {
-      headers: { 'Content-Type': 'multipart/form-data' },
+      headers: { "Content-Type": "multipart/form-data" },
     });
   }
 }

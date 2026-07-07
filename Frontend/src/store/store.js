@@ -1,0 +1,22 @@
+import { configureStore } from "@reduxjs/toolkit";
+import authReducer from "../context/authSlice";
+import messageReducer from "../context/messageSlice";
+import adminEventsReducer from "../context/adminEventsSlice";
+import adminFaqsReducer from "../context/adminFaqsSlice";
+import adminTeamReducer from "../context/adminTeamSlice";
+import adminRegistrationsReducer from "../context/adminRegistrationsSlice";
+import adminSessionsReducer from "../context/adminSessionsSlice";
+
+const store = configureStore({
+  reducer: {
+    auth: authReducer,
+    message: messageReducer,
+    adminEvents: adminEventsReducer,
+    adminFaqs: adminFaqsReducer,
+    adminTeam: adminTeamReducer,
+    adminRegistrations: adminRegistrationsReducer,
+    adminSessions: adminSessionsReducer,
+  },
+});
+
+export default store;

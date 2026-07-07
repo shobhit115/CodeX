@@ -1,28 +1,31 @@
-import axiosInstance from './axiosInstance';
+import axiosInstance from "./axiosInstance";
 
 class AdminService {
   async loginAdmin(email, password) {
-    return axiosInstance.post('/admin/login', { email, password });
+    return axiosInstance.post("/admin/login", { email, password });
   }
 
   async verifyAdminOtp(email, otp) {
-    return axiosInstance.post('/admin/verify-otp', { email, otp });
+    return axiosInstance.post("/admin/verify-otp", { email, otp });
   }
 
   async logoutAdmin() {
-    return axiosInstance.post('/admin/logout');
+    return axiosInstance.post("/admin/logout");
   }
 
   async getCurrentAdmin() {
-    return axiosInstance.get('/admin/current');
+    return axiosInstance.get("/admin/current");
   }
 
   async changeAdminPassword(oldPassword, newPassword) {
-    return axiosInstance.post('/admin/change-password', { oldPassword, newPassword });
+    return axiosInstance.post("/admin/change-password", {
+      oldPassword,
+      newPassword,
+    });
   }
 
   async getSessions() {
-    return axiosInstance.get('/admin/sessions');
+    return axiosInstance.get("/admin/sessions");
   }
 
   async killSession(sessionId) {
@@ -30,12 +33,12 @@ class AdminService {
   }
 
   async updateAdminProfile(name, email) {
-    return axiosInstance.patch('/admin/update-profile', { name, email });
+    return axiosInstance.patch("/admin/update-profile", { name, email });
   }
 
   async updateAdminAvatar(formData) {
-    return axiosInstance.patch('/admin/avatar', formData, {
-      headers: { 'Content-Type': 'multipart/form-data' },
+    return axiosInstance.patch("/admin/avatar", formData, {
+      headers: { "Content-Type": "multipart/form-data" },
     });
   }
 }

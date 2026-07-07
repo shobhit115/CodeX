@@ -1,34 +1,58 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { adminService } from '../../services/adminService';
-import { Lock, Mail, KeyRound, ArrowRight, Loader2, ShieldCheck, AlertCircle } from 'lucide-react';
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { adminService } from "../../services/adminService";
+import { setLogin } from "../../context/authSlice";
+import { setError as setGlobalError, setSuccess } from "../../context/messageSlice";
+import {
+  Lock,
+  Mail,
+  KeyRound,
+  ArrowRight,
+  Loader2,
+  ShieldCheck,
+  AlertCircle,
+} from "lucide-react";
 
 export default function AdminLogin() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.auth.user);
+  const isAuthResolved = useSelector((state) => state.auth.isAuthResolved);
+
   const [step, setStep] = useState(1);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
   const [credentials, setCredentials] = useState({
-    email: '',
-    password: '',
-    otp: ''
+    email: "",
+    password: "",
+    otp: "",
   });
+
+  useEffect(() => {
+    if (isAuthResolved && user) {
+      navigate("/admin/dashboard", { replace: true });
+    }
+  }, [isAuthResolved, user, navigate]);
 
   const handleInputChange = (e) => {
     setCredentials({ ...credentials, [e.target.name]: e.target.value });
-    setError(''); 
+    setError("");
   };
 
   const handleLoginSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    setError('');
+    setError("");
 
     try {
       await adminService.loginAdmin(credentials.email, credentials.password);
-      setStep(2); 
+      dispatch(setSuccess("OTP sent to your email."));
+      setStep(2);
     } catch (err) {
-      setError(err.response?.data?.message || 'Authentication failed. Verify credentials.');
+      const msg = err.response?.data?.message || "Authentication failed. Verify credentials.";
+      setError(msg);
+      dispatch(setGlobalError(msg));
     } finally {
       setLoading(false);
     }
@@ -37,13 +61,17 @@ export default function AdminLogin() {
   const handleOtpSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    setError('');
+    setError("");
 
     try {
-      await adminService.verifyAdminOtp(credentials.email, credentials.otp);
-      navigate('/admin/dashboard');
+      const response = await adminService.verifyAdminOtp(credentials.email, credentials.otp);
+      dispatch(setLogin(response.data || response));
+      dispatch(setSuccess("Welcome back, Admin!"));
+      navigate("/admin/dashboard");
     } catch (err) {
-      setError(err.response?.data?.message || 'Invalid or expired OTP sequence.');
+      const msg = err.response?.data?.message || "Invalid or expired OTP sequence.";
+      setError(msg);
+      dispatch(setGlobalError(msg));
     } finally {
       setLoading(false);
     }
@@ -52,19 +80,26 @@ export default function AdminLogin() {
   return (
     <div className="min-h-screen bg-slate-50 flex items-center justify-center p-6 font-sans relative overflow-hidden">
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-2xl h-96 bg-teal-500/10 blur-[100px] rounded-full pointer-events-none"></div>
-      <div className="absolute inset-0 pointer-events-none opacity-[0.03] z-0" 
-           style={{ backgroundImage: 'linear-gradient(#2ec5d4 1px, transparent 1px), linear-gradient(90deg, #2ec5d4 1px, transparent 1px)', backgroundSize: '40px 40px' }}>
-      </div>
+      <div
+        className="absolute inset-0 pointer-events-none opacity-[0.03] z-0"
+        style={{
+          backgroundImage:
+            "linear-gradient(#2ec5d4 1px, transparent 1px), linear-gradient(90deg, #2ec5d4 1px, transparent 1px)",
+          backgroundSize: "40px 40px",
+        }}
+      ></div>
       <div className="relative z-10 w-full max-w-md bg-white border border-slate-200 rounded-2xl p-8 shadow-xl">
-          <div className="text-center mb-8">
+        <div className="text-center mb-8">
           <div className="w-16 h-16 bg-teal-50 rounded-2xl flex items-center justify-center mx-auto mb-4 border border-teal-100 shadow-sm">
             <ShieldCheck className="w-8 h-8 text-teal-600" />
           </div>
           <h1 className="text-2xl font-bold text-slate-900 tracking-tight">
-            CodeX 
+            CodeX
           </h1>
           <p className="mt-2 text-sm font-medium text-slate-500">
-            {step === 1 ? 'Authorized personnel access only' : 'Multi-factor verification required'}
+            {step === 1
+              ? "Authorized personnel access only"
+              : "Multi-factor verification required"}
           </p>
         </div>
         {error && (
@@ -77,7 +112,7 @@ export default function AdminLogin() {
           <form onSubmit={handleLoginSubmit} className="space-y-5">
             <div>
               <label className="block text-sm font-semibold text-slate-700 mb-1.5">
-               Email
+                Email
               </label>
               <div className="relative">
                 <Mail className="absolute left-3 top-2.5 w-5 h-5 text-slate-400" />
@@ -109,13 +144,17 @@ export default function AdminLogin() {
                 />
               </div>
             </div>
-            <button 
-              type="submit" 
+            <button
+              type="submit"
               disabled={loading}
               className="w-full flex items-center justify-center gap-2 bg-teal-600 text-white py-2.5 rounded-lg text-sm font-semibold transition-colors hover:bg-teal-700 disabled:opacity-70 shadow-sm mt-2"
             >
-              {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : (
-                <>Secure Login <ArrowRight className="w-4 h-4" /></>
+              {loading ? (
+                <Loader2 className="w-5 h-5 animate-spin" />
+              ) : (
+                <>
+                  Secure Login <ArrowRight className="w-4 h-4" />
+                </>
               )}
             </button>
           </form>
@@ -123,8 +162,10 @@ export default function AdminLogin() {
           <form onSubmit={handleOtpSubmit} className="space-y-6">
             <div className="text-center mb-6">
               <p className="text-sm text-slate-600">
-                A 6-digit code has been sent to <br/>
-                <span className="font-semibold text-teal-600">{credentials.email}</span>
+                A 6-digit code has been sent to <br />
+                <span className="font-semibold text-teal-600">
+                  {credentials.email}
+                </span>
               </p>
             </div>
             <div>
@@ -145,12 +186,16 @@ export default function AdminLogin() {
                 />
               </div>
             </div>
-            <button 
-              type="submit" 
+            <button
+              type="submit"
               disabled={loading}
               className="w-full flex items-center justify-center gap-2 bg-teal-600 text-white py-2.5 rounded-lg text-sm font-semibold transition-colors hover:bg-teal-700 disabled:opacity-70 shadow-sm"
             >
-              {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : 'Verify & Access'}
+              {loading ? (
+                <Loader2 className="w-5 h-5 animate-spin" />
+              ) : (
+                "Verify & Access"
+              )}
             </button>
           </form>
         )}

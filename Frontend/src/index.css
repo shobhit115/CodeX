@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Oswald:wght@400;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Oswald:wght@400;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap");
 @import "tailwindcss";
 @theme {
   --color-bg: #f5f0e8;
@@ -9,9 +9,9 @@
   --color-line-soft: rgba(13, 13, 13, 0.12);
   --color-accent: #2ec5d4;
   --color-panel: #111111;
-  --font-mono: 'JetBrains Mono', monospace;
-  --font-sans: 'Oswald', sans-serif;
-  --font-serif: 'Playfair Display', serif;
+  --font-mono: "JetBrains Mono", monospace;
+  --font-sans: "Oswald", sans-serif;
+  --font-serif: "Playfair Display", serif;
   --shadow-brutal: 0 18px 60px rgba(13, 13, 13, 0.08);
   --breakpoint-md: 720px;
   --breakpoint-lg: 1100px;
@@ -23,10 +23,12 @@
 
   body {
     @apply m-0 min-w-[320px] text-ink font-mono bg-bg;
-        background-image:
+    background-image:
       linear-gradient(rgba(13, 13, 13, 0.025) 1px, transparent 1px),
       linear-gradient(90deg, rgba(13, 13, 13, 0.025) 1px, transparent 1px);
-    background-size: 100% 84px, 124px 100%;
+    background-size:
+      100% 84px,
+      124px 100%;
   }
 
   a {
@@ -43,7 +45,6 @@
   }
 }
 @layer components {
-  
   .app-shell {
     @apply min-h-screen flex flex-col;
   }
@@ -97,7 +98,7 @@
   }
 
   .ticker-track span::before {
-    content: '+';
+    content: "+";
     @apply mr-[1.1rem];
   }
   .main-content {
@@ -235,18 +236,19 @@
   }
 
   .split-item::before {
-    content: '↳';
+    content: "↳";
     @apply absolute left-0 text-accent;
   }
 }
 @keyframes ambient-pulse {
-  0%, 100% { 
-    opacity: 0.3; 
-    transform: scale(1) translate(0, 0); 
+  0%,
+  100% {
+    opacity: 0.3;
+    transform: scale(1) translate(0, 0);
   }
-  50% { 
-    opacity: 0.6; 
-    transform: scale(1.1) translate(-2%, -2%); 
+  50% {
+    opacity: 0.6;
+    transform: scale(1.1) translate(-2%, -2%);
   }
 }
 
@@ -255,8 +257,9 @@
     @apply absolute rounded-full pointer-events-none blur-[80px] bg-accent;
     animation: ambient-pulse 4s ease-in-out infinite;
   }
-  
+
   .text-reflect {
-    -webkit-box-reflect: below -10px linear-gradient(to bottom, transparent 70%, rgba(255, 255, 255, 0.3));
+    -webkit-box-reflect: below -10px
+      linear-gradient(to bottom, transparent 70%, rgba(255, 255, 255, 0.3));
   }
 }

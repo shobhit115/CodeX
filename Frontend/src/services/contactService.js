@@ -1,12 +1,12 @@
-import axiosInstance from './axiosInstance';
+import axiosInstance from "./axiosInstance";
 
 class ContactService {
   async submitContactForm(contactData) {
-    return axiosInstance.post('/contact', contactData);
+    return axiosInstance.post("/contact", contactData);
   }
 
   async getAllContactMessages() {
-    return axiosInstance.get('/contact');
+    return axiosInstance.get("/contact");
   }
 
   async markAsRead(id) {
