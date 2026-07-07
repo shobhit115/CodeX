@@ -3,6 +3,7 @@ import { ApiError } from '../utils/ApiError.js';
 import { ApiResponse } from '../utils/ApiResponse.js';
 import { asyncHandler } from '../utils/asyncHandler.js';
 import { sendEmail } from '../utils/sendEmail.js';
+import { uploadOnCloudinary, updateOnCloudinary } from '../utils/cloudinary.js';
 import { adminOtpEmail, passwordChangeOtpEmail, passwordChangedSuccessEmail } from '../utils/emailTemplates.js';
 import { Session } from '../models/session.model.js';
 import { Token } from '../models/token.model.js';
@@ -220,18 +221,37 @@ const killSession = asyncHandler(async (req, res) => {
 
 const updateProfile = asyncHandler(async (req, res) => {
   const { name, mobileNumber } = req.body;
-  // Note: profilePhoto upload will be handled later if needed via cloudinary middleware
+  const admin = await Admin.findById(req.admin._id);
 
-  if (!name && !mobileNumber) {
+  let profilePhotoUrl = admin.profilePhoto;
+
+  if (req.file) {
+    if (admin.profilePhoto) {
+      // Extract public ID and update
+      const urlParts = admin.profilePhoto.split('/');
+      const filename = urlParts[urlParts.length - 1];
+      const oldPublicId = `CodeX Website/${filename.split('.')[0]}`;
+      const uploadedImage = await updateOnCloudinary(req.file.path, oldPublicId);
+      if (!uploadedImage) throw new ApiError(500, 'Error updating profile photo');
+      profilePhotoUrl = uploadedImage.url;
+    } else {
+      const uploadedImage = await uploadOnCloudinary(req.file.path);
+      if (!uploadedImage) throw new ApiError(500, 'Error uploading profile photo');
+      profilePhotoUrl = uploadedImage.url;
+    }
+  }
+
+  if (!name && !mobileNumber && !req.file) {
     throw new ApiError(400, 'Please provide fields to update');
   }
 
-  const admin = await Admin.findByIdAndUpdate(
+  const updatedAdmin = await Admin.findByIdAndUpdate(
     req.admin._id,
     {
       $set: {
         ...(name && { name }),
         ...(mobileNumber && { mobileNumber }),
+        ...(profilePhotoUrl && { profilePhoto: profilePhotoUrl }),
       },
     },
     { new: true, runValidators: true }
@@ -239,7 +259,7 @@ const updateProfile = asyncHandler(async (req, res) => {
 
   return res
     .status(200)
-    .json(new ApiResponse(200, admin, 'Admin profile updated successfully'));
+    .json(new ApiResponse(200, updatedAdmin, 'Admin profile updated successfully'));
 });
 
 const requestPasswordChange = asyncHandler(async (req, res) => {

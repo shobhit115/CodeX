@@ -41,6 +41,15 @@ class AdminService {
       headers: { "Content-Type": "multipart/form-data" },
     });
   }
+
+  async updateProfile(formData) {
+    const response = await axiosInstance.patch("/admin/profile", formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+    return response.data;
+  }
 }
 
 export const adminService = new AdminService();
