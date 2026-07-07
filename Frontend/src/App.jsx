@@ -3,6 +3,7 @@ import { useDispatch } from "react-redux";
 import { adminService } from "./services/adminService";
 import { setLogin, setLogout, setAuthResolved } from "./context/authSlice";
 import GlobalMessage from "./components/common/GlobalMessage";
+import { ConfirmProvider } from "./context/ConfirmContext";
 
 const PageLoader = () => (
   <div className="min-h-screen flex items-center justify-center bg-[#0a0a0a] text-[#2ec5d4] font-jetbrains">
@@ -40,12 +41,12 @@ function App({ children }) {
   }, [dispatch]);
 
   return (
-    <>
+    <ConfirmProvider>
       <GlobalMessage />
       <Suspense fallback={<PageLoader />}>
         {children}
       </Suspense>
-    </>
+    </ConfirmProvider>
   );
 }
 

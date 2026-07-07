@@ -1,6 +1,7 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchAdminSessions, killAdminSession } from "../../context/adminSessionsSlice";
+import { useConfirm } from "../../context/ConfirmContext";
 import {
   Monitor,
   Smartphone,
@@ -15,16 +16,19 @@ import {
 export default function ManageSessions() {
   const { sessions, loading } = useSelector((state) => state.adminSessions);
   const dispatch = useDispatch();
+  const confirm = useConfirm();
 
-  useEffect(() => {
+  React.useEffect(() => {
     dispatch(fetchAdminSessions());
   }, [dispatch]);
 
   const handleKill = async (id) => {
-    if (
-      !window.confirm("Are you sure you want to forcibly log out this device?")
-    )
-      return;
+    const isConfirmed = await confirm({
+      title: "Revoke Session",
+      message: "Are you sure you want to forcibly log out this device?"
+    });
+
+    if (!isConfirmed) return;
 
     try {
       await dispatch(killAdminSession(id)).unwrap();

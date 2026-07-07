@@ -1,4 +1,6 @@
 import axios from "axios";
+import store from "../store/store";
+import { setError } from "../context/messageSlice";
 
 const axiosInstance = axios.create({
   baseURL: "/api/v1",
@@ -26,6 +28,10 @@ axiosInstance.interceptors.response.use(
         localStorage.setItem("trueLogin", "false");
         window.location.href = "/admin/login";
       }
+    } else {
+      // Global error handler for backend errors
+      const errorMessage = error.response?.data?.message || error.message || "An unexpected error occurred.";
+      store.dispatch(setError(errorMessage));
     }
     return Promise.reject(error.response?.data || error.message);
   }

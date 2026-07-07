@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Loader2, AlertCircle } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
+import { useConfirm } from "../../context/ConfirmContext";
 import { setError, setSuccess } from "../../context/messageSlice";
 import {
   fetchAdminEvents,
@@ -19,6 +20,7 @@ export default function ManageEvents() {
   const dispatch = useDispatch();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const confirm = useConfirm();
   const [editingId, setEditingId] = useState(null);
   const [formData, setFormData] = useState({
     eventName: "",
@@ -102,12 +104,13 @@ export default function ManageEvents() {
   };
 
   const handleDelete = async (id) => {
-    if (
-      !window.confirm(
-        "Are you sure you want to delete this event? This will also remove the image from Cloudinary."
-      )
-    )
-      return;
+    const isConfirmed = await confirm({
+      title: "Delete Event",
+      message: "Are you sure you want to delete this event? This will also remove the image from Cloudinary.",
+    });
+
+    if (!isConfirmed) return;
+
     try {
       await dispatch(deleteAdminEvent(id)).unwrap();
       dispatch(fetchAdminEvents());

@@ -10,8 +10,11 @@ import {
   Filter,
   AlertCircle,
   Users,
+  UserCheck,
+  UserX,
 } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
+import { useConfirm } from "../../context/ConfirmContext";
 import { setError, setSuccess } from "../../context/messageSlice";
 import {
   fetchAdminTeam,
@@ -31,6 +34,7 @@ export default function ManageTeam() {
   // Modal & Form State
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const confirm = useConfirm();
   const [editingId, setEditingId] = useState(null);
 
   const [formData, setFormData] = useState({
@@ -120,12 +124,12 @@ export default function ManageTeam() {
 
   // Delete Handler
   const handleDelete = async (id) => {
-    if (
-      !window.confirm(
-        "Are you sure you want to revoke this user's access? This action is permanent."
-      )
-    )
-      return;
+    const isConfirmed = await confirm({
+      title: "Revoke Access",
+      message: "Are you sure you want to revoke this user's access? This action is permanent."
+    });
+
+    if (!isConfirmed) return;
 
     try {
       await dispatch(deleteAdminTeamMember(id)).unwrap();

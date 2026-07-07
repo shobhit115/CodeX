@@ -11,6 +11,7 @@ import {
   MessageSquare,
 } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
+import { useConfirm } from "../../context/ConfirmContext";
 import { setError, setSuccess } from "../../context/messageSlice";
 import {
   fetchAdminFaqs,
@@ -25,6 +26,7 @@ export default function ManageFAQs() {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const confirm = useConfirm();
   const [editingId, setEditingId] = useState(null);
 
   const [formData, setFormData] = useState({
@@ -55,14 +57,20 @@ export default function ManageFAQs() {
     }
   };
 
-  const handleDelete = async (id) => {
-    if (!window.confirm("Are you sure you want to delete this FAQ entry?"))
-      return;
+  const handleDelete = async (index) => {
+    const isConfirmed = await confirm({
+      title: "Delete FAQ",
+      message: "Are you sure you want to delete this FAQ entry? This action cannot be undone."
+    });
+
+    if (!isConfirmed) return;
+
     try {
-      await dispatch(deleteAdminFaq(id)).unwrap();
+      await dispatch(deleteAdminFaq(index)).unwrap();
+      dispatch(setSuccess("FAQ entry deleted successfully."));
       dispatch(fetchAdminFaqs());
     } catch (err) {
-      // Error handled in thunk
+      dispatch(setError("Failed to delete FAQ entry."));
     }
   };
 

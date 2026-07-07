@@ -6,10 +6,11 @@ import {
   CheckCircle,
   Clock,
   XCircle,
-  Check,
-  X,
+  Mail,
+  MoreVertical,
 } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
+import { useConfirm } from "../../context/ConfirmContext";
 import {
   fetchAdminRegistrations,
   updateRegistrationStatus,
@@ -21,21 +22,27 @@ export default function Registrations() {
 
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState("ALL");
+  const confirm = useConfirm();
 
-  useEffect(() => {
+  React.useEffect(() => {
     dispatch(fetchAdminRegistrations());
   }, [dispatch]);
 
   const handleStatusChange = async (id, newStatus) => {
-    if (
-      !window.confirm(
-        `Are you sure you want to mark this registration as ${newStatus}? The system will dispatch an automated email to the candidate.`
-      )
-    )
-      return;
+    const isConfirmed = await confirm({
+      title: "Update Status",
+      message: `Are you sure you want to mark this registration as ${newStatus}? The system will dispatch an automated email to the candidate.`,
+    });
+
+    if (!isConfirmed) return;
 
     try {
-      await dispatch(updateRegistrationStatus({ id, status: newStatus })).unwrap();
+      await dispatch(
+        updateRegistrationStatus({ 
+          id, 
+          status: newStatus 
+        })
+      ).unwrap();
     } catch (err) {
       // Handled in thunk
     }
