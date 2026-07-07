@@ -1,4 +1,7 @@
 import { Admin } from '../models/admin.model.js';
+import { StudentRegistration } from '../models/studentRegistration.model.js';
+import { Event } from '../models/event.model.js';
+import { TeamMember } from '../models/teamMember.model.js';
 import { ApiError } from '../utils/ApiError.js';
 import { ApiResponse } from '../utils/ApiResponse.js';
 import { asyncHandler } from '../utils/asyncHandler.js';
@@ -341,7 +344,7 @@ const changePassword = asyncHandler(async (req, res) => {
   }
 
   const isOtpValid = await tokenDoc.isTokenCorrect(otp);
-  
+
   if (!isOtpValid || tokenDoc.expiresAt < new Date()) {
     throw new ApiError(400, 'Invalid or expired OTP');
   }
@@ -350,7 +353,7 @@ const changePassword = asyncHandler(async (req, res) => {
 
   admin.password = newPassword;
   await admin.save({ validateBeforeSave: false });
-  
+
   const successMessage = passwordChangedSuccessEmail();
   try {
     await sendEmail({
@@ -373,4 +376,28 @@ const getCurrentAdmin = asyncHandler(async (req, res) => {
   );
 });
 
-export { loginAdmin, verifyOtp, logoutAdmin, updateProfile, requestPasswordChange, changePassword, getAdminSessions, killSession, getCurrentAdmin };
+const getDashboardMetrics = asyncHandler(async (req, res) => {
+  const [pendingApps, totalApps, activeEvents, liveSessions, teamSize, recentLogs] = await Promise.all([
+    StudentRegistration.countDocuments({ status: "PENDING" }),
+    StudentRegistration.countDocuments(),
+    Event.countDocuments(),
+    Session.countDocuments(),
+    TeamMember.countDocuments(),
+    StudentRegistration.find().sort({ createdAt: -1 }).limit(5)
+  ]);
+
+  return res.status(200).json(
+    new ApiResponse(200, {
+      metrics: {
+        pendingApps,
+        totalApps,
+        activeEvents,
+        liveSessions,
+        teamSize,
+      },
+      recentLogs
+    }, 'Dashboard metrics fetched successfully')
+  );
+});
+
+export { loginAdmin, verifyOtp, logoutAdmin, updateProfile, requestPasswordChange, changePassword, getAdminSessions, killSession, getCurrentAdmin, getDashboardMetrics };

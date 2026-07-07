@@ -12,6 +12,7 @@ import {
   Users,
   UserCheck,
   UserX,
+  RefreshCw,
 } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import { useConfirm } from "../../context/ConfirmContext";
@@ -22,10 +23,11 @@ import {
   updateAdminTeamMember,
   deleteAdminTeamMember,
 } from "../../context/adminTeamSlice";
+import { AdminTeamCardSkeleton } from "../../components/common/SkeletonLoaders";
 
 
 export default function ManageTeam() {
-  const { members, loading } = useSelector((state) => state.adminTeam);
+  const { members, loading, isLoaded, currentYear } = useSelector((state) => state.adminTeam);
   const dispatch = useDispatch();
 
   // Filter state
@@ -48,8 +50,10 @@ export default function ManageTeam() {
   const [imagePreview, setImagePreview] = useState(null);
 
   useEffect(() => {
-    dispatch(fetchAdminTeam(filterYear));
-  }, [dispatch, filterYear]);
+    if (!isLoaded || currentYear !== filterYear) {
+      dispatch(fetchAdminTeam(filterYear));
+    }
+  }, [dispatch, filterYear, isLoaded, currentYear]);
 
   // Form Handlers
   const handleInputChange = (e) => {
@@ -154,6 +158,14 @@ export default function ManageTeam() {
         </div>
 
         <div className="flex flex-col sm:flex-row gap-3">
+          <button
+            onClick={() => dispatch(fetchAdminTeam(filterYear))}
+            disabled={loading}
+            className="p-2 bg-white border border-slate-200 rounded-lg text-slate-500 hover:text-teal-600 hover:border-teal-200 transition-colors shadow-sm disabled:opacity-50 flex items-center justify-center shrink-0"
+            title="Refresh Data"
+          >
+            <RefreshCw className={`w-5 h-5 ${loading ? "animate-spin text-teal-500" : ""}`} />
+          </button>
           <div className="relative">
             <Filter className="absolute left-3 top-2.5 w-4 h-4 text-teal-600 pointer-events-none" />
             <select
@@ -183,11 +195,10 @@ export default function ManageTeam() {
 
       {/* Roster Grid */}
       {loading ? (
-        <div className="flex flex-col items-center justify-center py-32">
-          <Loader2 className="w-8 h-8 animate-spin text-teal-500 mb-4" />
-          <span className="text-slate-500 font-medium text-sm">
-            Syncing Personnel Data...
-          </span>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          {[1, 2, 3, 4, 5, 6, 7, 8].map((i) => (
+            <AdminTeamCardSkeleton key={i} />
+          ))}
         </div>
       ) : members.length === 0 ? (
         <div className="bg-white border border-slate-200 rounded-2xl p-16 text-center shadow-sm">

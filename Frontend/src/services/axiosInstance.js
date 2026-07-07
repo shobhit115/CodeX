@@ -29,6 +29,11 @@ axiosInstance.interceptors.response.use(
     return response.data;
   },
   (error) => {
+    const errorMessage = error.response?.data?.message || error.message || "An unexpected error occurred.";
+    
+    // Global error handler for all backend errors
+    store.dispatch(setError(errorMessage));
+
     if (error.response?.status === 401) {
       if (
         window.location.pathname.startsWith("/admin") &&
@@ -37,10 +42,6 @@ axiosInstance.interceptors.response.use(
         localStorage.setItem("trueLogin", "false");
         window.location.href = "/admin/login";
       }
-    } else {
-      // Global error handler for backend errors
-      const errorMessage = error.response?.data?.message || error.message || "An unexpected error occurred.";
-      store.dispatch(setError(errorMessage));
     }
     return Promise.reject(error.response?.data || error.message);
   }

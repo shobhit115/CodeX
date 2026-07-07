@@ -73,7 +73,7 @@ const updateRegistrationStatus = asyncHandler(async (req, res) => {
   // Send email notification
   if (status === 'APPROVED') {
     const message = registrationApprovedEmail(registration.name);
-    
+
     // We send email asynchronously without blocking the response
     sendEmail({
       email: registration.email,

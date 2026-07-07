@@ -14,9 +14,10 @@ import EventHeader from "../../components/admin/events/EventHeader";
 import EmptyState from "../../components/admin/events/EmptyState";
 import EventCard from "../../components/admin/events/EventCard";
 import EventModal from "../../components/admin/events/EventModal";
+import { EventCardSkeleton } from "../../components/common/SkeletonLoaders";
 
 export default function ManageEvents() {
-  const { events, loading } = useSelector((state) => state.adminEvents);
+  const { events, loading, isLoaded } = useSelector((state) => state.adminEvents);
   const dispatch = useDispatch();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -32,8 +33,10 @@ export default function ManageEvents() {
   const [imagePreview, setImagePreview] = useState(null);
 
   useEffect(() => {
-    dispatch(fetchAdminEvents());
-  }, [dispatch]);
+    if (!isLoaded) {
+      dispatch(fetchAdminEvents());
+    }
+  }, [dispatch, isLoaded]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -121,14 +124,17 @@ export default function ManageEvents() {
 
   return (
     <div className="p-8 lg:p-10 font-sans text-slate-900 min-h-full relative">
-      <EventHeader openCreateModal={openCreateModal} />
+      <EventHeader 
+        openCreateModal={openCreateModal} 
+        onRefresh={() => dispatch(fetchAdminEvents())}
+        loading={loading}
+      />
 
       {loading ? (
-        <div className="flex flex-col items-center justify-center py-32">
-          <Loader2 className="w-8 h-8 animate-spin text-teal-500 mb-4" />
-          <span className="text-slate-500 font-medium text-sm">
-            Syncing Database...
-          </span>
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+          {[1, 2, 3, 4, 5, 6].map((i) => (
+            <EventCardSkeleton key={i} />
+          ))}
         </div>
       ) : events.length === 0 ? (
         <EmptyState />

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Calendar, Clock, MapPin, ArrowRight, Loader2 } from "lucide-react";
+import { PublicEventCardSkeleton } from "../../../components/common/SkeletonLoaders";
 
 const EventList = ({ events, loading }) => {
   const [activeTab, setActiveTab] = useState("ALL");
@@ -7,11 +8,29 @@ const EventList = ({ events, loading }) => {
 
   if (loading) {
     return (
-      <div className="flex flex-col items-center justify-center py-32">
-        <Loader2 className="w-12 h-12 animate-spin text-[#2ec5d4] mb-4" />
-        <span className="font-bold uppercase tracking-widest text-gray-500 text-sm">
-          Fetching Database Records...
-        </span>
+      <div className="flex flex-col gap-10">
+        <div className="flex flex-wrap gap-3 font-bold uppercase tracking-wider text-xs border-b-2 border-gray-200 pb-2">
+          {tabs.map((tab) => (
+            <button
+              key={tab}
+              className={`px-5 py-2 border-2 transition-all ${
+                activeTab === tab
+                  ? "border-[#2ec5d4] bg-[#2ec5d4] text-[#0a0a0a]"
+                  : "border-transparent text-gray-400 hover:border-gray-400 hover:text-gray-800"
+              }`}
+            >
+              {tab}
+            </button>
+          ))}
+          <div className="ml-auto flex items-center text-[#2ec5d4] text-xs font-bold uppercase tracking-widest">
+            Event Highlights
+          </div>
+        </div>
+        <div className="flex flex-col gap-8">
+          {[1, 2, 3].map((i) => (
+            <PublicEventCardSkeleton key={i} />
+          ))}
+        </div>
       </div>
     );
   }

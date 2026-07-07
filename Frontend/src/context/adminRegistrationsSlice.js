@@ -12,6 +12,11 @@ export const fetchAdminRegistrations = createAsyncThunk(
     } catch (err) {
       return rejectWithValue(err);
     }
+  },
+  {
+    condition: (_, { getState }) => {
+      if (getState().adminRegistrations.loading) return false;
+    }
   }
 );
 
@@ -33,6 +38,7 @@ const adminRegistrationsSlice = createSlice({
     registrations: [],
     loading: false,
     error: null,
+    isLoaded: false,
   },
   reducers: {},
   extraReducers: (builder) => {
@@ -42,6 +48,7 @@ const adminRegistrationsSlice = createSlice({
       })
       .addCase(fetchAdminRegistrations.fulfilled, (state, action) => {
         state.loading = false;
+        state.isLoaded = true;
         state.registrations = action.payload;
       })
       .addCase(fetchAdminRegistrations.rejected, (state, action) => {

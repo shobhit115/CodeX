@@ -11,16 +11,21 @@ import {
   Loader2,
   AlertCircle,
   ShieldAlert,
+  RefreshCw,
 } from "lucide-react";
+import { SessionCardSkeleton } from "../../components/common/SkeletonLoaders";
 
 export default function ManageSessions() {
-  const { sessions, loading } = useSelector((state) => state.adminSessions);
+  const { sessions, loading, isLoaded } = useSelector((state) => state.adminSessions);
   const dispatch = useDispatch();
   const confirm = useConfirm();
+  const [updatingId, setUpdatingId] = useState(null);
 
   useEffect(() => {
-    dispatch(fetchAdminSessions());
-  }, [dispatch]);
+    if (!isLoaded) {
+      dispatch(fetchAdminSessions());
+    }
+  }, [dispatch, isLoaded]);
 
   const handleKill = async (id) => {
     const isConfirmed = await confirm({
@@ -30,10 +35,13 @@ export default function ManageSessions() {
 
     if (!isConfirmed) return;
 
+    setUpdatingId(id);
     try {
       await dispatch(killAdminSession(id)).unwrap();
     } catch (err) {
       // Handled in thunk
+    } finally {
+      setUpdatingId(null);
     }
   };
 
@@ -52,21 +60,30 @@ export default function ManageSessions() {
         <div>
           <h1 className="text-2xl font-bold text-slate-900">Session Control</h1>
           <p className="text-sm text-slate-500 mt-1">
-            Monitor and manage active device connections.
+            Monitor and manage active admin sessions.
           </p>
         </div>
-        <div className="p-3 bg-teal-50 rounded-xl hidden sm:block">
-          <ShieldAlert className="w-8 h-8 text-teal-600" />
+        <div className="flex items-center gap-3">
+          <button
+            onClick={() => dispatch(fetchAdminSessions())}
+            disabled={loading}
+            className="p-2 bg-white border border-slate-200 rounded-lg text-slate-500 hover:text-teal-600 hover:border-teal-200 transition-colors shadow-sm disabled:opacity-50"
+            title="Refresh Data"
+          >
+            <RefreshCw className={`w-5 h-5 ${loading ? "animate-spin text-teal-500" : ""}`} />
+          </button>
+          <div className="p-3 bg-teal-50 rounded-xl hidden sm:block">
+            <ShieldAlert className="w-8 h-8 text-teal-600" />
+          </div>
         </div>
       </header>
 
       {/* Main Content */}
       {loading ? (
-        <div className="flex flex-col items-center justify-center py-32">
-          <Loader2 className="w-8 h-8 animate-spin text-teal-500 mb-4" />
-          <span className="text-slate-500 font-medium text-sm">
-            Scanning Network...
-          </span>
+        <div className="grid gap-4">
+          {[1, 2, 3].map((i) => (
+            <SessionCardSkeleton key={i} />
+          ))}
         </div>
       ) : sessions.length === 0 ? (
         <div className="bg-white border border-slate-200 rounded-2xl p-16 text-center shadow-sm">
@@ -121,10 +138,15 @@ export default function ManageSessions() {
               {/* Action Button */}
               <button
                 onClick={() => handleKill(session._id)}
-                className="w-full md:w-auto flex items-center justify-center gap-2 px-5 py-2.5 bg-red-50 hover:bg-red-100 text-red-600 rounded-lg text-sm font-semibold transition-colors border border-red-100 hover:border-red-200 shrink-0"
+                disabled={updatingId === session._id}
+                className="w-full md:w-auto flex items-center justify-center gap-2 px-5 py-2.5 bg-red-50 hover:bg-red-100 text-red-600 rounded-lg text-sm font-semibold transition-colors border border-red-100 hover:border-red-200 shrink-0 disabled:opacity-50"
               >
-                <Trash2 className="w-4 h-4" />
-                Revoke Access
+                {updatingId === session._id ? (
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                ) : (
+                  <Trash2 className="w-4 h-4" />
+                )}
+                {updatingId === session._id ? "Revoking..." : "Revoke Access"}
               </button>
             </div>
           ))}

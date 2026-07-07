@@ -1,7 +1,7 @@
 import React from "react";
-import { CalendarDays } from "lucide-react";
+import { CalendarDays, RefreshCw } from "lucide-react";
 
-export default function DashboardHeader() {
+export default function DashboardHeader({ onRefresh, loading }) {
   const currentDate = new Intl.DateTimeFormat("en-US", {
     month: "short",
     day: "numeric",
@@ -18,9 +18,19 @@ export default function DashboardHeader() {
           Real-time metrics and system health
         </p>
       </div>
-      <div className="flex items-center gap-2 bg-white border border-slate-200 rounded-lg px-4 py-2 shadow-sm text-sm font-medium text-slate-700">
-        <CalendarDays className="w-4 h-4 text-slate-400" />
-        {currentDate}
+      <div className="flex items-center gap-3">
+        <button
+          onClick={onRefresh}
+          disabled={loading}
+          className="p-2 bg-white border border-slate-200 rounded-lg text-slate-500 hover:text-teal-600 hover:border-teal-200 transition-colors shadow-sm disabled:opacity-50"
+          title="Refresh Data"
+        >
+          <RefreshCw className={`w-5 h-5 ${loading ? "animate-spin text-teal-500" : ""}`} />
+        </button>
+        <div className="flex items-center gap-2 bg-white border border-slate-200 rounded-lg px-4 py-2 shadow-sm text-sm font-medium text-slate-700">
+          <CalendarDays className="w-4 h-4 text-slate-400" />
+          {currentDate}
+        </div>
       </div>
     </header>
   );

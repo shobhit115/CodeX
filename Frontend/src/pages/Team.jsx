@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axiosInstance from "../services/axiosInstance";
 import { useDispatch } from "react-redux";
 import { Mail, User, Loader2 } from "lucide-react";
+import { PublicTeamCardSkeleton } from "../components/common/SkeletonLoaders";
 const MemberCard = ({ member }) => {
   const generateEmail = (name) => {
     return `${name.split(" ")[0].toLowerCase()}@codex.org`;
@@ -106,11 +107,27 @@ const Team = () => {
           </p>
         </div>
         {loading ? (
-          <div className="flex flex-col items-center justify-center py-32">
-            <Loader2 className="w-12 h-12 animate-spin text-[#2ec5d4] mb-4" />
-            <span className="font-bold uppercase tracking-widest text-gray-500 text-sm">
-              Loading Roster...
-            </span>
+          <div className="flex flex-col gap-20 items-center">
+            <div className="flex flex-wrap justify-center gap-x-8 gap-y-12 w-full max-w-4xl">
+              {[1, 2, 3].map((i) => (
+                <div key={i} className="flex flex-col items-center">
+                  <span className="text-gray-200 text-[10px] font-bold uppercase tracking-[0.15em] mb-3 text-center h-4">
+                    LOADING
+                  </span>
+                  <PublicTeamCardSkeleton />
+                </div>
+              ))}
+            </div>
+            <div className="w-full flex flex-col items-center pt-8">
+              <h2 className="text-gray-200 text-[10px] font-bold uppercase tracking-[0.2em] mb-8 text-center border-b border-gray-100 pb-2 px-8">
+                LOADING TEAM
+              </h2>
+              <div className="flex flex-wrap justify-center gap-6 w-full">
+                {[1, 2, 3, 4, 5, 6].map((i) => (
+                  <PublicTeamCardSkeleton key={i} />
+                ))}
+              </div>
+            </div>
           </div>
         ) : (
           <div className="flex flex-col gap-20 items-center">

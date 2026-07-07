@@ -9,7 +9,8 @@ import {
   Mail,
   MoreVertical,
   Check,
-  X,
+  X as XIcon,
+  RefreshCw,
 } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import { useConfirm } from "../../context/ConfirmContext";
@@ -17,18 +18,22 @@ import {
   fetchAdminRegistrations,
   updateRegistrationStatus,
 } from "../../context/adminRegistrationsSlice";
+import { TableRowSkeleton } from "../../components/common/SkeletonLoaders";
 
 export default function Registrations() {
-  const { registrations, loading } = useSelector((state) => state.adminRegistrations);
+  const { registrations, loading, isLoaded } = useSelector((state) => state.adminRegistrations);
   const dispatch = useDispatch();
 
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState("ALL");
+  const [updatingId, setUpdatingId] = useState(null);
   const confirm = useConfirm();
 
   useEffect(() => {
-    dispatch(fetchAdminRegistrations());
-  }, [dispatch]);
+    if (!isLoaded) {
+      dispatch(fetchAdminRegistrations());
+    }
+  }, [dispatch, isLoaded]);
 
   const handleStatusChange = async (id, newStatus) => {
     const isConfirmed = await confirm({
@@ -38,6 +43,7 @@ export default function Registrations() {
 
     if (!isConfirmed) return;
 
+    setUpdatingId(id);
     try {
       await dispatch(
         updateRegistrationStatus({ 
@@ -47,6 +53,8 @@ export default function Registrations() {
       ).unwrap();
     } catch (err) {
       // Handled in thunk
+    } finally {
+      setUpdatingId(null);
     }
   };
 
@@ -89,13 +97,25 @@ export default function Registrations() {
   return (
     <div className="p-8 lg:p-10 font-sans text-slate-900 min-h-full">
       {/* Header */}
-      <header className="mb-8">
-        <h1 className="text-2xl font-bold text-slate-900">
-          Registration Information
-        </h1>
-        <p className="text-sm text-slate-500 mt-1">
-          Manage and verify new applicant submissions.
-        </p>
+      <header className="mb-8 flex items-center justify-between">
+        <div>
+          <h1 className="text-2xl font-bold text-slate-900">
+            Registration Information
+          </h1>
+          <p className="text-sm text-slate-500 mt-1">
+            Manage and verify new applicant submissions.
+          </p>
+        </div>
+        <div className="flex items-center gap-3">
+          <button
+            onClick={() => dispatch(fetchAdminRegistrations())}
+            disabled={loading}
+            className="p-2 bg-white border border-slate-200 rounded-lg text-slate-500 hover:text-teal-600 hover:border-teal-200 transition-colors shadow-sm disabled:opacity-50"
+            title="Refresh Data"
+          >
+            <RefreshCw className={`w-5 h-5 ${loading ? "animate-spin text-teal-500" : ""}`} />
+          </button>
+        </div>
       </header>
 
       {/* Control Bar */}
@@ -156,14 +176,11 @@ export default function Registrations() {
             </thead>
             <tbody className="divide-y divide-slate-100">
               {loading ? (
-                <tr>
-                  <td colSpan="6" className="p-12 text-center">
-                    <Loader2 className="w-8 h-8 animate-spin text-teal-500 mx-auto mb-4" />
-                    <span className="text-slate-500 font-medium text-sm">
-                      Extracting Database Records...
-                    </span>
-                  </td>
-                </tr>
+                <>
+                  {[1, 2, 3, 4, 5].map((i) => (
+                    <TableRowSkeleton key={i} />
+                  ))}
+                </>
               ) : filteredRegistrations.length === 0 ? (
                 <tr>
                   <td
@@ -222,7 +239,11 @@ export default function Registrations() {
                     </td>
 
                     <td className="px-6 py-4 text-right">
-                      {reg.status === "PENDING" ? (
+                      {updatingId === reg._id ? (
+                        <div className="flex justify-end pr-2 text-slate-400">
+                          <Loader2 className="w-5 h-5 animate-spin" />
+                        </div>
+                      ) : reg.status === "PENDING" ? (
                         <div className="flex items-center justify-end gap-2">
                           <button
                             onClick={() =>

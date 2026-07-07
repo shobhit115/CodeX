@@ -11,6 +11,11 @@ export const fetchAdminFaqs = createAsyncThunk(
     } catch (err) {
       return rejectWithValue(err);
     }
+  },
+  {
+    condition: (_, { getState }) => {
+      if (getState().adminFaqs.loading) return false;
+    }
   }
 );
 
@@ -56,6 +61,7 @@ const adminFaqsSlice = createSlice({
     faqs: [],
     loading: false,
     error: null,
+    isLoaded: false,
   },
   reducers: {},
   extraReducers: (builder) => {
@@ -65,6 +71,7 @@ const adminFaqsSlice = createSlice({
       })
       .addCase(fetchAdminFaqs.fulfilled, (state, action) => {
         state.loading = false;
+        state.isLoaded = true;
         state.faqs = action.payload;
       })
       .addCase(fetchAdminFaqs.rejected, (state, action) => {

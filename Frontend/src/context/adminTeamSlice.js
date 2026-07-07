@@ -12,6 +12,11 @@ export const fetchAdminTeam = createAsyncThunk(
     } catch (err) {
       return rejectWithValue(err);
     }
+  },
+  {
+    condition: (_, { getState }) => {
+      if (getState().adminTeam.loading) return false;
+    }
   }
 );
 
@@ -57,6 +62,8 @@ const adminTeamSlice = createSlice({
     members: [],
     loading: false,
     error: null,
+    isLoaded: false,
+    currentYear: null,
   },
   reducers: {},
   extraReducers: (builder) => {
@@ -66,7 +73,9 @@ const adminTeamSlice = createSlice({
       })
       .addCase(fetchAdminTeam.fulfilled, (state, action) => {
         state.loading = false;
+        state.isLoaded = true;
         state.members = action.payload;
+        state.currentYear = action.meta.arg;
       })
       .addCase(fetchAdminTeam.rejected, (state, action) => {
         state.loading = false;

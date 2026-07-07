@@ -11,6 +11,11 @@ export const fetchAdminEvents = createAsyncThunk(
     } catch (err) {
       return rejectWithValue(err);
     }
+  },
+  {
+    condition: (_, { getState }) => {
+      if (getState().adminEvents.loading) return false;
+    }
   }
 );
 
@@ -60,6 +65,7 @@ const adminEventsSlice = createSlice({
     events: [],
     loading: false,
     error: null,
+    isLoaded: false,
   },
   reducers: {},
   extraReducers: (builder) => {
@@ -69,6 +75,7 @@ const adminEventsSlice = createSlice({
       })
       .addCase(fetchAdminEvents.fulfilled, (state, action) => {
         state.loading = false;
+        state.isLoaded = true;
         state.events = action.payload;
       })
       .addCase(fetchAdminEvents.rejected, (state, action) => {

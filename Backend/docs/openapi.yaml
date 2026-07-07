@@ -388,6 +388,30 @@ paths:
           description: Session killed
         "404":
           description: Session not found
+  /admin/current:
+    get:
+      tags:
+        - Admin
+      summary: Get the current admin user
+      security:
+        - cookieAuth: []
+      responses:
+        "200":
+          description: Current admin fetched successfully
+        "401":
+          description: Unauthorized
+  /admin/dashboard:
+    get:
+      tags:
+        - Admin
+      summary: Get dashboard metrics aggregation
+      security:
+        - cookieAuth: []
+      responses:
+        "200":
+          description: Dashboard metrics fetched successfully
+        "401":
+          description: Unauthorized
   /students/register:
     post:
       tags:

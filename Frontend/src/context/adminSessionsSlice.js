@@ -10,6 +10,11 @@ export const fetchAdminSessions = createAsyncThunk(
     } catch (err) {
       return rejectWithValue(err);
     }
+  },
+  {
+    condition: (_, { getState }) => {
+      if (getState().adminSessions.loading) return false;
+    }
   }
 );
 
@@ -31,6 +36,7 @@ const adminSessionsSlice = createSlice({
     sessions: [],
     loading: false,
     error: null,
+    isLoaded: false,
   },
   reducers: {},
   extraReducers: (builder) => {
@@ -40,6 +46,7 @@ const adminSessionsSlice = createSlice({
       })
       .addCase(fetchAdminSessions.fulfilled, (state, action) => {
         state.loading = false;
+        state.isLoaded = true;
         state.sessions = action.payload;
       })
       .addCase(fetchAdminSessions.rejected, (state, action) => {

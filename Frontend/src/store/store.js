@@ -6,6 +6,7 @@ import adminFaqsReducer from "../context/adminFaqsSlice";
 import adminTeamReducer from "../context/adminTeamSlice";
 import adminRegistrationsReducer from "../context/adminRegistrationsSlice";
 import adminSessionsReducer from "../context/adminSessionsSlice";
+import adminDashboardReducer from "../context/adminDashboardSlice";
 
 const store = configureStore({
   reducer: {
@@ -16,6 +17,7 @@ const store = configureStore({
     adminTeam: adminTeamReducer,
     adminRegistrations: adminRegistrationsReducer,
     adminSessions: adminSessionsReducer,
+    adminDashboard: adminDashboardReducer,
   },
 });
 

@@ -9,6 +9,7 @@ import {
   ToggleRight,
   AlertCircle,
   MessageSquare,
+  RefreshCw,
 } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import { useConfirm } from "../../context/ConfirmContext";
@@ -19,9 +20,10 @@ import {
   updateAdminFaq,
   deleteAdminFaq,
 } from "../../context/adminFaqsSlice";
+import { FaqSkeleton } from "../../components/common/SkeletonLoaders";
 
 export default function ManageFAQs() {
-  const { faqs, loading } = useSelector((state) => state.adminFaqs);
+  const { faqs, loading, isLoaded } = useSelector((state) => state.adminFaqs);
   const dispatch = useDispatch();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -36,8 +38,10 @@ export default function ManageFAQs() {
   });
 
   useEffect(() => {
-    dispatch(fetchAdminFaqs());
-  }, [dispatch]);
+    if (!isLoaded) {
+      dispatch(fetchAdminFaqs());
+    }
+  }, [dispatch, isLoaded]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -83,8 +87,17 @@ export default function ManageFAQs() {
             Manage public FAQs and system documentation.
           </p>
         </div>
-        <button
-          onClick={() => {
+        <div className="flex items-center gap-3">
+          <button
+            onClick={() => dispatch(fetchAdminFaqs())}
+            disabled={loading}
+            className="p-2 bg-white border border-slate-200 rounded-lg text-slate-500 hover:text-teal-600 hover:border-teal-200 transition-colors shadow-sm disabled:opacity-50"
+            title="Refresh Data"
+          >
+            <RefreshCw className={`w-5 h-5 ${loading ? "animate-spin text-teal-500" : ""}`} />
+          </button>
+          <button
+            onClick={() => {
             setEditingId(null);
             setFormData({ question: "", answer: "", isActive: true });
             setIsModalOpen(true);
@@ -94,15 +107,15 @@ export default function ManageFAQs() {
           <Plus className="w-4 h-4" />
           New Entry
         </button>
+        </div>
       </header>
 
       {/* FAQs List */}
       {loading ? (
-        <div className="flex flex-col items-center justify-center py-32">
-          <Loader2 className="w-8 h-8 animate-spin text-teal-500 mb-4" />
-          <span className="text-slate-500 font-medium text-sm">
-            Loading Knowledge Base...
-          </span>
+        <div className="grid gap-4">
+          {[1, 2, 3, 4].map((i) => (
+            <FaqSkeleton key={i} />
+          ))}
         </div>
       ) : faqs.length === 0 ? (
         <div className="bg-white border border-slate-200 rounded-2xl p-16 text-center shadow-sm">
