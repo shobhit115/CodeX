@@ -20,6 +20,7 @@ const Resources = lazy(() => import("./pages/Resources"));
 const Faqs = lazy(() => import("./pages/Faqs"));
 const Register = lazy(() => import("./pages/Register"));
 const About = lazy(() => import("./pages/About"));
+const VerifyCertificate = lazy(() => import("./pages/VerifyCertificate"));
 
 // Admin only pages
 const AdminLogin = lazy(() => import("./pages/admin/AdminLogin"));
@@ -44,6 +45,10 @@ const router = createBrowserRouter([
       { path: "/resources", element: <Resources /> },
       { path: "/faqs", element: <Faqs /> },
       { path: "/register", element: <Register /> },
+      {
+      path: "/verify-certificate/:certificateId",
+      element: <VerifyCertificate />,
+    },
     ],
   },
   {
