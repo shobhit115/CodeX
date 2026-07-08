@@ -111,7 +111,6 @@
       { "label": "ABOUT", "path": "/about" },
       { "label": "EVENTS", "path": "/events" },
       { "label": "TEAM", "path": "/team" },
-      { "label": "RESOURCES", "path": "/resources" },
       { "label": "FAQS", "path": "/faqs" },
       { "label": "CONTACT", "path": "/contact" }
     ],
