@@ -1,4 +1,5 @@
-import { useState, useRef } from "react";
+import { useState,useRef } from "react";
+import { useForm, useFieldArray } from "react-hook-form";
 import {
   Award,
   Plus,
@@ -295,7 +296,7 @@ export default function BulkCertificates() {
       </header>
 
       <form
-        onSubmit={handleSubmit}
+        onSubmit={handleSubmit(onFormSubmit)}
         className="grid grid-cols-1 lg:grid-cols-12 gap-8"
       >
         {/* ========================================================= */}
@@ -354,6 +355,7 @@ export default function BulkCertificates() {
                 placeholder="Dr. Smith"
                 className="w-full rounded-lg border border-slate-300 pl-10 p-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500"
               />
+              {errors.eventName && <p className="mt-1 text-xs text-red-500">{errors.eventName.message}</p>}
             </div>
           </div>
 
