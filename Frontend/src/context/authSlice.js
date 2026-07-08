@@ -12,6 +12,7 @@ const authSlice = createSlice({
     setLogin: (state, action) => {
       state.user = action.payload;
       state.isAuthResolved = true;
+      localStorage.setItem("codex_admin_auth", "true");
     },
     setAuthResolved: (state, action) => {
       state.isAuthResolved = action.payload;
@@ -19,6 +20,7 @@ const authSlice = createSlice({
     setLogout: (state) => {
       state.user = null;
       state.isAuthResolved = true;
+      localStorage.removeItem("codex_admin_auth");
     }
   },
 });

@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 
 const SplashScreen = ({ show = true }) => {
-  const [isEntered, setIsEntered] = useState(false);
+  // Initialize isEntered to true if show is true, so it doesn't start invisible and fade in on mount.
+  const [isEntered, setIsEntered] = useState(show);
   const [shouldRender, setShouldRender] = useState(show);
 
   useEffect(() => {

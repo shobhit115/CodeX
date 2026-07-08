@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { useForm } from "react-hook-form";
 import { adminService } from "../../services/adminService";
@@ -12,6 +12,7 @@ import {
   Loader2,
   ShieldCheck,
   AlertCircle,
+  Home,
 } from "lucide-react";
 
 export default function AdminLogin() {
@@ -120,7 +121,7 @@ export default function AdminLogin() {
                 <Mail className={`absolute left-3 top-2.5 w-5 h-5 ${loginErrors.email ? 'text-red-400' : 'text-slate-400'}`} />
                 <input
                   type="email"
-                  {...registerLogin("email", { 
+                  {...registerLogin("email", {
                     required: "Email is required",
                     pattern: { value: /^\S+@\S+$/i, message: "Invalid email format" }
                   })}
@@ -160,7 +161,10 @@ export default function AdminLogin() {
             </button>
           </form>
         ) : (
-          <form onSubmit={handleSubmitOtp(onOtpSubmit)} className="space-y-6">
+          <form onSubmit={handleSubmitOtp(onOtpSubmit)} className="space-y-6" autoComplete="off">
+            {/* Hidden inputs to trick browser password managers from autofilling the OTP field */}
+            <input type="text" style={{ display: 'none' }} />
+            <input type="password" style={{ display: 'none' }} />
             <div className="text-center mb-6">
               <p className="text-sm text-slate-600">
                 A 6-digit code has been sent to <br />
@@ -178,7 +182,8 @@ export default function AdminLogin() {
                 <input
                   type="text"
                   maxLength={6}
-                  {...registerOtp("otp", { 
+                  autoComplete="one-time-code"
+                  {...registerOtp("otp", {
                     required: "OTP is required",
                     pattern: { value: /^[0-9]{6}$/, message: "OTP must be exactly 6 digits" }
                   })}
@@ -201,6 +206,17 @@ export default function AdminLogin() {
             </button>
           </form>
         )}
+
+        {/* Back to Home Button inside the card */}
+        <div className="mt-6 pt-6 border-t border-slate-100 flex justify-start">
+          <Link 
+            to="/" 
+            className="flex items-center gap-2 text-slate-500 hover:text-teal-600 font-medium text-sm transition-colors"
+          >
+            <Home className="w-4 h-4" />
+            Back to Home
+          </Link>
+        </div>
       </div>
     </div>
   );
