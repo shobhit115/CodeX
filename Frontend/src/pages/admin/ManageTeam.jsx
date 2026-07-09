@@ -2,17 +2,11 @@ import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import {
   Plus,
-  Edit,
-  Trash2,
   X,
   Image as ImageIcon,
   Loader2,
-  ShieldCheck,
   Filter,
-  AlertCircle,
   Users,
-  UserCheck,
-  UserX,
   RefreshCw,
 } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
@@ -23,15 +17,19 @@ import {
   updateAdminTeamMember,
   deleteAdminTeamMember,
 } from "../../context/adminTeamSlice";
+import { generateAcademicYears } from "../../utils/helpers";
 import { AdminTeamCardSkeleton } from "../../components/common/SkeletonLoaders";
+import { TeamMemberCard } from "../../components/common/TeamMemberCard";
 
 
 export default function ManageTeam() {
   const { members, loading, isLoaded, currentYear } = useSelector((state) => state.adminTeam);
   const dispatch = useDispatch();
 
+  const formAcademicYears = generateAcademicYears();
+
   // Filter state
-  const [filterYear, setFilterYear] = useState("");
+  const [filterYear, setFilterYear] = useState(formAcademicYears[0]);
 
   // Modal & Form State
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -46,6 +44,7 @@ export default function ManageTeam() {
     handleSubmit,
     formState: { errors },
     setError,
+    clearErrors,
     reset
   } = useForm({
     defaultValues: {
@@ -62,11 +61,25 @@ export default function ManageTeam() {
     }
   }, [dispatch, filterYear, isLoaded, currentYear]);
 
+  const teamOrder = {
+    "Admin Team": 1,
+    "Core Team": 2,
+    "Tech Team": 3,
+    "Graphic Team": 4,
+  };
+
+  const displayedMembers = [...members].sort((a, b) => {
+    const teamDiff = (teamOrder[a.subTeam] || 99) - (teamOrder[b.subTeam] || 99);
+    if (teamDiff !== 0) return teamDiff;
+    return (a.sequenceNumber || 0) - (b.sequenceNumber || 0);
+  });
+
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     if (file) {
       setPhotoFile(file);
       setImagePreview(URL.createObjectURL(file));
+      clearErrors("photo");
     }
   };
 
@@ -98,6 +111,8 @@ export default function ManageTeam() {
 
   // Submit Handler
   const onFormSubmit = async (data) => {
+
+
     setIsSubmitting(true);
 
     try {
@@ -106,6 +121,14 @@ export default function ManageTeam() {
       submitData.append("post", data.post);
       submitData.append("subTeam", data.subTeam);
       submitData.append("academicYear", data.academicYear);
+
+      if (!editingId) {
+        const teamMembers = members.filter(
+          (m) => m.subTeam === data.subTeam && m.academicYear === data.academicYear
+        );
+        const maxSeq = teamMembers.reduce((max, m) => Math.max(max, m.sequenceNumber || 0), 0);
+        submitData.append("sequenceNumber", maxSeq + 1);
+      }
 
       if (photoFile) {
         submitData.append("photo", photoFile);
@@ -118,7 +141,6 @@ export default function ManageTeam() {
       }
 
       setIsModalOpen(false);
-      dispatch(fetchAdminTeam(filterYear));
     } catch (err) {
       if (err.response?.data?.errors?.length > 0) {
         err.response.data.errors.forEach((e) => {
@@ -141,14 +163,11 @@ export default function ManageTeam() {
 
     try {
       await dispatch(deleteAdminTeamMember(id)).unwrap();
-      dispatch(fetchAdminTeam(filterYear));
     } catch {
       // Handled in thunk
     }
   };
 
-  // Extract unique academic years for the filter dropdown
-  const uniqueYears = [...new Set(members.map((m) => m.academicYear))];
 
   return (
     <div className="p-8 lg:p-10 font-sans text-slate-900 min-h-full relative">
@@ -163,7 +182,7 @@ export default function ManageTeam() {
 
         <div className="flex flex-col sm:flex-row gap-3">
           <button
-            onClick={() => dispatch(fetchAdminTeam(filterYear))}
+            onClick={() => dispatch(fetchAdminTeam({ year: filterYear, force: true }))}
             disabled={loading}
             className="p-2 bg-white border border-slate-200 rounded-lg text-slate-500 hover:text-teal-600 hover:border-teal-200 transition-colors shadow-sm disabled:opacity-50 flex items-center justify-center shrink-0"
             title="Refresh Data"
@@ -177,8 +196,7 @@ export default function ManageTeam() {
               onChange={(e) => setFilterYear(e.target.value)}
               className="appearance-none bg-white border border-slate-200 text-slate-700 rounded-lg py-2 pl-9 pr-10 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 hover:border-slate-300 transition-colors shadow-sm cursor-pointer w-full"
             >
-              <option value="ALL">All Academic Years</option>
-              {uniqueYears.map((year) => (
+              {formAcademicYears.map((year) => (
                 <option key={year} value={year}>
                   {year}
                 </option>
@@ -199,12 +217,12 @@ export default function ManageTeam() {
 
       {/* Roster Grid */}
       {loading ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-6">
           {[1, 2, 3, 4, 5, 6, 7, 8].map((i) => (
             <AdminTeamCardSkeleton key={i} />
           ))}
         </div>
-      ) : members.length === 0 ? (
+      ) : displayedMembers.length === 0 ? (
         <div className="bg-white border border-slate-200 rounded-2xl p-16 text-center shadow-sm">
           <Users className="w-12 h-12 text-slate-300 mx-auto mb-4" />
           <h3 className="text-lg font-bold text-slate-900 mb-1">
@@ -215,66 +233,31 @@ export default function ManageTeam() {
           </p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-          {members.map((member) => (
-            <div
-              key={member._id}
-              className="bg-white border border-slate-200 rounded-2xl shadow-sm overflow-hidden flex flex-col group hover:shadow-md transition-shadow"
-            >
-              {/* Photo Section */}
-              <div className="h-56 w-full bg-slate-100 border-b border-slate-100 relative overflow-hidden flex items-center justify-center">
-                {member.photo ? (
-                  <img
-                    src={member.photo}
-                    alt={member.name}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                  />
-                ) : (
-                  <ImageIcon className="w-10 h-10 text-slate-300" />
-                )}
-                {/* Year Badge */}
-                <div className="absolute top-3 right-3 bg-white/95 backdrop-blur px-2.5 py-1 rounded-lg shadow-sm border border-slate-100 flex items-center">
-                  <span className="text-[10px] font-bold text-teal-600 uppercase tracking-widest">
-                    {member.academicYear}
-                  </span>
+        <div className="flex flex-col gap-12">
+          {Object.keys(teamOrder).map((teamName) => {
+            const teamMembers = displayedMembers.filter((m) => m.subTeam === teamName);
+            if (teamMembers.length === 0) return null;
+            
+            return (
+              <div key={teamName}>
+                <div className="flex items-center gap-4 mb-6">
+                  <h2 className="text-xl font-bold text-slate-800 tracking-tight">{teamName}</h2>
+                  <div className="flex-1 h-px bg-slate-200"></div>
+                </div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-6">
+                  {teamMembers.map((member) => (
+                    <TeamMemberCard 
+                      key={member._id} 
+                      member={member} 
+                      isAdmin={true} 
+                      onEdit={openEditModal} 
+                      onDelete={handleDelete} 
+                    />
+                  ))}
                 </div>
               </div>
-
-              {/* Content Section */}
-              <div className="p-5 flex-1 flex flex-col">
-                <h3
-                  className="text-lg font-bold text-slate-900 mb-1 line-clamp-1"
-                  title={member.name}
-                >
-                  {member.name}
-                </h3>
-
-                <div className="flex items-center gap-1.5 text-teal-600 text-sm font-semibold mb-1">
-                  <ShieldCheck className="w-4 h-4" /> {member.post}
-                </div>
-
-                <div className="text-slate-500 text-xs font-medium uppercase tracking-wider mb-4">
-                  {member.subTeam}
-                </div>
-
-                {/* Actions */}
-                <div className="flex gap-3 mt-auto pt-4 border-t border-slate-100">
-                  <button
-                    onClick={() => openEditModal(member)}
-                    className="flex-1 flex items-center justify-center gap-2 px-3 py-2 bg-slate-50 hover:bg-teal-50 text-slate-600 hover:text-teal-700 rounded-lg text-sm font-medium transition-colors border border-slate-200 hover:border-teal-200"
-                  >
-                    <Edit className="w-4 h-4" /> Edit
-                  </button>
-                  <button
-                    onClick={() => handleDelete(member._id)}
-                    className="flex-1 flex items-center justify-center gap-2 px-3 py-2 bg-slate-50 hover:bg-red-50 text-slate-600 hover:text-red-700 rounded-lg text-sm font-medium transition-colors border border-slate-200 hover:border-red-200"
-                  >
-                    <Trash2 className="w-4 h-4" /> Delete
-                  </button>
-                </div>
-              </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       )}
 
@@ -331,13 +314,10 @@ export default function ManageTeam() {
                       className={`w-full bg-white border ${errors.subTeam ? 'border-red-300 focus:ring-red-500/20 focus:border-red-500' : 'border-slate-300 focus:ring-teal-500/20 focus:border-teal-500'} text-slate-900 rounded-lg p-2.5 text-sm focus:outline-none focus:ring-2 transition-colors shadow-sm`}
                     >
                       <option value="">Select Sub-Team</option>
+                      <option value="Admin Team">Admin Team</option>
                       <option value="Core Team">Core Team</option>
                       <option value="Tech Team">Tech Team</option>
-                      <option value="Design Team">Design Team</option>
-                      <option value="PR & Outreach Team">PR & Outreach Team</option>
-                      <option value="Event Management Team">Event Management Team</option>
-                      <option value="Advisors">Advisors</option>
-                      <option value="Alumni">Alumni</option>
+                      <option value="Graphic Team">Graphic Team</option>
                     </select>
                     {errors.subTeam && <p className="mt-1 text-xs text-red-500">{errors.subTeam.message}</p>}
                   </div>
@@ -346,12 +326,17 @@ export default function ManageTeam() {
                     <label className="block text-sm font-semibold text-slate-700 mb-1.5">
                       Academic Year
                     </label>
-                    <input
-                      type="text"
+                    <select
                       {...register("academicYear", { required: "Academic Year is required" })}
                       className={`w-full bg-white border ${errors.academicYear ? 'border-red-300 focus:ring-red-500/20 focus:border-red-500' : 'border-slate-300 focus:ring-teal-500/20 focus:border-teal-500'} text-slate-900 rounded-lg p-2.5 text-sm focus:outline-none focus:ring-2 transition-colors shadow-sm`}
-                      placeholder="e.g., 2023-2024"
-                    />
+                    >
+                      <option value="">Select Academic Year</option>
+                      {formAcademicYears.map((year) => (
+                        <option key={year} value={year}>
+                          {year}
+                        </option>
+                      ))}
+                    </select>
                     {errors.academicYear && <p className="mt-1 text-xs text-red-500">{errors.academicYear.message}</p>}
                   </div>
                 </div>
@@ -362,15 +347,18 @@ export default function ManageTeam() {
                     Profile Photo
                   </label>
                   <div className="flex items-center gap-4">
-                    <label className="flex-1 border-2 border-dashed border-slate-300 bg-slate-50 hover:bg-teal-50 hover:border-teal-400 rounded-xl p-6 text-center cursor-pointer transition-colors group">
+                    <label className={`flex-1 border-2 border-dashed ${errors.photo ? 'border-red-300 bg-red-50' : 'border-slate-300 bg-slate-50 hover:bg-teal-50 hover:border-teal-400'} rounded-xl p-6 text-center cursor-pointer transition-colors group`}>
                       <input
                         type="file"
                         accept="image/*"
-                        onChange={handleFileChange}
                         className="hidden"
+                        {...register("photo", { 
+                          required: !editingId ? "Profile photo is required" : false,
+                          onChange: handleFileChange 
+                        })}
                       />
-                      <ImageIcon className="w-8 h-8 text-slate-400 mx-auto mb-2 group-hover:text-teal-500 transition-colors" />
-                      <span className="text-sm font-medium text-slate-500 group-hover:text-teal-600">
+                      <ImageIcon className={`w-8 h-8 mx-auto mb-2 transition-colors ${errors.photo ? 'text-red-400' : 'text-slate-400 group-hover:text-teal-500'}`} />
+                      <span className={`text-sm font-medium ${errors.photo ? 'text-red-500' : 'text-slate-500 group-hover:text-teal-600'}`}>
                         Click to browse or drag image here
                       </span>
                     </label>
@@ -384,6 +372,7 @@ export default function ManageTeam() {
                       </div>
                     )}
                   </div>
+                  {errors.photo && <p className="mt-1 text-xs text-red-500">{errors.photo.message}</p>}
                 </div>
 
                 <button

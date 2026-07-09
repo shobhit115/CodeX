@@ -10,7 +10,7 @@ const teamMemberSchema = new mongoose.Schema(
       type: String,
       required: [true, "Sub-team is required"],
       enum: {
-        values: ['Core Team', 'Tech Team', 'Graphic Team'],
+        values: ['Admin Team','Core Team', 'Tech Team', 'Graphic Team'],
         message: '{VALUE} is not a valid sub-team'
       },
     },
@@ -22,6 +22,11 @@ const teamMemberSchema = new mongoose.Schema(
     post: {
       type: String,
       required: [true, "Post/Role is required (e.g., 'Project Lead')"], 
+    },
+    sequenceNumber: {
+      type: Number,
+      required: [true, "Sequence number is required"],
+      default: 0
     },
     photo: {
       type: String, // Cloudinary URL
