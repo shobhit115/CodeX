@@ -72,21 +72,23 @@ const updateRegistrationStatus = asyncHandler(async (req, res) => {
 
   // Send email notification
   if (status === 'APPROVED') {
-    const message = registrationApprovedEmail(registration.name);
+    const { html, text } = registrationApprovedEmail(registration.name);
 
-    // We send email asynchronously without blocking the response
+    // Send email (async)
     sendEmail({
       email: registration.email,
-      subject: 'CodeX Registration Approved',
-      message,
+      subject: 'Welcome to CodeX - Registration Approved',
+      message: html,
+      textMessage: text,
     }).catch(err => console.error("Failed to send approval email:", err));
   } else if (status === 'REJECTED') {
-    const message = registrationRejectedEmail(registration.name);
-
+    const { html, text } = registrationRejectedEmail(registration.name);
+    // Send email (async)
     sendEmail({
       email: registration.email,
       subject: 'CodeX Registration Update',
-      message,
+      message: html,
+      textMessage: text,
     }).catch(err => console.error("Failed to send rejection email:", err));
   }
 

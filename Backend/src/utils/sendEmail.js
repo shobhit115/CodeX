@@ -6,7 +6,8 @@ import { ApiError } from "./ApiError.js";
  * @param {Object} options - Email options
  * @param {string} options.email - Recipient email address
  * @param {string} options.subject - Email subject
- * @param {string} options.message - Email message body (plain text or html)
+ * @param {string} options.message - Email message body (html)
+ * @param {string} options.textMessage - Email message body (plain text)
  */
 const sendEmail = async (options) => {
   try {
@@ -25,8 +26,10 @@ const sendEmail = async (options) => {
     const mailOptions = {
       from: `${process.env.FROM_NAME} <${process.env.FROM_EMAIL}>`,
       to: options.email,
+      replyTo: process.env.FROM_EMAIL,
       subject: options.subject,
-      html: options.message, // You can also use 'text: options.message' if you prefer plain text
+      html: options.message,
+      text: options.textMessage,
     };
 
     // 3. Actually send the email
