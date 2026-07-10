@@ -1,99 +1,160 @@
 {
   "landing": {
     "hero": {
-      "eyebrow": "init sequence complete // active status",
+      "eyebrow": "BUILD • LEARN • INNOVATE",
       "titlePart1": "CODE",
       "titlePart2": "X",
-      "quote": "\"Engineering the future, code by code.\"",
-      "description": "A high-frequency technical collective focused on protocol development, pixel-perfect UI architecture, and computational excellence.",
-      "ctaPrimary": "explore events",
-      "ctaSecondary": "learn more",
+      "quote": "\"Coding the Future, Today.\"",
+      "description": "CodeX is the official technical club of Quantum University, empowering students to learn, build, and innovate through real-world projects, workshops, hackathons, and collaborative learning.",
+      "ctaPrimary": "Explore Events",
+      "ctaSecondary": "Become a Member",
       "stats": [
         {
-          "label": "workshops_executed",
-          "value": "24+",
-          "text": "Hands-on sessions from low-level systems to UI architecture."
+          "label": "events",
+          "value": "25+",
+          "text": "Technical workshops, hackathons, and coding competitions."
         },
         {
-          "label": "units_synchronized",
+          "label": "members",
           "value": "500+",
-          "text": "Students and professionals under one technical collective."
+          "text": "Students learning, building, and growing together."
         },
         {
-          "label": "production_deployments",
-          "value": "10+",
-          "text": "Real-world systems built and shipped by collective members."
+          "label": "domains",
+          "value": "8+",
+          "text": "Communities across AI, Web, Cloud, Cybersecurity, and more."
         }
       ]
     },
-    "systemModules": {
-      "eyebrow": "system diagnostic // modules loaded",
-      "title": "Core Architectures",
-      "modules": [
+    "whyJoin": {
+      "eyebrow": "WHY CODEX",
+      "title": "Why Join CodeX?",
+      "benefits": [
         {
           "id": "01",
-          "module": "module_01: events_manager",
-          "status": "status: online",
-          "title": "Upcoming Events",
-          "description": "Workshops, hackathons, and seminars engineered for high-performance learning. Cross-disciplinary. Real impact."
+          "title": "Hands-on Learning",
+          "description": "Learn modern technologies through practical workshops, coding sessions, and guided learning beyond the classroom."
         },
         {
           "id": "02",
-          "module": "module_02: repository_viewer",
-          "status": "status: read_only",
-          "title": "Project Showcase",
-          "description": "Open-source builds, pixel-perfect UIs, and production-grade systems built by collective members."
+          "title": "Build Real Projects",
+          "description": "Collaborate with fellow students on real-world projects that strengthen your portfolio and practical experience."
         },
         {
           "id": "03",
-          "module": "module_03: personnel_db",
-          "status": "status: encrypted",
-          "title": "Meet The Team",
-          "description": "Engineers, designers, and researchers bridging the gap between abstract logic and hardware reality."
+          "title": "Hackathons & Competitions",
+          "description": "Participate in hackathons, coding contests, and technical events to challenge yourself and showcase your skills."
+        },
+        {
+          "id": "04",
+          "title": "Mentorship & Community",
+          "description": "Connect with seniors, mentors, and like-minded peers who support your learning and technical growth."
+        },
+        {
+          "id": "05",
+          "title": "Leadership Opportunities",
+          "description": "Organize events, lead teams, and develop communication and management skills alongside technical expertise."
+        },
+        {
+          "id": "06",
+          "title": "Career Growth",
+          "description": "Build a strong portfolio, improve problem-solving skills, and prepare for internships, placements, and future careers."
         }
       ]
     },
     "commitSection": {
       "eyebrow": "auth_required",
       "title": "Write the next chapter.",
-      "description": "We are looking for high-performance individuals to bridge the gap between abstract logic and hardware reality. Ready to commit?",
-      "kicker": "// why codex?",
+      "description": "Every great developer starts somewhere. Join CodeX to build real projects, solve meaningful problems, collaborate with passionate peers, and create experiences that shape your future.",
+      "kicker": "// member benefits",
       "benefits": [
         "Access to a 100+ member collaborative network",
         "Hands-on protocol development sessions",
-        "Direct mentorship from senior engineers",
-        "Pixel-perfect UI architecture workshops",
+        "Direct mentorship from seniors and alumni",
+        "Career-focused learning and networking",
         "Annual hackathon with real industry exposure",
         "Open-source project contributions and live deployments"
       ]
     },
     "gradientPulse": {
       "text": "system.ready() // waiting for user_input..."
+    },
+    "domains": {
+      "eyebrow": "explore // tech_stacks",
+      "titlePart1": "Core",
+      "titlePart2": "Domains",
+      "description": "Choose your specialization. Master the stack and build real-world applications.",
+      "list": [
+        {
+          "title": "Web Development",
+          "description": "Build modern websites and full-stack applications."
+        },
+        {
+          "title": "AI & ML",
+          "description": "Build intelligent systems using modern AI tools."
+        },
+        {
+          "title": "Competitive Programming",
+          "description": "Improve algorithmic thinking and coding interview skills."
+        },
+        {
+          "title": "Cloud Computing",
+          "description": "Deploy scalable applications and learn DevOps."
+        },
+        {
+          "title": "Cyber Security",
+          "description": "Understand security fundamentals and ethical hacking."
+        },
+        {
+          "title": "UI/UX",
+          "description": "Design beautiful and user-friendly products."
+        },
+        {
+          "title": "App Development",
+          "description": "Android, Flutter, React Native."
+        },
+        {
+          "title": "Open Source",
+          "description": "Contribute to real-world projects."
+        }
+      ]
     }
   },
   "faqs": [
     {
       "_id": "faq_1",
-      "question": "What is CodeX?",
-      "answer": "CodeX is a community of tech enthusiasts and developers aiming to foster innovation and learning.",
+      "question": "Who can join CodeX?",
+      "answer": "Any Quantum University student with an interest in technology can join CodeX. Whether you're a beginner or an experienced developer, you'll find opportunities to learn, build, and collaborate.",
       "isActive": true
     },
     {
       "_id": "faq_2",
-      "question": "How can I join?",
-      "answer": "You can join by filling out the registration form on our website when recruitments are open.",
+      "question": "What activities does CodeX organize?",
+      "answer": "CodeX organizes hackathons, coding competitions, technical workshops, speaker sessions, open-source initiatives, project collaborations, networking events, and weekly PROPS (Problem Solving) sessions where members practice DSA, competitive programming, interview questions, and collaborative problem-solving.",
       "isActive": true
     },
     {
       "_id": "faq_3",
       "question": "Do I need prior coding experience?",
-      "answer": "Not necessarily! We welcome beginners who are eager to learn, as well as experienced developers.",
+      "answer": "No. We welcome students of all skill levels. If you're willing to learn and actively participate, our mentors and community will help you grow through practical projects and collaborative learning.",
       "isActive": true
     },
     {
       "_id": "faq_4",
-      "question": "Are there any membership fees?",
-      "answer": "No, joining CodeX is completely free for all students.",
+      "question": "When are the weekly PROPS sessions held?",
+      "answer": "We conduct a weekly PROPS (Problem Solving) session every Saturday from 4:00 PM to 6:00 PM, where members solve coding problems, strengthen DSA concepts, prepare for coding interviews, and improve their problem-solving skills together.",
+      "isActive": true
+    },
+    {
+      "_id": "faq_5",
+      "question": "Is there a membership fee?",
+      "answer": "Yes. There is a one-time membership fee of ₹50. The entire amount is added to the club fund and is used to organize workshops, hackathons, coding contests, technical events, and other activities for our members.",
+      "isActive": true
+    },
+    {
+      "_id": "faq_6",
+      "question": "What are the benefits of joining CodeX?",
+      "answer": "As a member, you'll work on real-world projects, attend exclusive workshops, participate in hackathons and coding contests, receive mentorship, build a strong portfolio, expand your professional network, and gain practical experience that helps with internships and placements.",
       "isActive": true
     }
   ],
@@ -103,16 +164,38 @@
       "OPEN SOURCE",
       "PIXEL PERFECT",
       "PROTOCOL DEV",
-      "100+ MEMBERS",
-      "WORKSHOPS"
+      "500+ MEMBERS",
+      "WORKSHOPS",
+      "WEEKLY PROPS",
+      "DSA PRACTICE",
+      "CODE REVIEWS",
+      "WORKSHOPS",
+      "TECH TALKS",
+      "AI & ML",
+      "WEB DEVELOPMENT"
     ],
     "footerText": "© 2026 Codex Collective. All systems nominal.",
     "nav": [
-      { "label": "ABOUT", "path": "/about" },
-      { "label": "EVENTS", "path": "/events" },
-      { "label": "TEAM", "path": "/team" },
-      { "label": "FAQS", "path": "/faqs" },
-      { "label": "CONTACT", "path": "/contact" }
+      {
+        "label": "ABOUT",
+        "path": "/about"
+      },
+      {
+        "label": "EVENTS",
+        "path": "/events"
+      },
+      {
+        "label": "TEAM",
+        "path": "/team"
+      },
+      {
+        "label": "FAQS",
+        "path": "/faqs"
+      },
+      {
+        "label": "CONTACT",
+        "path": "/contact"
+      }
     ],
     "meta": "EST. 2018 — VOL.07",
     "cta": "JOIN US"
@@ -123,31 +206,27 @@
     "titlePart2": "Club",
     "description": "Initialize your profile and secure your position in the CodeX network."
   },
-  "resources": {
-    "eyebrow": "resources",
-    "title": "Student Resources"
-  },
   "about": {
-    "eyebrow": "QU CodeX",
-    "title": "About CodeX",
-    "description": "CodeX is the official technical club of the Department of Computer Science & Engineering and Computer Applications at Quantum University, Roorkee.",
-    "mission": "Our mission is to serve as a hub for students passionate about programming, software development, and emerging technologies. We bridge the gap between abstract logic and hardware reality, providing students with opportunities to collaborate on real-world, live projects, and build professional portfolios.",
+    "eyebrow": "Official Technical Club",
+    "title": "Building the Next Generation of Innovators",
+    "description": "CodeX is the official technical club of the Department of Computer Science & Engineering and Computer Applications at Quantum University, Roorkee. We empower students to learn, build, innovate, and collaborate through practical, hands-on experiences.",
+    "mission": "Our mission is to create a thriving community where students transform ideas into real-world solutions. Through mentorship, live projects, hackathons, technical workshops, and competitive programming, we help members develop industry-ready skills, strengthen problem-solving abilities, and build impactful portfolios for internships, placements, and entrepreneurship.",
     "activitiesTitle": "Key Activities & Focus Areas",
     "activities": [
       {
-        "title": "Technical Events",
-        "description": "We organize various activities including hackathons (such as the annual Q-Hackathon), coding marathons, technical quizzes, and project showcases."
+        "title": "Projects & Open Source",
+        "description": "Build real-world applications, contribute to open-source projects, collaborate in teams, and gain practical development experience using modern technologies."
       },
       {
-        "title": "Skill Development",
-        "description": "Members engage with a wide range of technologies, including Python, C++, React JS, Flutter, Android development, AI, ML, IoT, Cybersecurity, and UI/UX design."
+        "title": "Workshops & Weekly PROPS",
+        "description": "Attend expert-led workshops and participate in our weekly PROPS (Problem Solving) sessions focused on DSA, competitive programming, coding interviews, and logical thinking."
       },
       {
-        "title": "CodeFest Series",
-        "description": "An exclusive series to foster collaboration and allow students to demonstrate their expertise in specialized domains."
+        "title": "Hackathons & Technical Events",
+        "description": "Compete in hackathons, coding contests, technical quizzes, project expos, and flagship events like CodeFest to challenge yourself and showcase your skills."
       }
     ],
-    "contact": "Contact us at codex.club@quantumeducation.in or follow us on Instagram @codexclub"
+    "contact": "Join our community, attend our events, or reach out at codex.club@quantumeducation.in. Follow us on Instagram @qu_codex for the latest updates."
   },
   "contact": {
     "eyebrow": "GET IN TOUCH",
