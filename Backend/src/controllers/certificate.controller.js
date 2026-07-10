@@ -58,7 +58,7 @@ const generateBulkCertificates = asyncHandler(async (req, res) => {
     // Send email with certificate link
     const verificationLink = `${process.env.FRONTEND_URL}/verify-certificate/${certificateId}`;
     
-    const message = certificateEmail({
+    const { html, text } = certificateEmail({
       studentName: student.name,
       eventName,
       certificateId,
@@ -70,7 +70,8 @@ const generateBulkCertificates = asyncHandler(async (req, res) => {
     sendEmail({
       email: student.email,
       subject: `Your Certificate for ${eventName}`,
-      message,
+      message: html,
+      textMessage: text,
     }).catch(err => console.error("Failed to send certificate email to", student.email, ":", err));
   }
 

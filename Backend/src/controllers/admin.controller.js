@@ -97,13 +97,14 @@ const loginAdmin = asyncHandler(async (req, res) => {
   });
 
   // Send OTP via Email
-  const message = adminOtpEmail(otp);
+  const { html, text } = adminOtpEmail(otp);
 
   try {
     await sendEmail({
       email: admin.email,
       subject: 'CodeX Admin Login OTP',
-      message,
+      message: html,
+      textMessage: text,
     });
   } catch (error) {
     // If email fails, delete the token we just created
@@ -303,13 +304,14 @@ const requestPasswordChange = asyncHandler(async (req, res) => {
     expiresAt: new Date(Date.now() + 10 * 60 * 1000), // 10 minutes
   });
 
-  const message = passwordChangeOtpEmail(otp);
+  const { html, text } = passwordChangeOtpEmail(otp);
 
   try {
     await sendEmail({
       email: admin.email,
       subject: 'CodeX Password Change OTP',
-      message,
+      message: html,
+      textMessage: text,
     });
   } catch (error) {
     await Token.deleteMany({ userId: admin._id, userType: 'Admin', type: 'RESET_PASSWORD' });
@@ -356,12 +358,13 @@ const changePassword = asyncHandler(async (req, res) => {
   admin.password = newPassword;
   await admin.save({ validateBeforeSave: false });
 
-  const successMessage = passwordChangedSuccessEmail();
+  const { html, text } = passwordChangedSuccessEmail();
   try {
     await sendEmail({
       email: admin.email,
       subject: 'CodeX Password Changed',
-      message: successMessage,
+      message: html,
+      textMessage: text,
     });
   } catch (error) {
     console.error("Failed to send password changed success email", error);

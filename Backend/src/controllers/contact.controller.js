@@ -34,10 +34,12 @@ const submitContactForm = asyncHandler(async (req, res) => {
   });
 
   // Send confirmation email to the user (non-blocking)
+  const { html, text } = contactFormReceivedEmail(name);
   sendEmail({
     email,
     subject: "We received your message - CodeX",
-    message: contactFormReceivedEmail(name),
+    message: html,
+    textMessage: text,
   }).catch((err) => {
     console.error("Failed to send contact confirmation email:", err);
   });

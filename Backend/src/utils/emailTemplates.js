@@ -167,8 +167,8 @@ const darkBadge = (text) =>
 /**
  * Admin OTP Email
  */
-const adminOtpEmail = (otp) =>
-  emailLayout({
+const adminOtpEmail = (otp) => ({
+  html: emailLayout({
     preheader: `Your CodeX admin login OTP is ${otp}`,
     body: `
       ${kicker('// auth_verification')}
@@ -186,13 +186,15 @@ const adminOtpEmail = (otp) =>
       ${paragraph('This OTP is valid for <strong>10 minutes</strong>. If you did not request this, please ignore this email.')}
       ${darkBadge('expires: 10 min')}
     `,
-  });
+  }),
+  text: `Your CodeX admin login OTP is ${otp}\n\nLogin OTP\n\nYour one-time password for admin access is:\n${otp}\n\nThis OTP is valid for 10 minutes. If you did not request this, please ignore this email.\n`,
+});
 
 /**
  * Password Change OTP Email
  */
-const passwordChangeOtpEmail = (otp) =>
-  emailLayout({
+const passwordChangeOtpEmail = (otp) => ({
+  html: emailLayout({
     preheader: `Your CodeX password change OTP is ${otp}`,
     body: `
       ${kicker('// security_verification')}
@@ -210,13 +212,15 @@ const passwordChangeOtpEmail = (otp) =>
       ${paragraph('This OTP is valid for <strong>10 minutes</strong>. If you did not request to change your password, please secure your account immediately.')}
       ${darkBadge('expires: 10 min')}
     `,
-  });
+  }),
+  text: `Your CodeX password change OTP is ${otp}\n\nPassword Change OTP\n\nYou requested to change your admin password. Your one-time password is:\n${otp}\n\nThis OTP is valid for 10 minutes. If you did not request to change your password, please secure your account immediately.\n`,
+});
 
 /**
  * Password Changed Success Email
  */
-const passwordChangedSuccessEmail = () =>
-  emailLayout({
+const passwordChangedSuccessEmail = () => ({
+  html: emailLayout({
     preheader: `Your CodeX password was successfully changed`,
     body: `
       ${kicker('// security_update')}
@@ -225,13 +229,15 @@ const passwordChangedSuccessEmail = () =>
       ${paragraph('If you did not make this change, please contact another administrator or the support team immediately to recover your account.')}
       ${darkBadge('status: updated')}
     `,
-  });
+  }),
+  text: `Your CodeX password was successfully changed\n\nPassword Changed\n\nYour CodeX admin account password has been successfully updated.\n\nIf you did not make this change, please contact another administrator or the support team immediately to recover your account.\n`,
+});
 
 /**
  * Registration Approved Email
  */
-const registrationApprovedEmail = (studentName) =>
-  emailLayout({
+const registrationApprovedEmail = (studentName) => ({
+  html: emailLayout({
     preheader: `Welcome to CodeX, ${studentName}! Your registration has been approved.`,
     body: `
       ${kicker('// access_granted')}
@@ -241,13 +247,15 @@ const registrationApprovedEmail = (studentName) =>
       ${paragraph('Keep an eye out for upcoming events, workshops, and announcements. We are excited to have you onboard.')}
       ${darkBadge('status: approved')}
     `,
-  });
+  }),
+  text: `Welcome to CodeX, ${studentName}! Your registration has been approved.\n\nWelcome to CodeX.\n\nDear ${studentName},\n\nYour registration for CodeX has been approved. You are now officially part of the collective.\n\nKeep an eye out for upcoming events, workshops, and announcements. We are excited to have you onboard.\n`,
+});
 
 /**
  * Registration Rejected Email
  */
-const registrationRejectedEmail = (studentName) =>
-  emailLayout({
+const registrationRejectedEmail = (studentName) => ({
+  html: emailLayout({
     preheader: `CodeX registration update for ${studentName}`,
     body: `
       ${kicker('// registration_update')}
@@ -257,13 +265,15 @@ const registrationRejectedEmail = (studentName) =>
       ${paragraph('If you believe this is a mistake, please contact our support team or resubmit your registration with the correct details.')}
       ${darkBadge('status: rejected')}
     `,
-  });
+  }),
+  text: `CodeX registration update for ${studentName}\n\nRegistration Update.\n\nDear ${studentName},\n\nWe regret to inform you that your registration for CodeX could not be approved at this time.\n\nIf you believe this is a mistake, please contact our support team or resubmit your registration with the correct details.\n`,
+});
 
 /**
  * Certificate Email
  */
-const certificateEmail = ({ studentName, eventName, certificateId, verificationLink, position = 'Participant' }) =>
-  emailLayout({
+const certificateEmail = ({ studentName, eventName, certificateId, verificationLink, position = 'Participant' }) => ({
+  html: emailLayout({
     preheader: `Your ${position} certificate for ${eventName} is ready — Verify ID: ${certificateId}`,
     body: `
       ${kicker('// certificate_issued')}
@@ -281,13 +291,15 @@ const certificateEmail = ({ studentName, eventName, certificateId, verificationL
 
       ${paragraph('You can also verify your certificate directly on our website using the certificate ID above.')}
     `,
-  });
+  }),
+  text: `Your ${position} certificate for ${eventName} is ready — Verify ID: ${certificateId}\n\nCertificate Ready.\n\nDear ${studentName},\n\nCongratulations on your role as ${position} in ${eventName}. Your certificate has been generated and is ready for verification.\n\nEvent: ${eventName}\nPosition: ${position}\nCertificate ID: ${certificateId}\n\nView Certificate at: ${verificationLink}\n\nYou can also verify your certificate directly on our website using the certificate ID above.\n`,
+});
 
 /**
  * Contact Form Received Email
  */
-const contactFormReceivedEmail = (userName) =>
-  emailLayout({
+const contactFormReceivedEmail = (userName) => ({
+  html: emailLayout({
     preheader: `Thank you for contacting CodeX, ${userName}`,
     body: `
       ${kicker('// message_received')}
@@ -297,7 +309,9 @@ const contactFormReceivedEmail = (userName) =>
       ${paragraph('In the meantime, feel free to explore our website and upcoming events.')}
       ${darkBadge('status: received')}
     `,
-  });
+  }),
+  text: `Thank you for contacting CodeX, ${userName}\n\nWe got your message.\n\nHi ${userName},\n\nThank you for reaching out to us. We have successfully received your message and our team will get back to you as soon as possible.\n\nIn the meantime, feel free to explore our website and upcoming events.\n`,
+});
 
 export {
   emailLayout,
