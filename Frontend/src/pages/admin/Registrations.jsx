@@ -21,11 +21,17 @@ import {
 import { TableRowSkeleton } from "../../components/common/SkeletonLoaders";
 
 export default function Registrations() {
-  const { registrations, loading, isLoaded } = useSelector((state) => state.adminRegistrations);
+  const { registrations, loading, isLoaded } = useSelector(
+    (state) => state.adminRegistrations
+  );
   const dispatch = useDispatch();
 
+  // --- Filter States ---
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState("ALL");
+  const [courseFilter, setCourseFilter] = useState("ALL");
+  const [yearFilter, setYearFilter] = useState("ALL");
+  
   const [updatingId, setUpdatingId] = useState(null);
   const confirm = useConfirm();
 
@@ -46,9 +52,9 @@ export default function Registrations() {
     setUpdatingId(id);
     try {
       await dispatch(
-        updateRegistrationStatus({ 
-          id, 
-          status: newStatus 
+        updateRegistrationStatus({
+          id,
+          status: newStatus,
         })
       ).unwrap();
     } catch {
@@ -58,6 +64,7 @@ export default function Registrations() {
     }
   };
 
+  // --- Filtering Logic ---
   const filteredRegistrations = registrations.filter((reg) => {
     const matchesSearch =
       reg.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -65,10 +72,12 @@ export default function Registrations() {
       reg.studentId?.toLowerCase().includes(searchTerm.toLowerCase());
 
     const currentStatus = reg.status || "PENDING";
-    const matchesStatus =
-      statusFilter === "ALL" || currentStatus === statusFilter;
+    
+    const matchesStatus = statusFilter === "ALL" || currentStatus === statusFilter;
+    const matchesCourse = courseFilter === "ALL" || reg.course === courseFilter;
+    const matchesYear = yearFilter === "ALL" || reg.year === yearFilter;
 
-    return matchesSearch && matchesStatus;
+    return matchesSearch && matchesStatus && matchesCourse && matchesYear;
   });
 
   const StatusBadge = ({ status }) => {
@@ -113,13 +122,17 @@ export default function Registrations() {
             className="p-2 bg-white border border-slate-200 rounded-lg text-slate-500 hover:text-teal-600 hover:border-teal-200 transition-colors shadow-sm disabled:opacity-50"
             title="Refresh Data"
           >
-            <RefreshCw className={`w-5 h-5 ${loading ? "animate-spin text-teal-500" : ""}`} />
+            <RefreshCw
+              className={`w-5 h-5 ${
+                loading ? "animate-spin text-teal-500" : ""
+              }`}
+            />
           </button>
         </div>
       </header>
 
       {/* Control Bar */}
-      <div className="flex flex-col md:flex-row justify-between gap-4 mb-6">
+      <div className="flex flex-col xl:flex-row justify-between gap-4 mb-6">
         <div className="relative flex-1 max-w-md">
           <Search className="absolute left-3 top-2.5 w-4 h-4 text-slate-400" />
           <input
@@ -131,20 +144,61 @@ export default function Registrations() {
           />
         </div>
 
-        <div className="relative">
-          <Filter className="absolute left-3 top-2.5 w-4 h-4 text-teal-600 pointer-events-none" />
-          <select
-            value={statusFilter}
-            onChange={(e) => setStatusFilter(e.target.value)}
-            className="appearance-none bg-white border border-slate-200 text-slate-700 rounded-lg py-2 pl-9 pr-10 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 hover:border-slate-300 transition-colors shadow-sm cursor-pointer"
-          >
-            <option value="ALL">All Statuses</option>
-            <option value="PENDING">Pending</option>
-            <option value="APPROVED">Approved</option>
-            <option value="REJECTED">Rejected</option>
-          </select>
-          {/* Custom Select Arrow */}
-          <div className="absolute right-3 top-4 w-0 h-0 border-l-[4px] border-l-transparent border-r-[4px] border-r-transparent border-t-[5px] border-t-slate-400 pointer-events-none"></div>
+        {/* Filter Dropdowns Container */}
+        <div className="flex flex-wrap items-center gap-3">
+          {/* Course Filter */}
+          <div className="relative">
+            <Filter className="absolute left-3 top-2.5 w-4 h-4 text-teal-600 pointer-events-none" />
+            <select
+              value={courseFilter}
+              onChange={(e) => setCourseFilter(e.target.value)}
+              className="appearance-none bg-white border border-slate-200 text-slate-700 rounded-lg py-2 pl-9 pr-10 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 hover:border-slate-300 transition-colors shadow-sm cursor-pointer"
+            >
+              <option value="ALL">All Courses</option>
+              <option value="B.Tech">B.Tech</option>
+              <option value="M.Tech">M.Tech</option>
+              <option value="BCA">BCA</option>
+              <option value="MCA">MCA</option>
+              <option value="BBA">BBA</option>
+              <option value="MBA">MBA</option>
+              <option value="B.Sc">B.Sc</option>
+              <option value="M.Sc">M.Sc</option>
+            </select>
+            <div className="absolute right-3 top-4 w-0 h-0 border-l-[4px] border-l-transparent border-r-[4px] border-r-transparent border-t-[5px] border-t-slate-400 pointer-events-none"></div>
+          </div>
+
+          {/* Year Filter */}
+          <div className="relative">
+            <Filter className="absolute left-3 top-2.5 w-4 h-4 text-teal-600 pointer-events-none" />
+            <select
+              value={yearFilter}
+              onChange={(e) => setYearFilter(e.target.value)}
+              className="appearance-none bg-white border border-slate-200 text-slate-700 rounded-lg py-2 pl-9 pr-10 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 hover:border-slate-300 transition-colors shadow-sm cursor-pointer"
+            >
+              <option value="ALL">All Years</option>
+              <option value="1st Year">1st Year</option>
+              <option value="2nd Year">2nd Year</option>
+              <option value="3rd Year">3rd Year</option>
+              <option value="4th Year">4th Year</option>
+            </select>
+            <div className="absolute right-3 top-4 w-0 h-0 border-l-[4px] border-l-transparent border-r-[4px] border-r-transparent border-t-[5px] border-t-slate-400 pointer-events-none"></div>
+          </div>
+
+          {/* Status Filter */}
+          <div className="relative">
+            <Filter className="absolute left-3 top-2.5 w-4 h-4 text-teal-600 pointer-events-none" />
+            <select
+              value={statusFilter}
+              onChange={(e) => setStatusFilter(e.target.value)}
+              className="appearance-none bg-white border border-slate-200 text-slate-700 rounded-lg py-2 pl-9 pr-10 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 hover:border-slate-300 transition-colors shadow-sm cursor-pointer"
+            >
+              <option value="ALL">All Statuses</option>
+              <option value="PENDING">Pending</option>
+              <option value="APPROVED">Approved</option>
+              <option value="REJECTED">Rejected</option>
+            </select>
+            <div className="absolute right-3 top-4 w-0 h-0 border-l-[4px] border-l-transparent border-r-[4px] border-r-transparent border-t-[5px] border-t-slate-400 pointer-events-none"></div>
+          </div>
         </div>
       </div>
 
