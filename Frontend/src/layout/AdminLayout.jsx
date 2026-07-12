@@ -50,11 +50,11 @@ export default function AdminLayout() {
     // 2. If unauthenticated and trying to access dashboard routes, redirect to login
     if (!user && !isLoginPage) {
       content = <Navigate to="/admin/login" replace state={{ from: location }} />;
-    } 
+    }
     // 3. If authenticated and trying to access the login page, redirect to dashboard
     else if (user && isLoginPage) {
       content = <Navigate to="/admin/dashboard" replace />;
-    } 
+    }
     // 4. Otherwise, render the requested route
     else {
       content = <Outlet />;

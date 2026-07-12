@@ -11,6 +11,7 @@ import {
   Check,
   X as XIcon,
   RefreshCw,
+  Download,
 } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import { useConfirm } from "../../context/ConfirmContext";
@@ -19,27 +20,32 @@ import {
   updateRegistrationStatus,
 } from "../../context/adminRegistrationsSlice";
 import { TableRowSkeleton } from "../../components/common/SkeletonLoaders";
+import { generateAcademicYears, getAcademicYearFromDate } from "../../utils/helpers";
 
 export default function Registrations() {
-  const { registrations, loading, isLoaded } = useSelector(
+  const { registrationsByYear, loading } = useSelector(
     (state) => state.adminRegistrations
   );
   const dispatch = useDispatch();
 
   // --- Filter States ---
+  const formAcademicYears = generateAcademicYears();
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState("ALL");
   const [courseFilter, setCourseFilter] = useState("ALL");
   const [yearFilter, setYearFilter] = useState("ALL");
+  const [academicYearFilter, setAcademicYearFilter] = useState(formAcademicYears[0] || "ALL");
   
   const [updatingId, setUpdatingId] = useState(null);
   const confirm = useConfirm();
 
+  const currentRegistrations = registrationsByYear[academicYearFilter] || [];
+
   useEffect(() => {
-    if (!isLoaded) {
-      dispatch(fetchAdminRegistrations());
+    if (!registrationsByYear[academicYearFilter]) {
+      dispatch(fetchAdminRegistrations(academicYearFilter));
     }
-  }, [dispatch, isLoaded]);
+  }, [dispatch, academicYearFilter, registrationsByYear]);
 
   const handleStatusChange = async (id, newStatus) => {
     const isConfirmed = await confirm({
@@ -65,7 +71,7 @@ export default function Registrations() {
   };
 
   // --- Filtering Logic ---
-  const filteredRegistrations = registrations.filter((reg) => {
+  const filteredRegistrations = currentRegistrations.filter((reg) => {
     const matchesSearch =
       reg.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
       reg.email?.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -76,9 +82,71 @@ export default function Registrations() {
     const matchesStatus = statusFilter === "ALL" || currentStatus === statusFilter;
     const matchesCourse = courseFilter === "ALL" || reg.course === courseFilter;
     const matchesYear = yearFilter === "ALL" || reg.year === yearFilter;
-
+    
     return matchesSearch && matchesStatus && matchesCourse && matchesYear;
   });
+
+  const handleExportCSV = () => {
+    if (filteredRegistrations.length === 0) {
+      alert("No data to export for this selection.");
+      return;
+    }
+
+    const headers = [
+      "Name",
+      "Father's Name",
+      "Email",
+      "Phone",
+      "Course",
+      "Study Year",
+      "Semester",
+      "Section",
+      "Set",
+      "Student ID",
+      "Transaction ID",
+      "Status",
+      "Registration Date"
+    ];
+
+    const csvRows = [headers.join(",")];
+
+    filteredRegistrations.forEach(reg => {
+      const row = [
+        `"${reg.name || ""}"`,
+        `"${reg.fatherName || ""}"`,
+        `"${reg.email || ""}"`,
+        `"${reg.phone || ""}"`,
+        `"${reg.course || ""}"`,
+        `"${reg.year || ""}"`,
+        `"${reg.semester || ""}"`,
+        `"${reg.section || ""}"`,
+        `"${reg.set || ""}"`,
+        `"${reg.studentId || ""}"`,
+        `"${reg.transactionId || ""}"`,
+        `"${reg.status || ""}"`,
+        `"${new Date(reg.createdAt).toLocaleDateString()}"`
+      ];
+      csvRows.push(row.join(","));
+    });
+
+    const csvString = csvRows.join("\n");
+    const blob = new Blob([csvString], { type: "text/csv" });
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `Registrations_${academicYearFilter}_${new Date().toISOString().split('T')[0]}.csv`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    window.URL.revokeObjectURL(url);
+  };
+
+  const isNewEntry = (dateString) => {
+    const createdAt = new Date(dateString);
+    const now = new Date();
+    // highlight if created within the last 24 hours
+    return (now - createdAt) < 24 * 60 * 60 * 1000;
+  };
 
   const StatusBadge = ({ status }) => {
     switch (status?.toUpperCase()) {
@@ -117,7 +185,16 @@ export default function Registrations() {
         </div>
         <div className="flex items-center gap-3">
           <button
-            onClick={() => dispatch(fetchAdminRegistrations())}
+            onClick={handleExportCSV}
+            disabled={loading || filteredRegistrations.length === 0}
+            className="flex items-center gap-2 px-4 py-2 bg-slate-800 text-white rounded-lg text-sm font-medium hover:bg-slate-900 transition-colors shadow-sm disabled:opacity-50"
+            title="Export to CSV"
+          >
+            <Download className="w-4 h-4" />
+            <span>Export CSV</span>
+          </button>
+          <button
+            onClick={() => dispatch(fetchAdminRegistrations(academicYearFilter))}
             disabled={loading}
             className="p-2 bg-white border border-slate-200 rounded-lg text-slate-500 hover:text-teal-600 hover:border-teal-200 transition-colors shadow-sm disabled:opacity-50"
             title="Refresh Data"
@@ -184,6 +261,24 @@ export default function Registrations() {
             <div className="absolute right-3 top-4 w-0 h-0 border-l-[4px] border-l-transparent border-r-[4px] border-r-transparent border-t-[5px] border-t-slate-400 pointer-events-none"></div>
           </div>
 
+          {/* Academic Year Filter */}
+          <div className="relative">
+            <Filter className="absolute left-3 top-2.5 w-4 h-4 text-teal-600 pointer-events-none" />
+            <select
+              value={academicYearFilter}
+              onChange={(e) => setAcademicYearFilter(e.target.value)}
+              className="appearance-none bg-white border border-slate-200 text-slate-700 rounded-lg py-2 pl-9 pr-10 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 hover:border-slate-300 transition-colors shadow-sm cursor-pointer"
+            >
+              <option value="ALL">All Academic Years</option>
+              {formAcademicYears.map((yr) => (
+                <option key={yr} value={yr}>
+                  {yr}
+                </option>
+              ))}
+            </select>
+            <div className="absolute right-3 top-4 w-0 h-0 border-l-[4px] border-l-transparent border-r-[4px] border-r-transparent border-t-[5px] border-t-slate-400 pointer-events-none"></div>
+          </div>
+
           {/* Status Filter */}
           <div className="relative">
             <Filter className="absolute left-3 top-2.5 w-4 h-4 text-teal-600 pointer-events-none" />
@@ -245,14 +340,21 @@ export default function Registrations() {
                   </td>
                 </tr>
               ) : (
-                filteredRegistrations.map((reg) => (
+                filteredRegistrations.map((reg) => {
+                  const isNew = isNewEntry(reg.createdAt);
+                  return (
                   <tr
                     key={reg._id}
-                    className="hover:bg-slate-50/50 transition-colors"
+                    className={`transition-colors ${isNew ? 'bg-teal-50/40 hover:bg-teal-50/60' : 'hover:bg-slate-50/50'}`}
                   >
                     <td className="px-6 py-4">
-                      <div className="font-medium text-slate-900">
+                      <div className="font-medium text-slate-900 flex items-center gap-2">
                         {reg.name}
+                        {isNew && (
+                          <span className="px-1.5 py-0.5 rounded text-[10px] font-bold bg-teal-100 text-teal-700 tracking-wider">
+                            NEW
+                          </span>
+                        )}
                       </div>
                       <div className="text-xs text-slate-500 mt-0.5">
                         D/O, S/O: {reg.fatherName}
@@ -325,7 +427,8 @@ export default function Registrations() {
                       )}
                     </td>
                   </tr>
-                ))
+                  );
+                })
               )}
             </tbody>
           </table>

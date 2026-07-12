@@ -7,7 +7,7 @@ import { registrationApprovedEmail, registrationRejectedEmail } from '../utils/e
 
 // Get all registrations (Admin only)
 const getAllRegistrations = asyncHandler(async (req, res) => {
-  const { status, search, page = 1, limit = 10 } = req.query;
+  const { status, search, academicYear, page = 1, limit = 10 } = req.query;
 
   const query = {};
   if (status) query.status = status;
@@ -18,6 +18,16 @@ const getAllRegistrations = asyncHandler(async (req, res) => {
       { studentId: { $regex: search, $options: 'i' } },
       { transactionId: { $regex: search, $options: 'i' } },
     ];
+  }
+  
+  if (academicYear && academicYear !== 'ALL') {
+    const [startYear] = academicYear.split("-");
+    const startDate = new Date(`${startYear}-06-01T00:00:00.000Z`);
+    const endDate = new Date(`${parseInt(startYear) + 1}-06-01T00:00:00.000Z`);
+    query.createdAt = {
+      $gte: startDate,
+      $lt: endDate
+    };
   }
 
   const options = {

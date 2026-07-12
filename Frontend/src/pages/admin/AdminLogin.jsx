@@ -209,8 +209,8 @@ export default function AdminLogin() {
 
         {/* Back to Home Button inside the card */}
         <div className="mt-6 pt-6 border-t border-slate-100 flex justify-start">
-          <Link 
-            to="/" 
+          <Link
+            to="/"
             className="flex items-center gap-2 text-slate-500 hover:text-teal-600 font-medium text-sm transition-colors"
           >
             <Home className="w-4 h-4" />

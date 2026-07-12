@@ -3,9 +3,11 @@ import { registrationService } from "../services/registrationService";
 
 export const fetchAdminRegistrations = createAsyncThunk(
   "adminRegistrations/fetch",
-  async (_, { rejectWithValue }) => {
+  async (academicYear, { rejectWithValue }) => {
     try {
-      const response = await registrationService.getRegistrations();
+      const response = await registrationService.getRegistrations(
+        academicYear && academicYear !== 'ALL' ? { academicYear } : {}
+      );
       const payload = response.data?.data || response.data || response;
       const records = payload.registrations || (Array.isArray(payload) ? payload : []);
       return records;
@@ -35,10 +37,9 @@ export const updateRegistrationStatus = createAsyncThunk(
 const adminRegistrationsSlice = createSlice({
   name: "adminRegistrations",
   initialState: {
-    registrations: [],
+    registrationsByYear: {},
     loading: false,
     error: null,
-    isLoaded: false,
   },
   reducers: {},
   extraReducers: (builder) => {
@@ -48,18 +49,20 @@ const adminRegistrationsSlice = createSlice({
       })
       .addCase(fetchAdminRegistrations.fulfilled, (state, action) => {
         state.loading = false;
-        state.isLoaded = true;
-        state.registrations = action.payload;
+        const year = action.meta.arg || 'ALL';
+        state.registrationsByYear[year] = action.payload;
       })
       .addCase(fetchAdminRegistrations.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       })
       .addCase(updateRegistrationStatus.fulfilled, (state, action) => {
-        const index = state.registrations.findIndex((r) => r._id === action.payload.id);
-        if (index !== -1) {
-          state.registrations[index].status = action.payload.status;
-        }
+        Object.keys(state.registrationsByYear).forEach(year => {
+          const index = state.registrationsByYear[year].findIndex((r) => r._id === action.payload.id);
+          if (index !== -1) {
+            state.registrationsByYear[year][index].status = action.payload.status;
+          }
+        });
       });
   },
 });
