@@ -8,6 +8,7 @@ import {
   MessageSquare,
   Activity,
   LogOut,
+  User,
 } from "lucide-react";
 import axios from "axios";
 
@@ -31,6 +32,7 @@ export default function DashboardLayout() {
     { name: "Certificates", path: "/admin/certificates", icon: FileText },
     { name: "Sessions", path: "/admin/sessions", icon: Activity },
     { name: "Messages", path: "/admin/messages", icon: MessageSquare },
+    { name: "Profile", path: "/admin/profile", icon: User },
   ];
   const handleLogout = async () => {
     try {

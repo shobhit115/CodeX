@@ -31,6 +31,7 @@ const AdminTeam = lazy(() => import("./pages/admin/ManageTeam"));
 const BulkCertificates = lazy(() => import("./pages/admin/BulkCertificates"));
 const ManageSessions = lazy(() => import("./pages/admin/ManageSessions"));
 const ManageContacts = lazy(() => import("./pages/admin/ManageContacts"));
+const AdminProfile = lazy(() => import("./pages/admin/AdminProfile"));
 
 const router = createBrowserRouter([
   {
@@ -72,6 +73,7 @@ const router = createBrowserRouter([
           { path: "certificates", element: <BulkCertificates /> },
           { path: "sessions", element: <ManageSessions /> },
           { path: "messages", element: <ManageContacts /> },
+          { path: "profile", element: <AdminProfile /> },
         ],
       },
     ],
