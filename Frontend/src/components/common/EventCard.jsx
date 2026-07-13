@@ -16,8 +16,6 @@ export default function EventCard({ event, onClose }) {
         className="bg-white rounded-3xl shadow-[0_20px_60px_-15px_rgba(0,0,0,0.3)] w-full max-w-5xl flex flex-col overflow-hidden h-full relative transform transition-all border border-white/20"
         onClick={(e) => e.stopPropagation()} 
       >
-        
-        {/* --- PREMIUM FIXED HEADER --- */}
         <div className="flex items-center justify-between px-6 py-4 md:px-8 bg-white/90 backdrop-blur-xl border-b border-slate-100 z-20 shrink-0">
           <h2 className="text-lg lg:text-xl font-bold text-slate-800 tracking-tight">
             Event Details
