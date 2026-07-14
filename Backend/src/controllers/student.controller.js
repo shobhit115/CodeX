@@ -40,10 +40,18 @@ const registerStudent = asyncHandler(async (req, res) => {
     throw new ApiError(400, 'All fields are required');
   }
 
-  // 3. Check for existing registration with same transactionId
-  const existingTx = await StudentRegistration.findOne({ transactionId });
-  if (existingTx) {
-    throw new ApiError(400, 'Transaction ID already used for another registration');
+  // 3. Check for existing registration with same transactionId or studentId
+  const existingRegistration = await StudentRegistration.findOne({
+    $or: [{ transactionId }, { studentId }]
+  });
+
+  if (existingRegistration) {
+    if (existingRegistration.studentId === studentId) {
+      throw new ApiError(400, 'Student ID (Q ID) is already registered');
+    }
+    if (existingRegistration.transactionId === transactionId) {
+      throw new ApiError(400, 'Transaction ID already used for another registration');
+    }
   }
 
   // 4. Create Registration

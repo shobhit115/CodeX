@@ -142,6 +142,12 @@ const addManualRegistration = asyncHandler(async (req, res) => {
     throw new ApiError(400, 'All fields are required');
   }
 
+  // Check if studentId already exists
+  const existingRegistration = await StudentRegistration.findOne({ studentId });
+  if (existingRegistration) {
+    throw new ApiError(400, 'Student ID (Q ID) is already registered');
+  }
+
   // Generate a mock transaction ID for cash
   const transactionId = `CASH-${Date.now()}`;
 
@@ -255,9 +261,16 @@ const bulkRegistration = asyncHandler(async (req, res) => {
         }
       }
 
-      const newStudents = uniqueResults.filter(s => 
-        !existingEmails.has(s.email) && !existingStudentIds.has(s.studentId)
-      );
+      const newStudents = [];
+      for (const s of uniqueResults) {
+        if (existingStudentIds.has(s.studentId)) {
+          errors.push(`Skipped: Student ID (Q ID) ${s.studentId} is already registered.`);
+        } else if (existingEmails.has(s.email)) {
+          errors.push(`Skipped: Email ${s.email} is already registered.`);
+        } else {
+          newStudents.push(s);
+        }
+      }
 
       const skippedCount = results.length - newStudents.length;
 
