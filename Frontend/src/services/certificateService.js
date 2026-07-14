@@ -10,6 +10,10 @@ class CertificateService {
   async verifyCertificate(certificateId) {
     return axiosInstance.get(`/certificates/verify/${certificateId}`);
   }
+
+  async getLatestSignature() {
+    return axiosInstance.get("/certificates/latest-signature");
+  }
 }
 
 export const certificateService = new CertificateService();

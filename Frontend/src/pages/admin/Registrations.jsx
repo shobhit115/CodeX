@@ -13,6 +13,8 @@ import {
   X as XIcon,
   RefreshCw,
   Download,
+  Upload,
+  FileText
 } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import { useConfirm } from "../../context/ConfirmContext";
@@ -20,26 +22,57 @@ import {
   fetchAdminRegistrations,
   updateRegistrationStatus,
   createManualRegistration,
+  createBulkRegistration,
+  setCurrentPage
 } from "../../context/adminRegistrationsSlice";
+import { registrationService } from "../../services/registrationService";
 import { TableRowSkeleton } from "../../components/common/SkeletonLoaders";
 import { generateAcademicYears } from "../../utils/helpers";
 
 export default function Registrations() {
-  const { registrationsByYear, loading } = useSelector(
+  const { pages, currentPage, total, totalPages, loading } = useSelector(
     (state) => state.adminRegistrations
   );
+  const currentData = pages[currentPage] || [];
   const dispatch = useDispatch();
 
   // --- Filter States ---
   const formAcademicYears = generateAcademicYears();
   const [searchTerm, setSearchTerm] = useState("");
+  const [debouncedSearch, setDebouncedSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState("ALL");
   const [courseFilter, setCourseFilter] = useState("ALL");
-  const [yearFilter, setYearFilter] = useState("ALL");
   const [academicYearFilter, setAcademicYearFilter] = useState(formAcademicYears[0] || "ALL");
   const [paymentModeFilter, setPaymentModeFilter] = useState("ALL");
   
+  const itemsPerPage = import.meta.env.MODE === 'development' ? 10 : 100;
+
+  // Debounce search term
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setDebouncedSearch(searchTerm);
+    }, 500);
+    return () => clearTimeout(handler);
+  }, [searchTerm]);
+
+  // Fetch data on filter or page change
+  useEffect(() => {
+    dispatch(fetchAdminRegistrations({
+      academicYear: academicYearFilter,
+      search: debouncedSearch,
+      status: statusFilter,
+      course: courseFilter,
+      paymentMode: paymentModeFilter,
+      page: currentPage,
+      limit: itemsPerPage
+    }));
+  }, [dispatch, academicYearFilter, debouncedSearch, statusFilter, courseFilter, paymentModeFilter, currentPage]);
+
   const [showAddModal, setShowAddModal] = useState(false);
+  const [showImportModal, setShowImportModal] = useState(false);
+  const [importFile, setImportFile] = useState(null);
+  const [isImporting, setIsImporting] = useState(false);
+  const [importResult, setImportResult] = useState(null);
   const {
     register,
     handleSubmit,
@@ -55,14 +88,6 @@ export default function Registrations() {
   
   const [updatingId, setUpdatingId] = useState(null);
   const confirm = useConfirm();
-
-  const currentRegistrations = registrationsByYear[academicYearFilter] || [];
-
-  useEffect(() => {
-    if (!registrationsByYear[academicYearFilter]) {
-      dispatch(fetchAdminRegistrations(academicYearFilter));
-    }
-  }, [dispatch, academicYearFilter, registrationsByYear]);
 
   const handleStatusChange = async (id, newStatus) => {
     const isConfirmed = await confirm({
@@ -87,24 +112,6 @@ export default function Registrations() {
     }
   };
 
-  // --- Filtering Logic ---
-  const filteredRegistrations = currentRegistrations.filter((reg) => {
-    const matchesSearch =
-      reg.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      reg.email?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      reg.studentId?.toLowerCase().includes(searchTerm.toLowerCase());
-
-    const currentStatus = reg.status || "PENDING";
-    
-    const matchesStatus = statusFilter === "ALL" || currentStatus === statusFilter;
-    const matchesCourse = courseFilter === "ALL" || reg.course === courseFilter;
-    const matchesYear = yearFilter === "ALL" || reg.year === yearFilter;
-    const regPaymentMode = reg.paymentMode || "ONLINE";
-    const matchesPaymentMode = paymentModeFilter === "ALL" || regPaymentMode === paymentModeFilter;
-    
-    return matchesSearch && matchesStatus && matchesCourse && matchesYear && matchesPaymentMode;
-  });
-
   const onAddSubmit = async (data) => {
     try {
       await dispatch(createManualRegistration(data)).unwrap();
@@ -115,59 +122,145 @@ export default function Registrations() {
     }
   };
 
-  const handleExportCSV = () => {
-    if (filteredRegistrations.length === 0) {
-      alert("No data to export for this selection.");
-      return;
-    }
-
+  const handleDownloadTemplate = () => {
     const headers = [
-      "Name",
-      "Father's Name",
-      "Email",
-      "Phone",
-      "Course",
-      "Study Year",
-      "Semester",
-      "Section",
-      "Set",
-      "Student ID",
-      "Transaction ID",
-      "Status",
-      "Registration Date"
+      "name",
+      "fatherName",
+      "email",
+      "phone",
+      "course",
+      "year",
+      "semester",
+      "section",
+      "set",
+      "studentId"
     ];
-
-    const csvRows = [headers.join(",")];
-
-    filteredRegistrations.forEach(reg => {
-      const row = [
-        `"${reg.name || ""}"`,
-        `"${reg.fatherName || ""}"`,
-        `"${reg.email || ""}"`,
-        `"${reg.phone || ""}"`,
-        `"${reg.course || ""}"`,
-        `"${reg.year || ""}"`,
-        `"${reg.semester || ""}"`,
-        `"${reg.section || ""}"`,
-        `"${reg.set || ""}"`,
-        `"${reg.studentId || ""}"`,
-        `"${reg.transactionId || ""}"`,
-        `"${reg.status || ""}"`,
-        `"${new Date(reg.createdAt).toLocaleDateString()}"`
-      ];
-      csvRows.push(row.join(","));
-    });
-
-    const csvString = csvRows.join("\n");
-    const blob = new Blob([csvString], { type: "text/csv" });
+    
+    const csvContent = headers.join(",") + "\n";
+    const blob = new Blob([csvContent], { type: "text/csv" });
     const url = window.URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
-    a.download = `Registrations_${academicYearFilter}_${new Date().toISOString().split('T')[0]}.csv`;
+    a.download = "CodeX_Registration_Template.csv";
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
     window.URL.revokeObjectURL(url);
+  };
+
+  const handleImportSubmit = async (e) => {
+    e.preventDefault();
+    if (!importFile) return;
+
+    setIsImporting(true);
+    setImportResult(null);
+
+    const formData = new FormData();
+    formData.append("file", importFile);
+
+    try {
+      const result = await dispatch(createBulkRegistration(formData)).unwrap();
+      setImportResult({ type: 'success', data: result });
+      dispatch(fetchAdminRegistrations({
+        academicYear: academicYearFilter,
+        search: debouncedSearch,
+        status: statusFilter,
+        course: courseFilter,
+        year: yearFilter,
+        paymentMode: paymentModeFilter,
+        page: currentPage,
+        limit: itemsPerPage
+      }));
+    } catch (error) {
+      setImportResult({ type: 'error', message: error || "Failed to import CSV" });
+    } finally {
+      setIsImporting(false);
+    }
+  };
+
+  const [isExporting, setIsExporting] = useState(false);
+
+  const handleExportCSV = async () => {
+    setIsExporting(true);
+    try {
+      const queryParams = {
+        academicYear: academicYearFilter,
+        search: debouncedSearch,
+        status: statusFilter,
+        course: courseFilter,
+        paymentMode: paymentModeFilter,
+        limit: 0
+      };
+      
+      for (const key in queryParams) {
+        if (queryParams[key] === 'ALL' || queryParams[key] === '') {
+          delete queryParams[key];
+        }
+      }
+      
+      const response = await registrationService.getRegistrations(queryParams);
+      const payload = response.data?.data || response.data || response;
+      const finalExportData = payload.registrations || (Array.isArray(payload) ? payload : []);
+      
+      if (finalExportData.length === 0) {
+        alert("No data matches your current filters to export.");
+        return;
+      }
+
+      const headers = [
+        "Name",
+        "Father's Name",
+        "Email",
+        "Phone",
+        "Course",
+        "Study Year",
+        "Semester",
+        "Section",
+        "Set",
+        "Student ID",
+        "Transaction ID",
+        "Payment Mode",
+        "Status",
+        "Registration Date"
+      ];
+
+      const csvRows = [headers.join(",")];
+
+      finalExportData.forEach(reg => {
+        const row = [
+          `"${reg.name || ""}"`,
+          `"${reg.fatherName || ""}"`,
+          `"${reg.email || ""}"`,
+          `"${reg.phone || ""}"`,
+          `"${reg.course || ""}"`,
+          `"${reg.year || ""}"`,
+          `"${reg.semester || ""}"`,
+          `"${reg.section || ""}"`,
+          `"${reg.set || ""}"`,
+          `"${reg.studentId || ""}"`,
+          `"${reg.transactionId || ""}"`,
+          `"${reg.paymentMode || "ONLINE"}"`,
+          `"${reg.status || ""}"`,
+          `"${new Date(reg.createdAt).toLocaleDateString()}"`
+        ];
+        csvRows.push(row.join(","));
+      });
+
+      const csvString = csvRows.join("\n");
+      const blob = new Blob([csvString], { type: "text/csv" });
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `Registrations_${academicYearFilter}_${new Date().toISOString().split('T')[0]}.csv`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      window.URL.revokeObjectURL(url);
+    } catch (error) {
+      alert("Failed to fetch full data for export.");
+    } finally {
+      setIsExporting(false);
+    }
   };
 
   const isNewEntry = (reg) => {
@@ -218,12 +311,19 @@ export default function Registrations() {
         <div className="flex items-center gap-3">
           <button
             onClick={handleExportCSV}
-            disabled={loading || filteredRegistrations.length === 0}
+            disabled={isExporting || loading || total === 0}
             className="flex items-center gap-2 px-4 py-2 bg-slate-800 text-white rounded-lg text-sm font-medium hover:bg-slate-900 transition-colors shadow-sm disabled:opacity-50"
             title="Export to CSV"
           >
-            <Download className="w-4 h-4" />
-            <span>Export CSV</span>
+            {isExporting ? <Loader2 className="w-4 h-4 animate-spin" /> : <Download className="w-4 h-4" />}
+            <span>{isExporting ? "Exporting..." : "Export CSV"}</span>
+          </button>
+          <button
+            onClick={() => { setShowImportModal(true); setImportResult(null); setImportFile(null); }}
+            className="flex items-center gap-2 px-4 py-2 bg-slate-100 text-slate-700 rounded-lg text-sm font-medium hover:bg-slate-200 transition-colors border border-slate-200 shadow-sm"
+          >
+            <Upload className="w-4 h-4" />
+            <span>Bulk Import</span>
           </button>
           <button
             onClick={() => setShowAddModal(true)}
@@ -232,7 +332,16 @@ export default function Registrations() {
             <span>+ Add Student (Cash)</span>
           </button>
           <button
-            onClick={() => dispatch(fetchAdminRegistrations(academicYearFilter))}
+            onClick={() => dispatch(fetchAdminRegistrations({
+              academicYear: academicYearFilter,
+              search: debouncedSearch,
+              status: statusFilter,
+              course: courseFilter,
+              year: yearFilter,
+              paymentMode: paymentModeFilter,
+              page: currentPage,
+              limit: itemsPerPage
+            }))}
             disabled={loading}
             className="p-2 bg-white border border-slate-200 rounded-lg text-slate-500 hover:text-teal-600 hover:border-teal-200 transition-colors shadow-sm disabled:opacity-50"
             title="Refresh Data"
@@ -282,22 +391,7 @@ export default function Registrations() {
             <div className="absolute right-3 top-4 w-0 h-0 border-l-[4px] border-l-transparent border-r-[4px] border-r-transparent border-t-[5px] border-t-slate-400 pointer-events-none"></div>
           </div>
 
-          {/* Year Filter */}
-          <div className="relative">
-            <Filter className="absolute left-3 top-2.5 w-4 h-4 text-teal-600 pointer-events-none" />
-            <select
-              value={yearFilter}
-              onChange={(e) => setYearFilter(e.target.value)}
-              className="appearance-none bg-white border border-slate-200 text-slate-700 rounded-lg py-2 pl-9 pr-10 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 hover:border-slate-300 transition-colors shadow-sm cursor-pointer"
-            >
-              <option value="ALL">All Years</option>
-              <option value="1st Year">1st Year</option>
-              <option value="2nd Year">2nd Year</option>
-              <option value="3rd Year">3rd Year</option>
-              <option value="4th Year">4th Year</option>
-            </select>
-            <div className="absolute right-3 top-4 w-0 h-0 border-l-[4px] border-l-transparent border-r-[4px] border-r-transparent border-t-[5px] border-t-slate-400 pointer-events-none"></div>
-          </div>
+
 
           {/* Academic Year Filter */}
           <div className="relative">
@@ -383,7 +477,7 @@ export default function Registrations() {
                     <TableRowSkeleton key={i} />
                   ))}
                 </>
-              ) : filteredRegistrations.length === 0 ? (
+              ) : currentData.length === 0 ? (
                 <tr>
                   <td
                     colSpan="6"
@@ -393,7 +487,7 @@ export default function Registrations() {
                   </td>
                 </tr>
               ) : (
-                filteredRegistrations.map((reg) => {
+                currentData.map((reg) => {
                   const isNew = isNewEntry(reg);
                   return (
                   <tr
@@ -493,6 +587,34 @@ export default function Registrations() {
             </tbody>
           </table>
         </div>
+        
+        {/* Pagination Controls */}
+        {!loading && total > 0 && (
+          <div className="flex items-center justify-between px-6 py-4 border-t border-slate-200 bg-slate-50">
+            <div className="text-sm text-slate-500">
+              Showing <span className="font-medium text-slate-900">{(currentPage - 1) * itemsPerPage + 1}</span> to <span className="font-medium text-slate-900">{Math.min(currentPage * itemsPerPage, total)}</span> of <span className="font-medium text-slate-900">{total}</span> results
+            </div>
+            <div className="flex gap-2">
+              <button
+                onClick={() => dispatch(setCurrentPage(Math.max(1, currentPage - 1)))}
+                disabled={currentPage === 1}
+                className="px-3 py-1 text-sm font-medium text-slate-600 bg-white border border-slate-300 rounded hover:bg-slate-50 disabled:opacity-50 transition-colors"
+              >
+                Previous
+              </button>
+              <div className="flex items-center px-3 text-sm font-medium text-slate-700">
+                Page {currentPage} of {totalPages}
+              </div>
+              <button
+                onClick={() => dispatch(setCurrentPage(Math.min(totalPages, currentPage + 1)))}
+                disabled={currentPage === totalPages}
+                className="px-3 py-1 text-sm font-medium text-slate-600 bg-white border border-slate-300 rounded hover:bg-slate-50 disabled:opacity-50 transition-colors"
+              >
+                Next
+              </button>
+            </div>
+          </div>
+        )}
       </div>
 
       {/* Add Modal */}
@@ -584,6 +706,91 @@ export default function Registrations() {
                 </button>
               </div>
             </form>
+          </div>
+        </div>
+      )}
+      {/* Import Modal */}
+      {showImportModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/50 backdrop-blur-sm">
+          <div className="bg-white rounded-2xl shadow-xl w-full max-w-lg">
+            <div className="p-6 border-b border-slate-100 flex items-center justify-between">
+              <h2 className="text-xl font-bold text-slate-900">Bulk Import Students</h2>
+              <button
+                onClick={() => setShowImportModal(false)}
+                className="text-slate-400 hover:text-slate-600 transition-colors p-2 rounded-lg hover:bg-slate-50"
+              >
+                <XIcon className="w-5 h-5" />
+              </button>
+            </div>
+            
+            <div className="p-6 space-y-4">
+              <div className="bg-blue-50 border border-blue-100 p-4 rounded-xl text-sm text-blue-800">
+                <p className="mb-2"><strong>Step 1:</strong> Download the template to see the required format.</p>
+                <button 
+                  onClick={handleDownloadTemplate}
+                  className="flex items-center gap-2 text-blue-600 hover:text-blue-800 font-medium transition-colors"
+                >
+                  <FileText className="w-4 h-4" /> Download CSV Template
+                </button>
+              </div>
+
+              <form onSubmit={handleImportSubmit}>
+                <p className="text-sm text-slate-700 font-medium mb-2">Step 2: Upload populated CSV file</p>
+                <input 
+                  type="file" 
+                  accept=".csv"
+                  onChange={(e) => setImportFile(e.target.files[0])}
+                  className="block w-full text-sm text-slate-500
+                    file:mr-4 file:py-2 file:px-4
+                    file:rounded-lg file:border-0
+                    file:text-sm file:font-semibold
+                    file:bg-teal-50 file:text-teal-700
+                    hover:file:bg-teal-100 border border-slate-200 rounded-lg p-2"
+                />
+
+                {importResult && (
+                  <div className={`mt-4 p-4 rounded-xl text-sm ${importResult.type === 'error' ? 'bg-red-50 text-red-700 border border-red-100' : 'bg-green-50 text-green-700 border border-green-100'}`}>
+                    {importResult.type === 'error' ? (
+                      <p>{importResult.message}</p>
+                    ) : (
+                      <div>
+                        <p className="font-semibold mb-1">Import Successful!</p>
+                        <ul className="list-disc pl-5">
+                          <li>Imported: {importResult.data.importedCount}</li>
+                          <li>Skipped (Duplicates): {importResult.data.skippedCount}</li>
+                        </ul>
+                        {importResult.data.errors?.length > 0 && (
+                          <div className="mt-2 text-amber-700">
+                            <p className="font-medium">Warnings:</p>
+                            <ul className="list-disc pl-5 max-h-32 overflow-y-auto">
+                              {importResult.data.errors.map((e, i) => <li key={i}>{e}</li>)}
+                            </ul>
+                          </div>
+                        )}
+                      </div>
+                    )}
+                  </div>
+                )}
+                
+                <div className="pt-4 flex justify-end gap-3 border-t border-slate-100 mt-6">
+                  <button
+                    type="button"
+                    onClick={() => setShowImportModal(false)}
+                    className="px-4 py-2 text-sm font-medium text-slate-600 hover:text-slate-800 transition-colors"
+                  >
+                    Close
+                  </button>
+                  <button
+                    type="submit"
+                    disabled={isImporting || !importFile}
+                    className="flex items-center gap-2 px-6 py-2 bg-teal-600 text-white rounded-lg text-sm font-medium hover:bg-teal-700 transition-colors disabled:opacity-50"
+                  >
+                    {isImporting ? <Loader2 className="w-4 h-4 animate-spin" /> : <Upload className="w-4 h-4" />}
+                    Upload & Process
+                  </button>
+                </div>
+              </form>
+            </div>
           </div>
         </div>
       )}

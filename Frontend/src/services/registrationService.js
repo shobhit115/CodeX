@@ -16,6 +16,14 @@ class RegistrationService {
   async addManualRegistration(studentData) {
     return axiosInstance.post("/registrations/manual", studentData);
   }
+
+  async addBulkRegistration(formData) {
+    return axiosInstance.post("/registrations/bulk", formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+  }
 }
 
 export const registrationService = new RegistrationService();

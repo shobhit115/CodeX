@@ -1,3 +1,5 @@
+import fs from 'fs';
+import csv from 'csv-parser';
 import { StudentRegistration } from '../models/studentRegistration.model.js';
 import { ApiError } from '../utils/ApiError.js';
 import { ApiResponse } from '../utils/ApiResponse.js';
@@ -7,10 +9,12 @@ import { registrationApprovedEmail, registrationRejectedEmail } from '../utils/e
 
 // Get all registrations (Admin only)
 const getAllRegistrations = asyncHandler(async (req, res) => {
-  const { status, search, academicYear, paymentMode, page = 1, limit = 10 } = req.query;
+  const defaultLimit = process.env.NODE_ENV === 'development' ? 10 : 100;
+  const { status, search, academicYear, paymentMode, course, page = 1, limit = defaultLimit } = req.query;
 
   const query = {};
   if (status) query.status = status;
+  if (course && course !== 'ALL') query.course = course;
   if (search) {
     query.$or = [
       { name: { $regex: search, $options: 'i' } },
@@ -171,4 +175,108 @@ const addManualRegistration = asyncHandler(async (req, res) => {
   );
 });
 
-export { getAllRegistrations, updateRegistrationStatus, addManualRegistration };
+
+// Add Bulk Registration (Admin only)
+const bulkRegistration = asyncHandler(async (req, res) => {
+  if (!req.file) {
+    throw new ApiError(400, "Please upload a CSV file");
+  }
+
+  const results = [];
+  const errors = [];
+  let rowCount = 0;
+
+  fs.createReadStream(req.file.path)
+    .pipe(csv())
+    .on('data', (data) => {
+      rowCount++;
+      // Clean up keys and values
+      const cleanData = {};
+      for (const [key, value] of Object.entries(data)) {
+        cleanData[key.trim()] = value.trim();
+      }
+
+      const { name, fatherName, course, year, semester, section, set, studentId, email, phone } = cleanData;
+
+      if (!name || !fatherName || !course || !year || !semester || !section || !set || !studentId || !email || !phone) {
+        errors.push(`Row ${rowCount}: Missing required fields.`);
+        return;
+      }
+
+      results.push({
+        name,
+        fatherName,
+        course,
+        year,
+        semester,
+        section,
+        set,
+        studentId,
+        email,
+        phone,
+        transactionId: cleanData.transactionId || `CASH-${Date.now()}-${rowCount}`,
+        paymentMode: cleanData.paymentMode || 'CASH',
+        status: 'APPROVED'
+      });
+    })
+    .on('end', async () => {
+      fs.unlinkSync(req.file.path);
+
+      if (results.length === 0) {
+        return res.status(400).json(
+          new ApiResponse(400, { errors }, "No valid rows found to import")
+        );
+      }
+
+      const emails = results.map(r => r.email);
+      const studentIds = results.map(r => r.studentId);
+      
+      const existingStudents = await StudentRegistration.find({
+        $or: [
+          { email: { $in: emails } },
+          { studentId: { $in: studentIds } }
+        ]
+      });
+
+      const existingEmails = new Set(existingStudents.map(s => s.email));
+      const existingStudentIds = new Set(existingStudents.map(s => s.studentId));
+
+      const uniqueResults = [];
+      const seenEmails = new Set();
+      const seenStudentIds = new Set();
+
+      for (const row of results) {
+        if (!seenEmails.has(row.email) && !seenStudentIds.has(row.studentId)) {
+          uniqueResults.push(row);
+          seenEmails.add(row.email);
+          seenStudentIds.add(row.studentId);
+        } else {
+          errors.push(`Duplicate inside CSV skipped: ${row.email} or ${row.studentId}`);
+        }
+      }
+
+      const newStudents = uniqueResults.filter(s => 
+        !existingEmails.has(s.email) && !existingStudentIds.has(s.studentId)
+      );
+
+      const skippedCount = results.length - newStudents.length;
+
+      if (newStudents.length > 0) {
+        await StudentRegistration.insertMany(newStudents);
+      }
+
+      return res.status(200).json(
+        new ApiResponse(200, {
+          importedCount: newStudents.length,
+          skippedCount,
+          errors
+        }, `Successfully imported ${newStudents.length} students. Skipped ${skippedCount} duplicates.`)
+      );
+    })
+    .on('error', (error) => {
+      fs.unlinkSync(req.file.path);
+      res.status(500).json(new ApiResponse(500, null, "Error parsing CSV file"));
+    });
+});
+
+export { getAllRegistrations, updateRegistrationStatus, addManualRegistration, bulkRegistration };

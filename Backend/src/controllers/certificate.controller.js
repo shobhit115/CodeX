@@ -8,7 +8,7 @@ import { certificateEmail } from '../utils/emailTemplates.js';
 import crypto from 'crypto';
 
 const generateBulkCertificates = asyncHandler(async (req, res) => {
-  const { eventName, eventDate, coordinatorName, studentsStr } = req.body;
+  const { eventName, eventDate, coordinatorName, studentsStr, signatureImageUrl } = req.body;
   
   if (!eventName || !eventDate || !coordinatorName || !studentsStr) {
     throw new ApiError(400, 'All fields are required');
@@ -25,14 +25,19 @@ const generateBulkCertificates = asyncHandler(async (req, res) => {
     throw new ApiError(400, 'Students array is required');
   }
 
-  const signatureLocalPath = req.file?.path;
-  if (!signatureLocalPath) {
-    throw new ApiError(400, 'Signature image is required');
-  }
+  let finalSignatureUrl = signatureImageUrl;
 
-  const signatureImage = await uploadOnCloudinary(signatureLocalPath);
-  if (!signatureImage) {
-    throw new ApiError(500, 'Error while uploading signature image');
+  if (!finalSignatureUrl) {
+    const signatureLocalPath = req.file?.path;
+    if (!signatureLocalPath) {
+      throw new ApiError(400, 'Signature image is required');
+    }
+
+    const signatureImage = await uploadOnCloudinary(signatureLocalPath);
+    if (!signatureImage) {
+      throw new ApiError(500, 'Error while uploading signature image');
+    }
+    finalSignatureUrl = signatureImage.url;
   }
 
   const createdCertificates = [];
@@ -48,7 +53,7 @@ const generateBulkCertificates = asyncHandler(async (req, res) => {
       eventName,
       eventDate,
       coordinatorName,
-      signatureImage: signatureImage.url,
+      signatureImage: finalSignatureUrl,
       certificateId,
       position: student.position || 'Participant',
     });
@@ -94,4 +99,14 @@ const verifyCertificate = asyncHandler(async (req, res) => {
   return res.status(200).json(new ApiResponse(200, certificate, 'Certificate verified successfully'));
 });
 
-export { generateBulkCertificates, verifyCertificate };
+const getLatestSignature = asyncHandler(async (req, res) => {
+  const latestCertificate = await Certificate.findOne().sort({ createdAt: -1 });
+  
+  if (!latestCertificate || !latestCertificate.signatureImage) {
+    return res.status(200).json(new ApiResponse(200, { signatureUrl: null }, 'No previous signature found'));
+  }
+
+  return res.status(200).json(new ApiResponse(200, { signatureUrl: latestCertificate.signatureImage }, 'Latest signature fetched successfully'));
+});
+
+export { generateBulkCertificates, verifyCertificate, getLatestSignature };

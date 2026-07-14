@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useForm, useFieldArray } from "react-hook-form";
 import {
   Award,
@@ -22,7 +22,23 @@ export default function BulkCertificates() {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
   const [signaturePreview, setSignaturePreview] = useState(null);
+  const [previousSignatureUrl, setPreviousSignatureUrl] = useState(null);
   const csvInputRef = useRef(null);
+
+  useEffect(() => {
+    const fetchLatestSignature = async () => {
+      try {
+        const response = await certificateService.getLatestSignature();
+        if (response.data?.signatureUrl) {
+          setPreviousSignatureUrl(response.data.signatureUrl);
+          setSignaturePreview(response.data.signatureUrl);
+        }
+      } catch (error) {
+        console.error("Failed to fetch latest signature:", error);
+      }
+    };
+    fetchLatestSignature();
+  }, []);
 
   const {
     register,
@@ -45,7 +61,7 @@ export default function BulkCertificates() {
   });
 
   const signatureImageRegister = register("signatureImage", {
-    required: "Signature image is required",
+    required: previousSignatureUrl ? false : "Signature image is required",
   });
 
   //-----------------------------------------------------
@@ -122,7 +138,7 @@ export default function BulkCertificates() {
       }
 
       const file = data.signatureImage?.[0];
-      if (!file) {
+      if (!file && !previousSignatureUrl) {
         dispatch(setError("Coordinator signature image is required."));
         setLoading(false);
         return;
@@ -133,7 +149,11 @@ export default function BulkCertificates() {
       submitData.append("eventDate", data.eventDate);
       submitData.append("coordinatorName", data.coordinatorName);
       submitData.append("studentsStr", JSON.stringify(validStudents));
-      submitData.append("signatureImage", file);
+      if (file) {
+        submitData.append("signatureImage", file);
+      } else if (previousSignatureUrl) {
+        submitData.append("signatureImageUrl", previousSignatureUrl);
+      }
 
       const response = await certificateService.generateBulkCertificates(submitData);
 
@@ -228,7 +248,10 @@ export default function BulkCertificates() {
                 }}
               />
               {signaturePreview ? (
-                <img src={signaturePreview} alt="Signature Preview" className="max-h-24 object-contain" />
+                <div className="flex flex-col items-center">
+                  <img src={signaturePreview} alt="Signature Preview" className="max-h-24 object-contain mb-2" />
+                  <span className="text-xs text-teal-600 font-medium">Click to change signature</span>
+                </div>
               ) : (
                 <>
                   <ImageIcon className="w-8 h-8 text-slate-400 mb-2" />
