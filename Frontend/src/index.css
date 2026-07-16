@@ -1,20 +1,58 @@
 @import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Oswald:wght@400;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap");
 @import "tailwindcss";
 @theme {
-  --color-bg: #f5f0e8;
-  --color-bg-soft: #fbf8f2;
-  --color-ink: #0d0d0d;
-  --color-muted: rgba(13, 13, 13, 0.48);
-  --color-line: rgba(13, 13, 13, 0.42);
-  --color-line-soft: rgba(13, 13, 13, 0.12);
-  --color-accent: #2ec5d4;
-  --color-panel: #111111;
+  --color-bg: var(--color-bg);
+  --color-bg-soft: var(--color-bg-soft);
+  --color-surface: var(--color-surface);
+  --color-surface-soft: var(--color-surface-soft);
+  --color-text: var(--color-text);
+  --color-text-muted: var(--color-text-muted);
+  --color-border: var(--color-border);
+  --color-border-soft: var(--color-border-soft);
+  --color-accent: var(--color-accent);
+  --color-panel: var(--color-panel);
+  --color-success: var(--color-success);
+  --color-warning: var(--color-warning);
+  --color-danger: var(--color-danger);
+
   --font-mono: "JetBrains Mono", monospace;
   --font-sans: "Oswald", sans-serif;
   --font-serif: "Playfair Display", serif;
   --shadow-brutal: 0 18px 60px rgba(13, 13, 13, 0.08);
   --breakpoint-md: 720px;
   --breakpoint-lg: 1100px;
+}
+
+:root {
+  --color-bg: #f5f0e8;
+  --color-bg-soft: #fbf8f2;
+  --color-surface: #ffffff;
+  --color-surface-soft: #f8f9fa;
+  --color-text: #0d0d0d;
+  --color-text-muted: rgba(13, 13, 13, 0.48);
+  --color-border: rgba(13, 13, 13, 0.22);
+  --color-border-soft: rgba(13, 13, 13, 0.12);
+  --color-accent: #2ec5d4;
+  --color-panel: #111111;
+  --color-success: #10b981;
+  --color-warning: #f59e0b;
+  --color-danger: #ef4444;
+}
+
+.dark {
+  --color-bg: #0a0a0a;
+  --color-bg-soft: #171717;
+  --color-surface: #111111;
+  --color-surface-soft: #1f1f1f;
+  --color-text: #f5f5f5;
+  --color-text-muted: rgba(255, 255, 255, 0.48);
+  --color-border: rgba(255, 255, 255, 0.2);
+  --color-border-soft: rgba(255, 255, 255, 0.08);
+  --color-accent: #2ec5d4;
+  --color-panel: #1a1a1a;
+  --color-success: #10b981;
+  --color-warning: #fbbf24;
+  --color-danger: #f87171;
 }
 @layer base {
   html {
@@ -33,7 +71,7 @@
   }
 
   body {
-    @apply m-0 min-w-[320px] text-ink font-mono bg-bg;
+    @apply m-0 min-w-[320px] text-text font-mono bg-bg;
     background-image:
       linear-gradient(rgba(13, 13, 13, 0.025) 1px, transparent 1px),
       linear-gradient(90deg, rgba(13, 13, 13, 0.025) 1px, transparent 1px);
@@ -60,13 +98,13 @@
     @apply min-h-screen flex flex-col;
   }
   .site-header {
-    @apply grid grid-cols-1 lg:grid-cols-[12rem_1fr_auto] items-stretch border-b border-line bg-bg/95 backdrop-blur-md;
+    @apply grid grid-cols-1 lg:grid-cols-[12rem_1fr_auto] items-stretch border-b border-border bg-bg/95 backdrop-blur-md;
   }
 
   .brand-lockup,
   .site-nav,
   .site-meta {
-    @apply min-h-[4.25rem] flex items-center px-[1.15rem] lg:px-5 lg:border-r border-line border-b lg:border-b-0;
+    @apply min-h-[4.25rem] flex items-center px-[1.15rem] lg:px-5 lg:border-r border-border border-b lg:border-b-0;
   }
 
   .brand-lockup {
@@ -86,7 +124,7 @@
   }
 
   .site-nav a {
-    @apply h-full inline-flex items-center px-4 lg:px-[1.65rem] border-l border-line-soft text-ink/55 text-[0.78rem] tracking-[0.3em] uppercase hover:text-ink hover:bg-white/45;
+    @apply h-full inline-flex items-center px-4 lg:px-[1.65rem] border-l border-border-soft text-text-muted text-[0.78rem] tracking-[0.3em] uppercase hover:text-text hover:bg-surface/10;
   }
 
   .site-meta {
@@ -98,14 +136,14 @@
   }
 
   .join-button {
-    @apply w-full lg:w-auto py-[0.95rem] px-[1.4rem] lg:ml-2 bg-ink text-white font-sans text-base tracking-[0.18em] uppercase hover:bg-[#181818] hover:-translate-y-[1px] transition-transform;
+    @apply w-full lg:w-auto py-[0.95rem] px-[1.4rem] lg:ml-2 bg-text text-bg font-sans text-base tracking-[0.18em] uppercase hover:bg-text/90 hover:-translate-y-[1px] transition-transform;
   }
   .ticker-bar {
-    @apply border-b border-line bg-accent overflow-hidden;
+    @apply border-b border-border bg-accent overflow-hidden;
   }
 
   .ticker-track {
-    @apply flex items-center gap-12 min-h-[2.5rem] px-4 whitespace-nowrap uppercase font-sans tracking-[0.28em] text-ink/78;
+    @apply flex items-center gap-12 min-h-[2.5rem] px-4 whitespace-nowrap uppercase font-sans tracking-[0.28em] text-text;
   }
 
   .ticker-track span::before {
@@ -113,14 +151,14 @@
     @apply mr-[1.1rem];
   }
   .main-content {
-    @apply w-full max-w-[1400px] mx-auto flex-1 border-x border-line bg-[#faf6ef]/66;
+    @apply w-full max-w-[1400px] mx-auto flex-1 border-x border-border bg-bg-soft;
   }
 
   .home-page {
     @apply flex flex-col;
   }
   .hero-panel {
-    @apply grid grid-cols-1 lg:grid-cols-[1.65fr_0.95fr] min-h-[calc(100vh-6.75rem)] border-b border-line;
+    @apply grid grid-cols-1 lg:grid-cols-[1.65fr_0.95fr] min-h-[calc(100vh-6.75rem)] border-b border-border;
   }
 
   .hero-copy {
@@ -144,7 +182,7 @@
   }
 
   .hero-quote {
-    @apply m-0 mb-4 font-serif text-[clamp(1.55rem,2vw,2.1rem)] italic text-ink/92;
+    @apply m-0 mb-4 font-serif text-[clamp(1.55rem,2vw,2.1rem)] italic text-text;
   }
 
   .hero-description,
@@ -152,7 +190,7 @@
   .module-copy p,
   .split-copy,
   .split-item {
-    @apply m-0 text-ink/60 text-[0.93rem] leading-[1.75];
+    @apply m-0 text-text-muted text-[0.93rem] leading-[1.75];
   }
 
   .hero-description {
@@ -164,22 +202,30 @@
   }
 
   .button {
-    @apply inline-flex items-center w-full lg:w-fit justify-center min-h-[3.25rem] px-[1.5rem] py-[0.9rem] border border-line font-sans text-[0.96rem] tracking-[0.2em] uppercase transition-all duration-150;
+    @apply inline-flex items-center w-full lg:w-fit justify-center min-h-[3.25rem] px-[1.5rem] py-[0.9rem] border font-sans text-[0.96rem] tracking-[0.2em] uppercase transition-all duration-150 rounded-lg;
   }
 
-  .button--solid {
-    @apply bg-ink text-white hover:bg-[#181818] hover:-translate-y-[1px];
+  .btn-primary {
+    @apply bg-text text-bg border-transparent hover:bg-text-muted hover:text-bg hover:-translate-y-[1px];
   }
 
-  .button--outline {
-    @apply bg-transparent hover:bg-ink/5;
+  .btn-secondary {
+    @apply bg-surface text-text border-border hover:bg-surface-soft hover:-translate-y-[1px];
+  }
+
+  .btn-outline {
+    @apply bg-transparent text-text border-border hover:bg-surface-soft;
+  }
+
+  .btn-ghost {
+    @apply bg-transparent text-text border-transparent hover:bg-surface-soft;
   }
   .hero-stats {
-    @apply flex flex-col justify-center gap-6 p-[1.15rem] lg:p-8 border-t lg:border-t-0 lg:border-l border-line;
+    @apply flex flex-col justify-center gap-6 p-[1.15rem] lg:p-8 border-t lg:border-t-0 lg:border-l border-border;
   }
 
   .stat-card {
-    @apply flex flex-col justify-center p-8 bg-white/40 backdrop-blur-md rounded-2xl border border-white/60 shadow-[0_8px_30px_rgb(0,0,0,0.04)];
+    @apply flex flex-col justify-center p-8 bg-surface/40 backdrop-blur-md rounded-2xl border border-border shadow-[0_8px_30px_rgb(0,0,0,0.04)];
   }
 
   .stat-value {
@@ -187,7 +233,7 @@
   }
   .modules-section,
   .split-section {
-    @apply border-b border-line;
+    @apply border-b border-border;
   }
 
   .section-heading {
@@ -203,11 +249,11 @@
   }
 
   .module-row {
-    @apply grid grid-cols-1 lg:grid-cols-[12rem_1fr] gap-4 items-start px-[1.15rem] py-[2.6rem] lg:px-12 border-t border-line-soft;
+    @apply grid grid-cols-1 lg:grid-cols-[12rem_1fr] gap-4 items-start px-[1.15rem] py-[2.6rem] lg:px-12 border-t border-border-soft;
   }
 
   .module-index {
-    @apply text-ink/10 font-sans text-[clamp(3rem,6vw,5rem)] leading-[0.85] tracking-[0.02em];
+    @apply text-text-muted font-sans text-[clamp(3rem,6vw,5rem)] leading-[0.85] tracking-[0.02em];
   }
 
   .module-copy h3 {
@@ -223,7 +269,7 @@
   }
 
   .split-right {
-    @apply bg-panel text-[#f4efe6] border-t lg:border-t-0 lg:border-l border-line;
+    @apply bg-panel text-surface border-t lg:border-t-0 lg:border-l border-border;
   }
 
   .split-title {
@@ -243,7 +289,7 @@
   }
 
   .split-item {
-    @apply relative py-4 pl-[1.35rem] border-t border-white/10 text-[#f4efe6]/75 last:border-b;
+    @apply relative py-4 pl-[1.35rem] border-t border-border-soft text-surface/75 last:border-b;
   }
 
   .split-item::before {
