@@ -184,16 +184,16 @@ export default function BulkCertificates() {
   };
 
   return (
-    <div className="p-8 lg:p-10 font-sans text-slate-900 min-h-full">
+    <div className="p-8 lg:p-10 font-sans text-text min-h-full">
       <header className="flex items-start justify-between mb-8 gap-4">
         <div>
           <h1 className="text-2xl font-bold">Credential Forge</h1>
-          <p className="text-sm text-slate-500 mt-1">
+          <p className="text-sm text-text-text-muted mt-1">
             Bulk generate and email certificates.
           </p>
         </div>
-        <div className="hidden sm:block p-3 rounded-xl bg-teal-50">
-          <Award className="w-8 h-8 text-teal-600" />
+        <div className="hidden sm:block p-3 rounded-xl bg-accent/10">
+          <Award className="w-8 h-8 text-accent" />
         </div>
       </header>
 
@@ -202,25 +202,25 @@ export default function BulkCertificates() {
         className="grid grid-cols-1 lg:grid-cols-12 gap-8"
       >
         {/* Left Panel : Event Details */}
-        <div className="lg:col-span-4 bg-white border border-slate-200 rounded-2xl shadow-sm p-6 sm:p-8 h-fit space-y-6">
-          <h2 className="flex items-center gap-2 text-lg font-bold border-b border-slate-100 pb-4">
-            <Calendar className="w-5 h-5 text-teal-600" />
+        <div className="lg:col-span-4 bg-card border border-border rounded-2xl shadow-sm p-6 sm:p-8 h-fit space-y-6">
+          <h2 className="flex items-center gap-2 text-lg font-bold border-b border-border-soft pb-4">
+            <Calendar className="w-5 h-5 text-accent" />
             Event Details
           </h2>
 
           {/* Event Name */}
           <div>
-            <label className="block text-sm font-semibold text-slate-700 mb-2">
+            <label className="block text-sm font-semibold text-text mb-2">
               Event Name
             </label>
             <input
               type="text"
               {...register("eventName", { required: "Event name is required" })}
               placeholder="Hackathon 2026"
-              className="w-full rounded-lg border border-slate-300 p-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500"
+              className="w-full rounded-lg border border-border p-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-accent"
             />
             {errors.eventName && (
-              <p className="mt-1 text-xs text-red-500">
+              <p className="mt-1 text-xs text-danger">
                 {errors.eventName.message}
               </p>
             )}
@@ -228,16 +228,16 @@ export default function BulkCertificates() {
 
           {/* Event Date */}
           <div>
-            <label className="block text-sm font-semibold text-slate-700 mb-2">
+            <label className="block text-sm font-semibold text-text mb-2">
               Event Date
             </label>
             <input
               type="date"
               {...register("eventDate", { required: "Event date is required" })}
-              className="w-full rounded-lg border border-slate-300 p-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500"
+              className="w-full rounded-lg border border-border p-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-accent"
             />
             {errors.eventDate && (
-              <p className="mt-1 text-xs text-red-500">
+              <p className="mt-1 text-xs text-danger">
                 {errors.eventDate.message}
               </p>
             )}
@@ -245,22 +245,22 @@ export default function BulkCertificates() {
 
           {/* Coordinator */}
           <div>
-            <label className="block text-sm font-semibold text-slate-700 mb-2">
+            <label className="block text-sm font-semibold text-text mb-2">
               Coordinator Name
             </label>
             <div className="relative">
-              <UserCheck className="absolute left-3 top-3 w-4 h-4 text-slate-400" />
+              <UserCheck className="absolute left-3 top-3 w-4 h-4 text-text-text-muted" />
               <input
                 type="text"
                 {...register("coordinatorName", {
                   required: "Coordinator name is required",
                 })}
                 placeholder="Dr. Smith"
-                className="w-full rounded-lg border border-slate-300 pl-10 p-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500"
+                className="w-full rounded-lg border border-border pl-10 p-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-accent"
               />
             </div>
             {errors.coordinatorName && (
-              <p className="mt-1 text-xs text-red-500">
+              <p className="mt-1 text-xs text-danger">
                 {errors.coordinatorName.message}
               </p>
             )}
@@ -268,10 +268,10 @@ export default function BulkCertificates() {
 
           {/* Signature Upload */}
           <div>
-            <label className="block text-sm font-semibold text-slate-700 mb-2">
+            <label className="block text-sm font-semibold text-text mb-2">
               Signature Image
             </label>
-            <label className="flex flex-col items-center justify-center border-2 border-dashed border-slate-300 rounded-xl p-6 cursor-pointer hover:border-teal-500 hover:bg-teal-50 transition">
+            <label className="flex flex-col items-center justify-center border-2 border-dashed border-border rounded-xl p-6 cursor-pointer hover:border-accent hover:bg-accent/10 transition">
               <input
                 type="file"
                 accept="image/*"
@@ -292,21 +292,21 @@ export default function BulkCertificates() {
                     alt="Signature Preview"
                     className="max-h-24 object-contain mb-2"
                   />
-                  <span className="text-xs text-teal-600 font-medium">
+                  <span className="text-xs text-accent font-medium">
                     Click to change signature
                   </span>
                 </div>
               ) : (
                 <>
-                  <ImageIcon className="w-8 h-8 text-slate-400 mb-2" />
-                  <span className="text-sm text-slate-500">
+                  <ImageIcon className="w-8 h-8 text-text-text-muted mb-2" />
+                  <span className="text-sm text-text-text-muted">
                     Upload Signature
                   </span>
                 </>
               )}
             </label>
             {errors.signatureImage && (
-              <p className="mt-1 text-xs text-red-500">
+              <p className="mt-1 text-xs text-danger">
                 {errors.signatureImage.message}
               </p>
             )}
@@ -314,15 +314,15 @@ export default function BulkCertificates() {
         </div>
 
         {/* Right Panel : Student Details */}
-        <div className="lg:col-span-8 bg-white border border-slate-200 rounded-2xl shadow-sm p-6 sm:p-8">
-          <div className="flex items-center justify-between border-b border-slate-100 pb-4 mb-6">
+        <div className="lg:col-span-8 bg-card border border-border rounded-2xl shadow-sm p-6 sm:p-8">
+          <div className="flex items-center justify-between border-b border-border-soft pb-4 mb-6">
             <h2 className="flex items-center gap-2 text-lg font-bold">
-              <Users className="w-5 h-5 text-teal-600" />
+              <Users className="w-5 h-5 text-accent" />
               Student Details
             </h2>
 
             <div className="flex items-center gap-4">
-              <span className="text-xs font-semibold bg-teal-50 text-teal-700 px-3 py-1 rounded-full">
+              <span className="text-xs font-semibold bg-accent/10 text-accent px-3 py-1 rounded-full">
                 {fields.length} Student(s)
               </span>
 
@@ -337,7 +337,7 @@ export default function BulkCertificates() {
               <button
                 type="button"
                 onClick={() => csvInputRef.current.click()}
-                className="flex items-center gap-2 px-3 py-1.5 text-sm rounded-lg border border-slate-300 bg-white hover:bg-slate-50 text-slate-700 font-medium transition-colors shadow-sm"
+                className="flex items-center gap-2 px-3 py-1.5 text-sm rounded-lg border border-border bg-card hover:bg-card-hover text-text font-medium transition-colors shadow-sm"
               >
                 <Upload className="w-4 h-4" />
                 Import CSV
@@ -349,21 +349,21 @@ export default function BulkCertificates() {
             {fields.map((field, index) => (
               <div
                 key={field.id}
-                className="grid grid-cols-1 md:grid-cols-12 gap-3 items-start bg-slate-50 border border-slate-200 rounded-xl p-4"
+                className="grid grid-cols-1 md:grid-cols-12 gap-3 items-start bg-card-hover border border-border rounded-xl p-4"
               >
                 {/* Name */}
                 <div className="md:col-span-4 relative">
-                  <User className="absolute left-3 top-3 w-4 h-4 text-slate-400" />
+                  <User className="absolute left-3 top-3 w-4 h-4 text-text-text-muted" />
                   <input
                     type="text"
                     placeholder="Student Name"
                     {...register(`students.${index}.name`, {
                       required: "Name is required",
                     })}
-                    className="w-full rounded-lg border border-slate-300 pl-10 p-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500"
+                    className="w-full rounded-lg border border-border pl-10 p-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-accent"
                   />
                   {errors.students?.[index]?.name && (
-                    <p className="mt-1 text-xs text-red-500">
+                    <p className="mt-1 text-xs text-danger">
                       {errors.students[index].name.message}
                     </p>
                   )}
@@ -371,7 +371,7 @@ export default function BulkCertificates() {
 
                 {/* Email */}
                 <div className="md:col-span-4 relative">
-                  <Mail className="absolute left-3 top-3 w-4 h-4 text-slate-400" />
+                  <Mail className="absolute left-3 top-3 w-4 h-4 text-text-text-muted" />
                   <input
                     type="email"
                     placeholder="student@email.com"
@@ -382,10 +382,10 @@ export default function BulkCertificates() {
                         message: "Invalid email address",
                       },
                     })}
-                    className="w-full rounded-lg border border-slate-300 pl-10 p-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500"
+                    className="w-full rounded-lg border border-border pl-10 p-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-accent"
                   />
                   {errors.students?.[index]?.email && (
-                    <p className="mt-1 text-xs text-red-500">
+                    <p className="mt-1 text-xs text-danger">
                       {errors.students[index].email.message}
                     </p>
                   )}
@@ -397,7 +397,7 @@ export default function BulkCertificates() {
                     {...register(`students.${index}.position`, {
                       required: "Position is required",
                     })}
-                    className="w-full rounded-lg border border-slate-300 p-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500"
+                    className="w-full rounded-lg border border-border p-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-accent"
                   >
                     <option value="Winner">Winner</option>
                     <option value="Runner Up">Runner Up</option>
@@ -407,7 +407,7 @@ export default function BulkCertificates() {
                     <option value="Coordinator">Coordinator</option>
                   </select>
                   {errors.students?.[index]?.position && (
-                    <p className="mt-1 text-xs text-red-500">
+                    <p className="mt-1 text-xs text-danger">
                       {errors.students[index].position.message}
                     </p>
                   )}
@@ -419,7 +419,7 @@ export default function BulkCertificates() {
                     type="button"
                     onClick={() => remove(index)}
                     disabled={fields.length === 1}
-                    className="text-slate-400 hover:text-red-600 disabled:opacity-40 mt-2"
+                    className="text-text-text-muted hover:text-danger disabled:opacity-40 mt-2"
                   >
                     <Trash2 className="w-5 h-5" />
                   </button>
@@ -429,13 +429,13 @@ export default function BulkCertificates() {
           </div>
 
           {/* Action Buttons */}
-          <div className="border-t border-slate-200 mt-6 pt-6 flex flex-col sm:flex-row gap-4">
+          <div className="border-t border-border mt-6 pt-6 flex flex-col sm:flex-row gap-4">
             <button
               type="button"
               onClick={() =>
                 append({ name: "", email: "", position: "Participant" })
               }
-              className="flex-1 flex items-center justify-center gap-2 px-6 py-3 rounded-xl border border-slate-300 bg-slate-50 hover:bg-slate-100 transition-all font-medium"
+              className="flex-1 flex items-center justify-center gap-2 px-6 py-3 rounded-xl border border-border bg-card-hover hover:bg-card-hover transition-all font-medium"
             >
               <Plus className="w-4 h-4" />
               Add Student
@@ -443,7 +443,7 @@ export default function BulkCertificates() {
             <button
               type="submit"
               disabled={loading}
-              className="flex-[2] flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-teal-600 text-white hover:bg-teal-700 transition-all disabled:opacity-60 disabled:cursor-not-allowed font-semibold"
+              className="flex-[2] flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-accent text-white hover:bg-accent transition-all disabled:opacity-60 disabled:cursor-not-allowed font-semibold"
             >
               {loading ? (
                 <>

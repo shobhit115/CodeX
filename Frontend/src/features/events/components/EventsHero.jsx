@@ -13,10 +13,10 @@ const EventsHero = () => {
     webinar: webinarImg,
   };
   return (
-    <section className="relative overflow-hidden border-b border-line bg-[#f8f5f0] pt-16 pb-24 lg:pt-24 lg:pb-32 px-[1.15rem] lg:px-12">
+    <section className="relative overflow-hidden border-b border-border bg-bg-soft pt-16 pb-24 lg:pt-24 lg:pb-32 px-[1.15rem] lg:px-12">
       <div className="max-w-[1400px] mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 items-center relative z-10">
         <div>
-          <span className="inline-block px-4 py-1.5 border border-line rounded-full text-xs font-mono tracking-widest uppercase mb-8 bg-white/50 backdrop-blur-sm">
+          <span className="inline-block px-4 py-1.5 border border-border rounded-full text-xs font-mono tracking-widest uppercase mb-8 bg-card/50 backdrop-blur-sm">
             {eventsHero.badge}
           </span>
           <h1 className="font-sans text-[clamp(4rem,7vw,6.5rem)] leading-[0.85] tracking-tight uppercase mb-6">
@@ -24,7 +24,7 @@ const EventsHero = () => {
             <br />
             <span className="text-accent">{eventsHero.title.highlight}</span>
           </h1>
-          <p className="text-ink/60 max-w-md text-lg mb-10 leading-relaxed">
+          <p className="text-text/60 max-w-md text-lg mb-10 leading-relaxed">
             {eventsHero.description}
           </p>
           <div className="flex flex-wrap items-center gap-6">
@@ -47,7 +47,7 @@ const EventsHero = () => {
   rounded-xl
   overflow-hidden
   shadow-2xl
-  border border-white/20
+  border border-border-soft
   cursor-pointer
   transition-all duration-500
   hover:scale-105

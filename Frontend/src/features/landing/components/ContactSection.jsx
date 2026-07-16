@@ -7,7 +7,7 @@ const ContactSection = () => {
 
   return (
     <section
-      className="border-b border-line bg-[#faf6ef]/66 flex flex-col"
+      className="border-b border-border bg-bg-soft/66 flex flex-col"
       id="contact"
     >
       <div className="grid grid-cols-1 lg:grid-cols-[1fr_380px] items-stretch">
@@ -17,11 +17,11 @@ const ContactSection = () => {
           <div className="ambient-glow w-[300px] h-[300px] bottom-[-10%] left-[-5%] z-0 opacity-20"></div>
 
           <div className="relative z-10">
-            <h3 className="font-serif text-[clamp(1.8rem,3vw,2.8rem)] leading-[1.1] mb-6 text-ink max-w-[36rem]">
+            <h3 className="font-serif text-[clamp(1.8rem,3vw,2.8rem)] leading-[1.1] mb-6 text-text max-w-[36rem]">
               {contactSection.headline}
             </h3>
 
-            <p className="font-mono text-ink/60 text-[0.95rem] leading-[1.8] max-w-[42rem] mb-10">
+            <p className="font-mono text-text/60 text-[0.95rem] leading-[1.8] max-w-[42rem] mb-10">
               {contactSection.description}
             </p>
 
@@ -37,21 +37,21 @@ const ContactSection = () => {
           </div>
         </div>
 
-        <aside className="border-t lg:border-t-0 lg:border-l border-line flex flex-col bg-bg-soft">
+        <aside className="border-t lg:border-t-0 lg:border-l border-border flex flex-col bg-bg-soft">
           {contactSection.directLines.map((line, index) => (
             <article
               key={index}
-              className="flex-1 p-[2rem] lg:p-[2.5rem] border-b border-line last:border-b-0 hover:bg-white/60 transition-colors flex flex-col justify-center"
+              className="flex-1 p-[2rem] lg:p-[2.5rem] border-b border-border last:border-b-0 hover:bg-card/60 transition-colors flex flex-col justify-center"
             >
               <p className="text-accent text-[0.72rem] tracking-[0.25em] uppercase font-bold mb-3">
                 {line.label}
               </p>
-              <p className="font-sans text-[1.35rem] text-ink uppercase tracking-wide mb-1">
+              <p className="font-sans text-[1.35rem] text-text uppercase tracking-wide mb-1">
                 {line.name}
               </p>
               <a
                 href={`mailto:${line.detail}`}
-                className="font-mono text-[0.85rem] text-ink/50 hover:text-ink transition-colors underline decoration-line-soft underline-offset-4"
+                className="font-mono text-[0.85rem] text-text/50 hover:text-text transition-colors underline decoration-line-soft underline-offset-4"
               >
                 {line.detail}
               </a>

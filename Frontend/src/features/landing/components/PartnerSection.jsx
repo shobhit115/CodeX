@@ -5,23 +5,23 @@ const PartnerSection = () => {
   const { partners } = contentData.landing;
 
   return (
-    <section className="border-b border-line bg-bg flex flex-col" id="partners">
+    <section className="border-b border-border bg-bg flex flex-col" id="partners">
       {/* Header Area */}
-      <div className="p-[1.15rem] py-[4rem] lg:p-[5rem] border-b border-line flex flex-col lg:flex-row lg:items-end justify-between gap-8">
+      <div className="p-[1.15rem] py-[4rem] lg:p-[5rem] border-b border-border flex flex-col lg:flex-row lg:items-end justify-between gap-8">
         <div className="max-w-[50rem]">
-          <h2 className="font-sans text-[clamp(2.5rem,5vw,4.5rem)] leading-[0.95] tracking-[0.01em] uppercase text-ink mb-6">
+          <h2 className="font-sans text-[clamp(2.5rem,5vw,4.5rem)] leading-[0.95] tracking-[0.01em] uppercase text-text mb-6">
             {partners.title}
           </h2>
-          <p className="font-mono text-ink/60 text-[0.95rem] leading-[1.8] max-w-[36rem]">
+          <p className="font-mono text-text/60 text-[0.95rem] leading-[1.8] max-w-[36rem]">
             {partners.description}
           </p>
         </div>
 
         {/* Decorative elements to fit the tech/coding vibe */}
         <div className="hidden lg:flex gap-2">
-          <div className="w-3 h-3 bg-ink"></div>
+          <div className="w-3 h-3 bg-text"></div>
           <div className="w-3 h-3 bg-accent"></div>
-          <div className="w-3 h-3 border border-ink"></div>
+          <div className="w-3 h-3 border border-text"></div>
         </div>
       </div>
 
@@ -33,15 +33,15 @@ const PartnerSection = () => {
             key={index}
             className={`
               relative aspect-[3/2] flex items-center justify-center p-6
-              border-r border-b border-line
-              hover:bg-ink hover:text-white transition-colors duration-200 cursor-pointer group
+              border-r border-b border-border
+              hover:bg-text hover:text-text-inverse transition-colors duration-200 cursor-pointer group
               /* Remove right border on the last item of a row depending on screen size */
               ${(index + 1) % 2 === 0 ? "lg:border-r" : ""}
               ${(index + 1) % 4 === 0 ? "lg:border-r-0" : ""}
             `}
           >
             {/* If you add actual image logos later, you can replace this text span with an <img> tag */}
-            <span className="font-sans text-[clamp(1.5rem,2.5vw,2rem)] tracking-[0.15em] uppercase text-ink group-hover:text-white transition-colors">
+            <span className="font-sans text-[clamp(1.5rem,2.5vw,2rem)] tracking-[0.15em] uppercase text-text group-hover:text-text-inverse transition-colors">
               {org.name}
             </span>
 

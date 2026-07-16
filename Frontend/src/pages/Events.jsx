@@ -24,7 +24,7 @@ const Events = () => {
   }, []);
 
   return (
-    <div className="events-page flex flex-col min-h-screen bg-[#Faf9f6] relative font-jetbrains">
+    <div className="events-page flex flex-col min-h-screen bg-bg-soft relative font-jetbrains">
       <div
         className="absolute inset-0 pointer-events-none opacity-5 z-0"
         style={{
@@ -37,7 +37,7 @@ const Events = () => {
       <div className="relative z-10">
         <EventsHero events={events} loading={loading} />
 
-        <section className="w-full max-w-[1400px] mx-auto px-4 lg:px-12 py-12 lg:py-20 border-t-2 border-gray-200">
+        <section className="w-full max-w-[1400px] mx-auto px-4 lg:px-12 py-12 lg:py-20 border-t-2 border-border">
           <div className="w-full">
             <EventList events={events} loading={loading} />
           </div>

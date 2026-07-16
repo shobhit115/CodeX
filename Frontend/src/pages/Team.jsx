@@ -29,7 +29,7 @@ const Team = () => {
   );
 
   return (
-    <div className="team-page min-h-screen bg-[#Faf9f6] relative font-jetbrains selection:bg-[#2ec5d4] selection:text-white pb-24">
+    <div className="team-page min-h-screen bg-bg-soft relative font-jetbrains selection:bg-accent selection:text-white pb-24">
       <div
         className="absolute inset-0 pointer-events-none opacity-[0.03] z-0"
         style={{
@@ -42,20 +42,20 @@ const Team = () => {
       <div className="relative z-10 max-w-[1920px] mx-auto px-6 pt-8 lg:pt-12">
         <header className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-12">
           <div>
-            <h1 className="text-2xl font-bold text-slate-900 tracking-tight">
+            <h1 className="text-2xl font-bold text-text tracking-tight">
               Codex Team
             </h1>
-            <p className="text-sm text-slate-500 mt-1">
+            <p className="text-sm text-text-text-muted mt-1">
               Meet the people driving Codex forward.
             </p>
           </div>
           <div className="flex items-center gap-3">
             <div className="relative min-w-[200px]">
-              <Filter className="absolute left-3 top-2.5 w-4 h-4 text-[#2ec5d4] pointer-events-none" />
+              <Filter className="absolute left-3 top-2.5 w-4 h-4 text-accent pointer-events-none" />
               <select
                 value={filterYear}
                 onChange={(e) => setFilterYear(e.target.value)}
-                className="appearance-none bg-white border border-gray-200 text-[#0a0a0a] rounded-lg py-2 pl-9 pr-10 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-[#2ec5d4]/20 focus:border-[#2ec5d4] hover:border-gray-300 transition-colors shadow-sm cursor-pointer w-full"
+                className="appearance-none bg-card border border-border text-text rounded-lg py-2 pl-9 pr-10 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-accent/20 focus:border-accent hover:border-border transition-colors shadow-sm cursor-pointer w-full"
               >
                 {formAcademicYears.map((year) => (
                   <option key={year} value={year}>
@@ -71,10 +71,10 @@ const Team = () => {
           <div className="flex flex-col gap-16 w-full">
             <div className="w-full">
               <div className="flex items-center gap-4 mb-6 w-full">
-                <h2 className="text-xl font-bold text-slate-300 tracking-tight">
+                <h2 className="text-xl font-bold text-text-text-muted tracking-tight">
                   Loading Roster...
                 </h2>
-                <div className="flex-1 h-px bg-slate-100"></div>
+                <div className="flex-1 h-px bg-card-hover"></div>
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 w-full max-w-7xl">
                 {[1, 2, 3, 4, 5, 6, 7, 8].map((i) => (
@@ -84,12 +84,12 @@ const Team = () => {
             </div>
           </div>
         ) : members.length === 0 ? (
-          <div className="bg-white border border-gray-200 rounded-2xl p-16 text-center shadow-sm w-full">
-            <Users className="w-12 h-12 text-gray-300 mx-auto mb-4" />
-            <h3 className="text-lg font-bold text-[#0a0a0a] mb-1">
+          <div className="bg-card border border-border rounded-2xl p-16 text-center shadow-sm w-full">
+            <Users className="w-12 h-12 text-text-text-muted mx-auto mb-4" />
+            <h3 className="text-lg font-bold text-text mb-1">
               No Team Members Found
             </h3>
-            <p className="text-gray-500 text-sm">
+            <p className="text-text-text-muted text-sm">
               There are no team records available for the selected academic
               year.
             </p>
@@ -99,10 +99,10 @@ const Team = () => {
             {adminTeam.length > 0 && (
               <div className="w-full">
                 <div className="flex items-center gap-4 mb-6 w-full">
-                  <h2 className="text-xl font-bold text-slate-800 tracking-tight">
+                  <h2 className="text-xl font-bold text-text tracking-tight">
                     Admin Team
                   </h2>
-                  <div className="flex-1 h-px bg-slate-200"></div>
+                  <div className="flex-1 h-px bg-card-hover"></div>
                 </div>
                 <div className="flex flex-wrap justify-center gap-6 w-full max-w-[1920px]">
                   {adminTeam.map((member) => (
@@ -119,10 +119,10 @@ const Team = () => {
             {coreTeam.length > 0 && (
               <div className="w-full">
                 <div className="flex items-center gap-4 mb-6 w-full">
-                  <h2 className="text-xl font-bold text-slate-800 tracking-tight">
+                  <h2 className="text-xl font-bold text-text tracking-tight">
                     Core Team
                   </h2>
-                  <div className="flex-1 h-px bg-slate-200"></div>
+                  <div className="flex-1 h-px bg-card-hover"></div>
                 </div>
                 <div className="flex flex-wrap justify-center gap-6 w-full max-w-[1920px]">
                   {coreTeam.map((member) => (
@@ -139,10 +139,10 @@ const Team = () => {
             {techTeam.length > 0 && (
               <div className="w-full">
                 <div className="flex items-center gap-4 mb-6 w-full">
-                  <h2 className="text-xl font-bold text-slate-800 tracking-tight">
+                  <h2 className="text-xl font-bold text-text tracking-tight">
                     Tech Team
                   </h2>
-                  <div className="flex-1 h-px bg-slate-200"></div>
+                  <div className="flex-1 h-px bg-card-hover"></div>
                 </div>
                 <div className="flex flex-wrap justify-center gap-6 w-full max-w-[1920px]">
                   {techTeam.map((member) => (
@@ -159,10 +159,10 @@ const Team = () => {
             {graphicTeam.length > 0 && (
               <div className="w-full">
                 <div className="flex items-center gap-4 mb-6 w-full">
-                  <h2 className="text-xl font-bold text-slate-800 tracking-tight">
+                  <h2 className="text-xl font-bold text-text tracking-tight">
                     Graphic Team
                   </h2>
-                  <div className="flex-1 h-px bg-slate-200"></div>
+                  <div className="flex-1 h-px bg-card-hover"></div>
                 </div>
                 <div className="flex flex-wrap justify-center gap-6 w-full max-w-[1920px]">
                   {graphicTeam.map((member) => (

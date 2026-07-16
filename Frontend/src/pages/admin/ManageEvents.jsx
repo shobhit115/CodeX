@@ -68,7 +68,7 @@ export default function ManageEvents() {
   };
 
   return (
-    <div className="p-8 lg:p-10 font-sans text-slate-900 min-h-full relative">
+    <div className="p-8 lg:p-10 font-sans text-text min-h-full relative">
       <EventHeader
         openCreateModal={openCreateModal}
         onRefresh={() => dispatch(fetchAdminEvents())}
@@ -77,22 +77,22 @@ export default function ManageEvents() {
 
       {loading ? (
         <div className="flex items-center justify-center h-64">
-          <Loader2 className="w-8 h-8 text-teal-500 animate-spin" />
+          <Loader2 className="w-8 h-8 text-accent animate-spin" />
         </div>
       ) : events.length === 0 ? (
         <EmptyState />
       ) : (
-        <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
-          <ul className="divide-y divide-slate-200">
+        <div className="bg-card rounded-xl shadow-sm border border-border overflow-hidden">
+          <ul className="divide-y divide-line">
             {events.map((event) => (
               <li
                 key={event._id}
                 onClick={() => setSelectedEvent(event)}
-                className="p-4 sm:p-5 hover:bg-slate-50 flex flex-col sm:flex-row sm:items-center justify-between gap-4 transition-colors cursor-pointer group"
+                className="p-4 sm:p-5 hover:bg-card-hover flex flex-col sm:flex-row sm:items-center justify-between gap-4 transition-colors cursor-pointer group"
               >
                 {/* Event Info (Left Side) */}
                 <div className="flex items-center gap-4 flex-1 overflow-hidden">
-                  <div className="w-16 h-16 rounded-lg bg-slate-100 border border-slate-200 overflow-hidden shrink-0 flex items-center justify-center">
+                  <div className="w-16 h-16 rounded-lg bg-card-hover border border-border overflow-hidden shrink-0 flex items-center justify-center">
                     {event.coverImage ? (
                       <img
                         src={event.coverImage}
@@ -100,14 +100,14 @@ export default function ManageEvents() {
                         className="w-full h-full object-cover"
                       />
                     ) : (
-                      <ImageIcon className="w-6 h-6 text-slate-300" />
+                      <ImageIcon className="w-6 h-6 text-text-text-muted" />
                     )}
                   </div>
                   <div className="flex-1 min-w-0">
-                    <h3 className="text-base font-bold text-slate-900 truncate group-hover:text-teal-700 transition-colors">
+                    <h3 className="text-base font-bold text-text truncate group-hover:text-accent transition-colors">
                       {event.eventName}
                     </h3>
-                    <div className="flex items-center gap-1.5 text-sm text-slate-500 mt-1">
+                    <div className="flex items-center gap-1.5 text-sm text-text-text-muted mt-1">
                       <Calendar className="w-4 h-4" />
                       {new Date(event.date).toLocaleDateString("en-US", {
                         weekday: "short",
@@ -131,14 +131,14 @@ export default function ManageEvents() {
                 >
                   <button
                     onClick={() => openEditModal(event)}
-                    className="p-2 text-slate-400 hover:text-teal-600 hover:bg-teal-50 rounded-lg transition-colors"
+                    className="p-2 text-text-text-muted hover:text-accent hover:bg-accent/10 rounded-lg transition-colors"
                     title="Edit Event"
                   >
                     <Edit className="w-5 h-5" />
                   </button>
                   <button
                     onClick={() => handleDelete(event._id)}
-                    className="p-2 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                    className="p-2 text-text-text-muted hover:text-danger hover:bg-danger/10 rounded-lg transition-colors"
                     title="Delete Event"
                   >
                     <Trash2 className="w-5 h-5" />

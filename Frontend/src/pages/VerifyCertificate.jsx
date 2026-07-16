@@ -21,8 +21,7 @@ const VerifyCertificate = () => {
       setLoading(true);
       setError("");
 
-      const response =
-        await certificateService.verifyCertificate(certificateId);
+      const response = await certificateService.verifyCertificate(certificateId);
 
       if (response.success) {
         setCertificate(response.data);
@@ -65,39 +64,40 @@ const VerifyCertificate = () => {
   /* ---------------- Loading State ---------------- */
   if (loading) {
     return (
-      <section className="min-h-screen flex items-center justify-center bg-slate-50 px-6">
-        <div className="w-full max-w-lg rounded-3xl border-2 border-slate-200 bg-white p-12 text-center shadow-xl">
-          <div className="mx-auto h-16 w-16 animate-spin rounded-full border-[6px] border-slate-200 border-t-cyan-500" />
-          <h2 className="mt-8 text-2xl font-bold uppercase tracking-[0.3em] text-slate-800">
+      <div className="app-shell flex items-center justify-center px-6">
+        <div className="stat-card max-w-lg text-center items-center">
+          <div className="mx-auto h-16 w-16 animate-spin rounded-full border-[6px] border-border border-t-accent" />
+          <h2 className="mt-8 font-sans text-2xl font-bold uppercase tracking-[0.3em] text-text">
             Verifying
           </h2>
-          <p className="mt-4 text-slate-500">
-            Please wait while we verify authenticity...
+          <p className="mt-4 text-text-muted text-sm font-mono uppercase tracking-widest">
+            Checking authenticity...
           </p>
         </div>
-      </section>
+      </div>
     );
   }
 
   /* ---------------- Error State ---------------- */
   if (error || !certificate) {
     return (
-      <section className="min-h-screen flex items-center justify-center bg-slate-50 px-6">
-        <div className="w-full max-w-2xl rounded-3xl border-2 border-red-200 bg-white p-12 text-center shadow-xl">
-          <h1 className="mt-6 text-4xl font-black uppercase tracking-wider text-slate-800">
+      <div className="app-shell flex items-center justify-center px-6">
+        <div className="stat-card max-w-2xl border-danger/50 text-center">
+          <h1 className="mt-2 font-sans text-4xl lg:text-6xl uppercase tracking-[0.05em] text-danger">
             Invalid Certificate
           </h1>
-          <p className="mt-5 text-lg text-slate-500">{error}</p>
+          <p className="mt-6 text-text-muted font-mono uppercase tracking-widest text-sm">
+            {error}
+          </p>
         </div>
-      </section>
+      </div>
     );
   }
 
   /* ---------------- Main Certificate Page ---------------- */
   return (
-    <>
-      {/* Fixed Print-Specific CSS
-       */}
+    <div className="app-shell">
+      {/* Fixed Print-Specific CSS */}
       <style>{`
         @media print {
           @page { size: landscape; margin: 0; }
@@ -125,36 +125,41 @@ const VerifyCertificate = () => {
             width: 100vw !important;
             height: 100vh !important;
             margin: 0 !important;
-            padding: 20px !important; /* Small padding so it doesn't clip off printer edges */
+            padding: 20px !important;
             background: white !important;
+            box-sizing: border-box !important;
           }
         }
       `}</style>
 
-      <section
+      <main
         id="certificate-overlay"
-        className="min-h-screen bg-[#Faf9f6] py-8 px-4 flex flex-col items-center justify-center font-sans overflow-y-auto"
+        className="main-content min-h-screen py-12 px-4 flex flex-col items-center justify-center relative overflow-y-auto"
       >
-        {/* Action Buttons */}
-        <div className="relative z-10 w-full max-w-[1000px] flex flex-wrap justify-end gap-4 mb-6 print:hidden">
-          <button
-            onClick={handlePrint}
-            className="rounded-lg bg-slate-900 px-6 py-2.5 font-semibold text-white transition hover:bg-slate-700 shadow-md"
-          >
+        {/* Background Ambient Glow matching the theme */}
+        <div className="ambient-glow w-[600px] h-[600px] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-20 print:hidden" />
+
+        {/* Action Buttons using theme components */}
+        <div className="relative z-10 w-full max-w-[1000px] flex flex-wrap justify-end gap-4 mb-8 print:hidden">
+          <button onClick={handlePrint} className="button button--solid">
             Download PDF
           </button>
           <button
             onClick={copyVerificationLink}
-            className="rounded-lg border-2 border-slate-300 bg-white px-6 py-2.5 font-semibold text-slate-700 transition hover:border-cyan-500 hover:text-cyan-600 shadow-sm"
+            className="button button--secondary"
           >
             Copy Link
           </button>
         </div>
 
-        {/* Certificate Container */}
-        <div className="relative z-10 w-full max-w-[1000px] bg-white shadow-2xl print:shadow-none print:w-full print:h-full print:max-w-none md:aspect-[1.414/1] flex flex-col p-3 md:p-5 border-[10px] border-[#e5e7eb] border-double rounded-sm">
+        {/* Certificate Container 
+          FIXED: Removed 'md:aspect-[1.414/1]' and added 'min-h-[600px] md:min-h-[700px]' 
+          so the container can grow vertically if the text wraps, preventing the bottom from overflowing.
+        */}
+        <div className="relative z-10 w-full max-w-[1000px] min-h-[600px] md:min-h-[700px] bg-white shadow-[0_18px_60px_rgba(13,13,13,0.15)] print:shadow-none print:w-full print:h-full print:max-w-none flex flex-col p-3 md:p-5 border-[10px] border-[#e5e7eb] border-double rounded-sm text-[#111111]">
           {/* Inner Border container */}
-          <div className="relative border-4 border-[#d1d5db] flex-1 w-full p-4 md:p-8 flex flex-col justify-between text-center bg-[#fffdf9] overflow-hidden">
+          <div className="relative border-4 border-[#d1d5db] flex-1 w-full p-4 md:p-8 flex flex-col justify-between text-center bg-[#fffdf9]">
+            
             {/* Header */}
             <div className="flex justify-between items-start w-full shrink-0">
               <img
@@ -164,13 +169,13 @@ const VerifyCertificate = () => {
               />
 
               <div className="flex flex-col items-center px-2 md:px-4">
-                <span className="inline-flex rounded-full border border-emerald-400/50 bg-emerald-50 px-3 py-1 text-[8px] md:text-xs font-bold uppercase tracking-[0.2em] text-emerald-700 mb-2 md:mb-4 shadow-sm">
+                <span className="inline-flex rounded-full border border-[#34d399] bg-[#ecfdf5] px-3 py-1 text-[8px] md:text-xs font-bold font-mono uppercase tracking-[0.2em] text-[#047857] mb-2 md:mb-4 shadow-sm">
                   ✔ Verified Authentic
                 </span>
-                <h1 className="text-2xl md:text-5xl font-serif font-black uppercase tracking-[0.15em] text-slate-800">
+                <h1 className="text-3xl md:text-6xl font-sans font-bold uppercase tracking-[0.15em] text-[#111111] leading-none">
                   Certificate
                 </h1>
-                <h2 className="text-sm md:text-2xl font-serif tracking-widest text-slate-500 mt-1">
+                <h2 className="text-sm md:text-2xl font-serif tracking-widest text-[#555555] mt-2 italic">
                   of Achievement
                 </h2>
               </div>
@@ -183,47 +188,47 @@ const VerifyCertificate = () => {
             </div>
 
             {/* Body */}
-            <div className="flex-1 flex flex-col justify-center py-4 md:py-6">
-              <p className="text-xs md:text-base text-slate-500 uppercase tracking-widest mb-2 md:mb-4">
+            <div className="flex-1 flex flex-col justify-center py-6 md:py-8">
+              <p className="text-xs md:text-sm font-mono text-[#666666] uppercase tracking-widest mb-4">
                 This is proudly presented to
               </p>
 
-              <h2 className="text-3xl md:text-6xl font-serif italic text-slate-900 border-b-2 border-slate-300 pb-2 mx-auto inline-block px-4 md:px-16">
+              <h2 className="text-3xl md:text-7xl font-serif italic text-[#111111] border-b-[3px] border-[#d1d5db] pb-3 mx-auto inline-block px-8 md:px-20 leading-tight">
                 {certificate.studentName}
               </h2>
 
-              <p className="text-xs md:text-base text-slate-500 mt-4 md:mt-8 uppercase tracking-widest">
+              <p className="text-xs md:text-sm font-mono text-[#666666] mt-6 md:mt-10 uppercase tracking-widest">
                 For successfully participating in
               </p>
 
-              <h3 className="mt-2 text-xl md:text-4xl font-serif text-slate-800">
+              <h3 className="mt-3 text-xl md:text-4xl font-sans font-medium uppercase tracking-wide text-[#111111]">
                 {certificate.eventName}
               </h3>
 
-              <div className="mt-4 md:mt-6">
-                <span className="inline-flex bg-slate-800 px-4 py-1.5 md:px-6 md:py-2 rounded-sm text-[10px] md:text-sm font-semibold uppercase tracking-[0.25em] text-white">
+              <div className="mt-6 md:mt-8">
+                <span className="inline-flex bg-[#111111] px-5 py-2 md:px-8 md:py-3 rounded-none text-[10px] md:text-sm font-sans font-bold uppercase tracking-[0.25em] text-white">
                   {certificate.position}
                 </span>
               </div>
             </div>
 
             {/* Footer */}
-            <div className="grid grid-cols-3 items-end text-left w-full gap-2 md:gap-4 shrink-0">
+            <div className="grid grid-cols-3 items-end text-left w-full gap-2 md:gap-4 shrink-0 font-mono">
               {/* Left: Metadata */}
-              <div className="flex flex-col gap-2 md:gap-4 text-[8px] md:text-xs text-slate-600 pb-1">
+              <div className="flex flex-col gap-3 md:gap-5 text-[8px] md:text-xs text-[#666666] pb-1">
                 <div>
-                  <p className="font-bold uppercase tracking-wider text-slate-400 mb-0.5">
+                  <p className="font-bold uppercase tracking-wider mb-1 text-[#888888]">
                     Certificate ID
                   </p>
-                  <p className="font-mono font-semibold text-slate-800 break-all">
+                  <p className="font-semibold text-[#111111] break-all">
                     {certificate.certificateId}
                   </p>
                 </div>
                 <div>
-                  <p className="font-bold uppercase tracking-wider text-slate-400 mb-0.5">
+                  <p className="font-bold uppercase tracking-wider mb-1 text-[#888888]">
                     Issued On
                   </p>
-                  <p className="font-semibold text-slate-800">
+                  <p className="font-semibold text-[#111111]">
                     {formatDate(certificate.issuedAt)}
                   </p>
                 </div>
@@ -236,9 +241,9 @@ const VerifyCertificate = () => {
                     verificationURL
                   )}`}
                   alt="Verification QR Code"
-                  className="w-14 h-14 md:w-20 md:h-20 shadow-sm border border-slate-200"
+                  className="w-16 h-16 md:w-24 md:h-24 shadow-sm border border-[#e5e7eb] p-1 bg-white"
                 />
-                <p className="mt-2 text-[7px] md:text-[10px] uppercase tracking-wider text-slate-500 font-semibold">
+                <p className="mt-3 text-[7px] md:text-[10px] uppercase tracking-[0.2em] text-[#666666] font-bold">
                   Scan to Verify
                 </p>
               </div>
@@ -249,26 +254,27 @@ const VerifyCertificate = () => {
                   <img
                     src={certificate.signatureImage}
                     alt="Coordinator Signature"
-                    className="max-h-12 md:max-h-16 object-contain mb-2"
+                    className="max-h-12 md:max-h-20 object-contain mb-3 mix-blend-multiply"
                   />
                 ) : (
-                  <div className="h-12 md:h-16 mb-2"></div> /* Spacer */
+                  <div className="h-12 md:h-20 mb-3"></div> /* Spacer */
                 )}
 
-                <div className="w-full border-t border-slate-400 pt-1.5 md:pt-2">
-                  <p className="font-bold text-[9px] md:text-sm text-slate-800 line-clamp-1">
+                <div className="w-full border-t-[2px] border-[#d1d5db] pt-2 md:pt-3">
+                  <p className="font-bold text-[9px] md:text-sm text-[#111111] line-clamp-1 uppercase tracking-wide">
                     {certificate.coordinatorName}
                   </p>
-                  <p className="text-[7px] md:text-[10px] text-slate-500 uppercase tracking-wider mt-0.5 md:mt-1">
+                  <p className="text-[7px] md:text-[10px] text-[#888888] uppercase tracking-widest mt-1">
                     Coordinator
                   </p>
                 </div>
               </div>
             </div>
+            
           </div>
         </div>
-      </section>
-    </>
+      </main>
+    </div>
   );
 };
 

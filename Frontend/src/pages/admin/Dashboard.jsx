@@ -22,7 +22,7 @@ export default function Dashboard() {
   }, [dispatch, isLoaded]);
 
   return (
-    <div className="p-8 lg:p-10 font-sans text-slate-900 min-h-full">
+    <div className="p-8 lg:p-10 font-sans text-text min-h-full">
       <DashboardHeader
         onRefresh={() => dispatch(fetchDashboardMetrics())}
         loading={loading}

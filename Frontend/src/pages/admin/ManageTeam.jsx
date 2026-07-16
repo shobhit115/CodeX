@@ -177,12 +177,12 @@ export default function ManageTeam() {
   };
 
   return (
-    <div className="p-8 lg:p-10 font-sans text-slate-900 min-h-full relative">
+    <div className="p-8 lg:p-10 font-sans text-text min-h-full relative">
       {/* Header */}
       <header className="flex flex-col md:flex-row md:items-center justify-between mb-8 gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-slate-900">Team Roster</h1>
-          <p className="text-sm text-slate-500 mt-1">
+          <h1 className="text-2xl font-bold text-text">Team Roster</h1>
+          <p className="text-sm text-text-text-muted mt-1">
             Manage personnel and organizational structure.
           </p>
         </div>
@@ -193,19 +193,19 @@ export default function ManageTeam() {
               dispatch(fetchAdminTeam({ year: filterYear, force: true }))
             }
             disabled={loading}
-            className="p-2 bg-white border border-slate-200 rounded-lg text-slate-500 hover:text-teal-600 hover:border-teal-200 transition-colors shadow-sm disabled:opacity-50 flex items-center justify-center shrink-0"
+            className="p-2 bg-card border border-border rounded-lg text-text-text-muted hover:text-accent hover:border-accent transition-colors shadow-sm disabled:opacity-50 flex items-center justify-center shrink-0"
             title="Refresh Data"
           >
             <RefreshCw
-              className={`w-5 h-5 ${loading ? "animate-spin text-teal-500" : ""}`}
+              className={`w-5 h-5 ${loading ? "animate-spin text-accent" : ""}`}
             />
           </button>
           <div className="relative">
-            <Filter className="absolute left-3 top-2.5 w-4 h-4 text-teal-600 pointer-events-none" />
+            <Filter className="absolute left-3 top-2.5 w-4 h-4 text-accent pointer-events-none" />
             <select
               value={filterYear}
               onChange={(e) => setFilterYear(e.target.value)}
-              className="appearance-none bg-white border border-slate-200 text-slate-700 rounded-lg py-2 pl-9 pr-10 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 hover:border-slate-300 transition-colors shadow-sm cursor-pointer w-full"
+              className="appearance-none bg-card border border-border text-text rounded-lg py-2 pl-9 pr-10 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-accent/20 focus:border-accent hover:border-border transition-colors shadow-sm cursor-pointer w-full"
             >
               {formAcademicYears.map((year) => (
                 <option key={year} value={year}>
@@ -213,12 +213,12 @@ export default function ManageTeam() {
                 </option>
               ))}
             </select>
-            <div className="absolute right-3 top-4 w-0 h-0 border-l-[4px] border-l-transparent border-r-[4px] border-r-transparent border-t-[5px] border-t-slate-400 pointer-events-none"></div>
+            <div className="absolute right-3 top-4 w-0 h-0 border-l-[4px] border-l-transparent border-r-[4px] border-r-transparent border-t-[5px] border-t-ink-muted pointer-events-none"></div>
           </div>
 
           <button
             onClick={openCreateModal}
-            className="flex items-center justify-center gap-2 bg-teal-600 text-white px-5 py-2 rounded-lg text-sm font-medium hover:bg-teal-700 transition-colors shadow-sm whitespace-nowrap"
+            className="flex items-center justify-center gap-2 bg-accent text-white px-5 py-2 rounded-lg text-sm font-medium hover:bg-accent transition-colors shadow-sm whitespace-nowrap"
           >
             <Plus className="w-4 h-4" />
             Add Member
@@ -234,12 +234,12 @@ export default function ManageTeam() {
           ))}
         </div>
       ) : displayedMembers.length === 0 ? (
-        <div className="bg-white border border-slate-200 rounded-2xl p-16 text-center shadow-sm">
-          <Users className="w-12 h-12 text-slate-300 mx-auto mb-4" />
-          <h3 className="text-lg font-bold text-slate-900 mb-1">
+        <div className="bg-card border border-border rounded-2xl p-16 text-center shadow-sm">
+          <Users className="w-12 h-12 text-text-text-muted mx-auto mb-4" />
+          <h3 className="text-lg font-bold text-text mb-1">
             No Personnel Records
           </h3>
-          <p className="text-slate-500 text-sm">
+          <p className="text-text-text-muted text-sm">
             Click "Add Member" to assign new personnel.
           </p>
         </div>
@@ -254,10 +254,10 @@ export default function ManageTeam() {
             return (
               <div key={teamName}>
                 <div className="flex items-center gap-4 mb-6">
-                  <h2 className="text-xl font-bold text-slate-800 tracking-tight">
+                  <h2 className="text-xl font-bold text-text tracking-tight">
                     {teamName}
                   </h2>
-                  <div className="flex-1 h-px bg-slate-200"></div>
+                  <div className="flex-1 h-px bg-card-hover"></div>
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-6">
                   {teamMembers.map((member) => (
@@ -278,41 +278,41 @@ export default function ManageTeam() {
 
       {/* Creation/Edit Modal */}
       {isModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 backdrop-blur-sm p-4 overflow-y-auto">
-          <div className="bg-white rounded-2xl shadow-xl w-full max-w-2xl relative my-auto">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-bg/50 backdrop-blur-sm p-4 overflow-y-auto">
+          <div className="bg-card rounded-2xl shadow-xl w-full max-w-2xl relative my-auto">
             <button
               onClick={() => setIsModalOpen(false)}
-              className="absolute top-4 right-4 text-slate-400 hover:text-slate-600 p-2 hover:bg-slate-100 rounded-full transition-colors"
+              className="absolute top-4 right-4 text-text-text-muted hover:text-text-text-muted p-2 hover:bg-card-hover rounded-full transition-colors"
             >
               <X className="w-5 h-5" />
             </button>
 
             <div className="p-6 md:p-8">
-              <h2 className="text-xl font-bold text-slate-900 border-b border-slate-100 pb-4 mb-6">
+              <h2 className="text-xl font-bold text-text border-b border-border-soft pb-4 mb-6">
                 {editingId ? "Edit Team Member" : "Add Team Member"}
               </h2>
 
               <form onSubmit={handleSubmit(onFormSubmit)} className="space-y-5">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                   <div>
-                    <label className="block text-sm font-semibold text-slate-700 mb-1.5">
+                    <label className="block text-sm font-semibold text-text mb-1.5">
                       Full Name
                     </label>
                     <input
                       type="text"
                       {...register("name", { required: "Name is required" })}
-                      className={`w-full bg-white border ${errors.name ? "border-red-300 focus:ring-red-500/20 focus:border-red-500" : "border-slate-300 focus:ring-teal-500/20 focus:border-teal-500"} text-slate-900 rounded-lg p-2.5 text-sm focus:outline-none focus:ring-2 transition-colors shadow-sm`}
+                      className={`w-full bg-card border ${errors.name ? "border-danger focus:ring-danger/20 focus:border-danger" : "border-border focus:ring-accent/20 focus:border-accent"} text-text rounded-lg p-2.5 text-sm focus:outline-none focus:ring-2 transition-colors shadow-sm`}
                       placeholder="Full Name"
                     />
                     {errors.name && (
-                      <p className="mt-1 text-xs text-red-500">
+                      <p className="mt-1 text-xs text-danger">
                         {errors.name.message}
                       </p>
                     )}
                   </div>
 
                   <div>
-                    <label className="block text-sm font-semibold text-slate-700 mb-1.5">
+                    <label className="block text-sm font-semibold text-text mb-1.5">
                       Role / Post
                     </label>
                     <input
@@ -321,24 +321,24 @@ export default function ManageTeam() {
                         required: "Post/Role is required",
                       })}
                       placeholder="Position"
-                      className={`w-full bg-white border ${errors.post ? "border-red-300 focus:ring-red-500/20 focus:border-red-500" : "border-slate-300 focus:ring-teal-500/20 focus:border-teal-500"} text-slate-900 rounded-lg p-2.5 text-sm focus:outline-none focus:ring-2 transition-colors shadow-sm`}
+                      className={`w-full bg-card border ${errors.post ? "border-danger focus:ring-danger/20 focus:border-danger" : "border-border focus:ring-accent/20 focus:border-accent"} text-text rounded-lg p-2.5 text-sm focus:outline-none focus:ring-2 transition-colors shadow-sm`}
                     />
                     {errors.post && (
-                      <p className="mt-1 text-xs text-red-500">
+                      <p className="mt-1 text-xs text-danger">
                         {errors.post.message}
                       </p>
                     )}
                   </div>
 
                   <div>
-                    <label className="block text-sm font-semibold text-slate-700 mb-1.5">
+                    <label className="block text-sm font-semibold text-text mb-1.5">
                       Sub-Team / Department
                     </label>
                     <select
                       {...register("subTeam", {
                         required: "Sub-Team is required",
                       })}
-                      className={`w-full bg-white border ${errors.subTeam ? "border-red-300 focus:ring-red-500/20 focus:border-red-500" : "border-slate-300 focus:ring-teal-500/20 focus:border-teal-500"} text-slate-900 rounded-lg p-2.5 text-sm focus:outline-none focus:ring-2 transition-colors shadow-sm`}
+                      className={`w-full bg-card border ${errors.subTeam ? "border-danger focus:ring-danger/20 focus:border-danger" : "border-border focus:ring-accent/20 focus:border-accent"} text-text rounded-lg p-2.5 text-sm focus:outline-none focus:ring-2 transition-colors shadow-sm`}
                     >
                       <option value="">Select Sub-Team</option>
                       <option value="Admin Team">Admin Team</option>
@@ -347,21 +347,21 @@ export default function ManageTeam() {
                       <option value="Graphic Team">Graphic Team</option>
                     </select>
                     {errors.subTeam && (
-                      <p className="mt-1 text-xs text-red-500">
+                      <p className="mt-1 text-xs text-danger">
                         {errors.subTeam.message}
                       </p>
                     )}
                   </div>
 
                   <div>
-                    <label className="block text-sm font-semibold text-slate-700 mb-1.5">
+                    <label className="block text-sm font-semibold text-text mb-1.5">
                       Academic Year
                     </label>
                     <select
                       {...register("academicYear", {
                         required: "Academic Year is required",
                       })}
-                      className={`w-full bg-white border ${errors.academicYear ? "border-red-300 focus:ring-red-500/20 focus:border-red-500" : "border-slate-300 focus:ring-teal-500/20 focus:border-teal-500"} text-slate-900 rounded-lg p-2.5 text-sm focus:outline-none focus:ring-2 transition-colors shadow-sm`}
+                      className={`w-full bg-card border ${errors.academicYear ? "border-danger focus:ring-danger/20 focus:border-danger" : "border-border focus:ring-accent/20 focus:border-accent"} text-text rounded-lg p-2.5 text-sm focus:outline-none focus:ring-2 transition-colors shadow-sm`}
                     >
                       <option value="">Select Academic Year</option>
                       {formAcademicYears.map((year) => (
@@ -371,7 +371,7 @@ export default function ManageTeam() {
                       ))}
                     </select>
                     {errors.academicYear && (
-                      <p className="mt-1 text-xs text-red-500">
+                      <p className="mt-1 text-xs text-danger">
                         {errors.academicYear.message}
                       </p>
                     )}
@@ -380,12 +380,12 @@ export default function ManageTeam() {
 
                 {/* Photo Upload */}
                 <div>
-                  <label className="block text-sm font-semibold text-slate-700 mb-1.5">
+                  <label className="block text-sm font-semibold text-text mb-1.5">
                     Profile Photo
                   </label>
                   <div className="flex items-center gap-4">
                     <label
-                      className={`flex-1 border-2 border-dashed ${errors.photo ? "border-red-300 bg-red-50" : "border-slate-300 bg-slate-50 hover:bg-teal-50 hover:border-teal-400"} rounded-xl p-6 text-center cursor-pointer transition-colors group`}
+                      className={`flex-1 border-2 border-dashed ${errors.photo ? "border-danger bg-danger/10" : "border-border bg-card-hover hover:bg-accent/10 hover:border-accent"} rounded-xl p-6 text-center cursor-pointer transition-colors group`}
                     >
                       <input
                         type="file"
@@ -399,16 +399,16 @@ export default function ManageTeam() {
                         })}
                       />
                       <ImageIcon
-                        className={`w-8 h-8 mx-auto mb-2 transition-colors ${errors.photo ? "text-red-400" : "text-slate-400 group-hover:text-teal-500"}`}
+                        className={`w-8 h-8 mx-auto mb-2 transition-colors ${errors.photo ? "text-danger" : "text-text-text-muted group-hover:text-accent"}`}
                       />
                       <span
-                        className={`text-sm font-medium ${errors.photo ? "text-red-500" : "text-slate-500 group-hover:text-teal-600"}`}
+                        className={`text-sm font-medium ${errors.photo ? "text-danger" : "text-text-text-muted group-hover:text-accent"}`}
                       >
                         Click to browse or drag image here
                       </span>
                     </label>
                     {imagePreview && (
-                      <div className="w-28 h-28 border border-slate-200 rounded-xl overflow-hidden shrink-0 bg-slate-100 shadow-sm">
+                      <div className="w-28 h-28 border border-border rounded-xl overflow-hidden shrink-0 bg-card-hover shadow-sm">
                         <img
                           src={imagePreview}
                           alt="Preview"
@@ -418,7 +418,7 @@ export default function ManageTeam() {
                     )}
                   </div>
                   {errors.photo && (
-                    <p className="mt-1 text-xs text-red-500">
+                    <p className="mt-1 text-xs text-danger">
                       {errors.photo.message}
                     </p>
                   )}
@@ -427,7 +427,7 @@ export default function ManageTeam() {
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="w-full flex items-center justify-center gap-2 bg-teal-600 text-white py-3 rounded-xl text-sm font-semibold transition-colors hover:bg-teal-700 disabled:opacity-50 mt-4 shadow-sm"
+                  className="w-full flex items-center justify-center gap-2 bg-accent text-white py-3 rounded-xl text-sm font-semibold transition-colors hover:bg-accent disabled:opacity-50 mt-4 shadow-sm"
                 >
                   {isSubmitting ? (
                     <Loader2 className="w-5 h-5 animate-spin" />

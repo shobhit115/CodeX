@@ -11,6 +11,18 @@
     <meta property="og:description" content="CodeX - Secure Admin Portal for Event & Certificate Management" />
     <meta property="og:image" content="/codex-logo.svg" />
     <title>CodeX</title>
+    <script>
+      (function() {
+        try {
+          var stored = localStorage.getItem('theme');
+          if (stored === 'dark' || (!stored && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+          } else {
+            document.documentElement.classList.remove('dark');
+          }
+        } catch (e) {}
+      })();
+    </script>
   </head>
   <body>
     <div id="root"></div>

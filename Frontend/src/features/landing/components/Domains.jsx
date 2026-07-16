@@ -33,7 +33,7 @@ const Domains = () => {
                 {`domain_0${index + 1}`}
               </p>
               <h3 className="stat-value text-xl mb-3">{domain.title}</h3>
-              <p className="stat-text text-sm leading-relaxed text-gray-400">
+              <p className="stat-text text-sm leading-relaxed text-text-text-muted">
                 {domain.description}
               </p>
             </div>

@@ -72,7 +72,7 @@ const Register = () => {
   }
 
   return (
-    <div className="min-h-screen bg-[#Faf9f6] relative font-jetbrains flex flex-col">
+    <div className="min-h-screen bg-bg-soft relative font-jetbrains flex flex-col">
       <div
         className="absolute inset-0 pointer-events-none opacity-[0.04] z-0"
         style={{
@@ -84,21 +84,21 @@ const Register = () => {
 
       <div className="relative z-10 w-full max-w-[1000px] mx-auto pb-20 pt-16 px-4 md:px-12">
         <header className="mb-12">
-          <p className="text-[#2ec5d4] text-xs font-bold uppercase tracking-widest mb-3">
+          <p className="text-accent text-xs font-bold uppercase tracking-widest mb-3">
             {register.eyebrow}
           </p>
-          <h1 className="font-oswald text-5xl md:text-6xl font-bold uppercase text-[#0a0a0a] mb-3">
+          <h1 className="font-oswald text-5xl md:text-6xl font-bold uppercase text-text mb-3">
             {register.titlePart1}{" "}
-            <span className="text-[#27EBF5]">{register.titlePart2}</span>
+            <span className="text-accent">{register.titlePart2}</span>
           </h1>
-          <p className="text-gray-500 text-sm font-medium">
+          <p className="text-text-text-muted text-sm font-medium">
             {register.description}
           </p>
         </header>
 
         <form
           onSubmit={handleSubmit(onFormSubmit)}
-          className="bg-white border-4 border-gray-800 p-6 md:p-10 shadow-[8px_8px_0px_rgba(0,0,0,0.05)]"
+          className="bg-card border-4 border-text p-6 md:p-10 shadow-[8px_8px_0px_rgba(0,0,0,0.05)]"
         >
           <PersonalDetailsForm register={formRegister} errors={errors} />
           <AcademicDetailsForm register={formRegister} errors={errors} />

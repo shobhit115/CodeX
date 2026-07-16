@@ -34,7 +34,7 @@ const MainLayout = () => {
         <Outlet />
       </main>
 
-      <footer className="border-t border-line p-6 font-mono text-xs text-ink/40 text-center uppercase tracking-widest bg-bg">
+      <footer className="border-t border-border p-6 font-mono text-xs text-text/40 text-center uppercase tracking-widest bg-bg">
         <span
           onClick={handleFooterClick}
           className="cursor-default select-none"

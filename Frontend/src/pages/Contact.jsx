@@ -54,19 +54,19 @@ const Contact = () => {
 
   if (isSuccess) {
     return (
-      <div className="min-h-screen bg-[#Faf9f6] flex items-center justify-center font-jetbrains p-4">
-        <div className="bg-white border-4 border-gray-800 p-8 md:p-12 shadow-[8px_8px_0px_rgba(0,0,0,0.05)] text-center max-w-lg w-full">
-          <CheckCircle className="w-16 h-16 text-[#2ec5d4] mx-auto mb-6" />
-          <h2 className="font-oswald text-4xl font-bold uppercase text-[#0a0a0a] mb-4">
+      <div className="min-h-screen bg-bg-soft flex items-center justify-center font-jetbrains p-4">
+        <div className="bg-card border-4 border-text p-8 md:p-12 shadow-[8px_8px_0px_rgba(0,0,0,0.05)] text-center max-w-lg w-full">
+          <CheckCircle className="w-16 h-16 text-accent mx-auto mb-6" />
+          <h2 className="font-oswald text-4xl font-bold uppercase text-text mb-4">
             Message Sent
           </h2>
-          <p className="text-gray-500 font-medium mb-8">
+          <p className="text-text-text-muted font-medium mb-8">
             Thank you for reaching out! We've received your message and will get
             back to you shortly.
           </p>
           <button
             onClick={() => window.location.reload()}
-            className="w-full bg-[#0a0a0a] text-white py-4 font-bold uppercase tracking-widest hover:bg-[#2ec5d4] hover:text-[#0a0a0a] transition-colors border-2 border-transparent hover:border-[#0a0a0a]"
+            className="w-full bg-text text-bg py-4 font-bold uppercase tracking-widest hover:bg-accent hover:text-text transition-colors border-2 border-transparent hover:border-text"
           >
             Send Another Message
           </button>
@@ -76,7 +76,7 @@ const Contact = () => {
   }
 
   return (
-    <div className="min-h-screen bg-[#Faf9f6] relative font-jetbrains flex flex-col pt-24 md:pt-32">
+    <div className="min-h-screen bg-bg-soft relative font-jetbrains flex flex-col pt-24 md:pt-32">
       <div
         className="absolute inset-0 pointer-events-none opacity-[0.04] z-0"
         style={{
@@ -88,26 +88,26 @@ const Contact = () => {
 
       <div className="relative z-10 w-full max-w-[800px] mx-auto pb-20 px-4 md:px-12">
         <header className="mb-12">
-          <p className="text-[#2ec5d4] text-xs font-bold uppercase tracking-widest mb-3">
+          <p className="text-accent text-xs font-bold uppercase tracking-widest mb-3">
             {contact.eyebrow}
           </p>
-          <h1 className="font-oswald text-5xl md:text-6xl font-bold uppercase text-[#0a0a0a] mb-3">
+          <h1 className="font-oswald text-5xl md:text-6xl font-bold uppercase text-text mb-3">
             {contact.titlePart1}{" "}
-            <span className="text-[#27EBF5]">{contact.titlePart2}</span>
+            <span className="text-accent">{contact.titlePart2}</span>
           </h1>
-          <p className="text-gray-500 text-sm font-medium">
+          <p className="text-text-text-muted text-sm font-medium">
             {contact.description}
           </p>
         </header>
 
         <form
           onSubmit={handleSubmit(onFormSubmit)}
-          className="bg-white border-4 border-gray-800 p-6 md:p-10 shadow-[8px_8px_0px_rgba(0,0,0,0.05)]"
+          className="bg-card border-4 border-text p-6 md:p-10 shadow-[8px_8px_0px_rgba(0,0,0,0.05)]"
         >
           <div className="space-y-6 mb-8">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
-                <label className="block text-xs font-bold text-gray-500 mb-2 uppercase tracking-wider">
+                <label className="block text-xs font-bold text-text-text-muted mb-2 uppercase tracking-wider">
                   Full Name
                 </label>
                 <input
@@ -115,19 +115,19 @@ const Contact = () => {
                   {...register("name", { required: "Name is required" })}
                   className={`w-full bg-transparent border-2 ${
                     errors.name
-                      ? "border-red-400 focus:border-red-500"
-                      : "border-gray-300 focus:border-[#2ec5d4]"
-                  } text-[#0a0a0a] p-3 focus:outline-none transition-colors uppercase font-bold text-sm tracking-wider placeholder-gray-300`}
+                      ? "border-danger focus:border-danger"
+                      : "border-border focus:border-accent"
+                  } text-text p-3 focus:outline-none transition-colors uppercase font-bold text-sm tracking-wider placeholder-gray-300`}
                   placeholder="Enter Your Name"
                 />
                 {errors.name && (
-                  <p className="mt-1 text-xs text-red-500 font-bold uppercase">
+                  <p className="mt-1 text-xs text-danger font-bold uppercase">
                     {errors.name.message}
                   </p>
                 )}
               </div>
               <div>
-                <label className="block text-xs font-bold text-gray-500 mb-2 uppercase tracking-wider">
+                <label className="block text-xs font-bold text-text-text-muted mb-2 uppercase tracking-wider">
                   Email Address
                 </label>
                 <input
@@ -138,13 +138,13 @@ const Contact = () => {
                   })}
                   className={`w-full bg-transparent border-2 ${
                     errors.email
-                      ? "border-red-400 focus:border-red-500"
-                      : "border-gray-300 focus:border-[#2ec5d4]"
-                  } text-[#0a0a0a] p-3 focus:outline-none transition-colors font-bold text-sm tracking-wider placeholder-gray-300`}
+                      ? "border-danger focus:border-danger"
+                      : "border-border focus:border-accent"
+                  } text-text p-3 focus:outline-none transition-colors font-bold text-sm tracking-wider placeholder-gray-300`}
                   placeholder="name@example.com"
                 />
                 {errors.email && (
-                  <p className="mt-1 text-xs text-red-500 font-bold uppercase">
+                  <p className="mt-1 text-xs text-danger font-bold uppercase">
                     {errors.email.message}
                   </p>
                 )}
@@ -152,7 +152,7 @@ const Contact = () => {
             </div>
 
             <div>
-              <label className="block text-xs font-bold text-gray-500 mb-2 uppercase tracking-wider">
+              <label className="block text-xs font-bold text-text-text-muted mb-2 uppercase tracking-wider">
                 Subject
               </label>
               <input
@@ -160,20 +160,20 @@ const Contact = () => {
                 {...register("subject", { required: "Subject is required" })}
                 className={`w-full bg-transparent border-2 ${
                   errors.subject
-                    ? "border-red-400 focus:border-red-500"
-                    : "border-gray-300 focus:border-[#2ec5d4]"
-                } text-[#0a0a0a] p-3 focus:outline-none transition-colors uppercase font-bold text-sm tracking-wider placeholder-gray-300`}
+                    ? "border-danger focus:border-danger"
+                    : "border-border focus:border-accent"
+                } text-text p-3 focus:outline-none transition-colors uppercase font-bold text-sm tracking-wider placeholder-gray-300`}
                 placeholder="What is this regarding?"
               />
               {errors.subject && (
-                <p className="mt-1 text-xs text-red-500 font-bold uppercase">
+                <p className="mt-1 text-xs text-danger font-bold uppercase">
                   {errors.subject.message}
                 </p>
               )}
             </div>
 
             <div>
-              <label className="block text-xs font-bold text-gray-500 mb-2 uppercase tracking-wider">
+              <label className="block text-xs font-bold text-text-text-muted mb-2 uppercase tracking-wider">
                 Message
               </label>
               <textarea
@@ -181,22 +181,22 @@ const Contact = () => {
                 rows="5"
                 className={`w-full bg-transparent border-2 ${
                   errors.message
-                    ? "border-red-400 focus:border-red-500"
-                    : "border-gray-300 focus:border-[#2ec5d4]"
-                } text-[#0a0a0a] p-3 focus:outline-none transition-colors font-medium text-sm placeholder-gray-300 resize-none`}
+                    ? "border-danger focus:border-danger"
+                    : "border-border focus:border-accent"
+                } text-text p-3 focus:outline-none transition-colors font-medium text-sm placeholder-gray-300 resize-none`}
                 placeholder="How can we help you?"
               ></textarea>
               {errors.message && (
-                <p className="mt-1 text-xs text-red-500 font-bold uppercase">
+                <p className="mt-1 text-xs text-danger font-bold uppercase">
                   {errors.message.message}
                 </p>
               )}
             </div>
           </div>
 
-          <div className="mb-8 flex flex-col items-center border-2 border-gray-100 p-4 bg-gray-50">
-            <div className="flex items-center gap-2 mb-4 text-xs font-bold uppercase tracking-widest text-gray-500">
-              <ShieldCheck className="w-4 h-4 text-[#2ec5d4]" /> Verification
+          <div className="mb-8 flex flex-col items-center border-2 border-border-soft p-4 bg-card-hover">
+            <div className="flex items-center gap-2 mb-4 text-xs font-bold uppercase tracking-widest text-text-text-muted">
+              <ShieldCheck className="w-4 h-4 text-accent" /> Verification
               Required
             </div>
             <Turnstile
@@ -212,7 +212,7 @@ const Contact = () => {
           <button
             type="submit"
             disabled={loading || !turnstileToken}
-            className="w-full bg-[#0a0a0a] text-white py-5 font-bold uppercase tracking-widest hover:bg-[#2ec5d4] hover:text-[#0a0a0a] transition-colors border-2 border-transparent hover:border-[#0a0a0a] disabled:opacity-50 flex justify-center items-center gap-3"
+            className="w-full bg-text text-bg py-5 font-bold uppercase tracking-widest hover:bg-accent hover:text-text transition-colors border-2 border-transparent hover:border-text disabled:opacity-50 flex justify-center items-center gap-3"
           >
             {loading ? (
               <Loader2 className="w-6 h-6 animate-spin" />

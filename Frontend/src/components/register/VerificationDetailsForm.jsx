@@ -11,22 +11,22 @@ export default function VerificationDetailsForm({
 }) {
   return (
     <>
-      <h3 className="font-oswald text-2xl font-bold uppercase tracking-widest text-[#0a0a0a] border-b-2 border-gray-200 pb-2 mb-6">
+      <h3 className="font-oswald text-2xl font-bold uppercase tracking-widest text-text border-b-2 border-border pb-2 mb-6">
         3. Verification Details
       </h3>
-      <div className="bg-gray-50 border-2 border-dashed border-gray-300 p-6 mb-8 flex flex-col md:flex-row items-center gap-6">
-        <div className="w-24 h-24 bg-white border-2 border-gray-300 flex items-center justify-center shrink-0">
-          <QrCode className="w-12 h-12 text-gray-400" />
+      <div className="bg-card-hover border-2 border-dashed border-border p-6 mb-8 flex flex-col md:flex-row items-center gap-6">
+        <div className="w-24 h-24 bg-card border-2 border-border flex items-center justify-center shrink-0">
+          <QrCode className="w-12 h-12 text-text-text-muted" />
         </div>
         <div className="flex-1">
-          <p className="text-sm font-bold uppercase tracking-widest text-gray-600 mb-2">
+          <p className="text-sm font-bold uppercase tracking-widest text-text-text-muted mb-2">
             1. Transfer the required membership fee to the official CodeX UPI
             handler.
           </p>
-          <p className="text-xs font-bold uppercase tracking-wider text-[#b76e79] mb-4">
+          <p className="text-xs font-bold uppercase tracking-wider text-danger mb-4">
             UPI ID: CODEX@YBL
           </p>
-          <label className="block text-xs font-bold text-[#2ec5d4] mb-2 uppercase tracking-wider">
+          <label className="block text-xs font-bold text-accent mb-2 uppercase tracking-wider">
             2. Enter Unique Transaction ID (UTR)
           </label>
           <input
@@ -34,18 +34,18 @@ export default function VerificationDetailsForm({
             {...register("transactionId", {
               required: "Transaction ID is required",
             })}
-            className={`w-full max-w-sm bg-white border-2 ${errors.transactionId ? "border-red-400 focus:border-red-500" : "border-gray-300 focus:border-[#2ec5d4]"} text-[#0a0a0a] p-3 focus:outline-none transition-colors uppercase font-bold text-sm tracking-wider placeholder-gray-300`}
+            className={`w-full max-w-sm bg-card border-2 ${errors.transactionId ? "border-danger focus:border-danger" : "border-border focus:border-accent"} text-text p-3 focus:outline-none transition-colors uppercase font-bold text-sm tracking-wider placeholder-gray-300`}
           />
           {errors.transactionId && (
-            <p className="mt-1 text-xs text-red-500 font-bold uppercase">
+            <p className="mt-1 text-xs text-danger font-bold uppercase">
               {errors.transactionId.message}
             </p>
           )}
         </div>
       </div>
-      <div className="mb-8 flex flex-col items-center border-2 border-gray-100 p-4 bg-gray-50">
-        <div className="flex items-center gap-2 mb-4 text-xs font-bold uppercase tracking-widest text-gray-500">
-          <ShieldCheck className="w-4 h-4 text-[#2ec5d4]" /> Verification
+      <div className="mb-8 flex flex-col items-center border-2 border-border-soft p-4 bg-card-hover">
+        <div className="flex items-center gap-2 mb-4 text-xs font-bold uppercase tracking-widest text-text-text-muted">
+          <ShieldCheck className="w-4 h-4 text-accent" /> Verification
           Required
         </div>
         <Turnstile
@@ -61,7 +61,7 @@ export default function VerificationDetailsForm({
       <button
         type="submit"
         disabled={loading || !turnstileToken}
-        className="w-full bg-[#0a0a0a] text-white py-5 font-bold uppercase tracking-widest hover:bg-[#2ec5d4] hover:text-[#0a0a0a] transition-colors border-2 border-transparent hover:border-[#0a0a0a] disabled:opacity-50 flex justify-center items-center gap-3"
+        className="w-full bg-text text-bg py-5 font-bold uppercase tracking-widest hover:bg-accent hover:text-text transition-colors border-2 border-transparent hover:border-text disabled:opacity-50 flex justify-center items-center gap-3"
       >
         {loading ? (
           <Loader2 className="w-6 h-6 animate-spin" />

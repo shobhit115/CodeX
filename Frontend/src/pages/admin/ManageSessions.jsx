@@ -57,15 +57,15 @@ export default function ManageSessions() {
   };
 
   return (
-    <div className="font-sans text-slate-900 relative">
+    <div className="font-sans text-text relative">
       <div className="flex justify-end mb-4">
         <button
           onClick={() => dispatch(fetchAdminSessions())}
           disabled={loading}
-          className="flex items-center gap-2 px-3 py-1.5 bg-white border border-slate-200 rounded-lg text-xs font-medium text-slate-600 hover:text-teal-600 hover:bg-teal-50 hover:border-teal-200 transition-colors shadow-sm disabled:opacity-50"
+          className="flex items-center gap-2 px-3 py-1.5 bg-card border border-border rounded-lg text-xs font-medium text-text-text-muted hover:text-accent hover:bg-accent/10 hover:border-accent transition-colors shadow-sm disabled:opacity-50"
         >
           <RefreshCw
-            className={`w-3.5 h-3.5 ${loading ? "animate-spin text-teal-500" : ""}`}
+            className={`w-3.5 h-3.5 ${loading ? "animate-spin text-accent" : ""}`}
           />
           Refresh
         </button>
@@ -79,12 +79,12 @@ export default function ManageSessions() {
           ))}
         </div>
       ) : sessions.length === 0 ? (
-        <div className="bg-white border border-slate-200 rounded-2xl p-16 text-center shadow-sm">
-          <Activity className="w-12 h-12 text-slate-300 mx-auto mb-4" />
-          <h3 className="text-lg font-bold text-slate-900 mb-1">
+        <div className="bg-card border border-border rounded-2xl p-16 text-center shadow-sm">
+          <Activity className="w-12 h-12 text-text-text-muted mx-auto mb-4" />
+          <h3 className="text-lg font-bold text-text mb-1">
             No Active Connections
           </h3>
-          <p className="text-slate-500 text-sm">
+          <p className="text-text-text-muted text-sm">
             No secondary devices are currently linked to this system.
           </p>
         </div>
@@ -93,35 +93,35 @@ export default function ManageSessions() {
           {sessions.map((session) => (
             <div
               key={session._id}
-              className="bg-white border border-slate-200 rounded-xl p-6 shadow-sm flex flex-col md:flex-row justify-between items-start md:items-center gap-6 hover:shadow-md transition-shadow"
+              className="bg-card border border-border rounded-xl p-6 shadow-sm flex flex-col md:flex-row justify-between items-start md:items-center gap-6 hover:shadow-md transition-shadow"
             >
               <div className="flex items-start gap-4">
                 {/* Device Icon */}
-                <div className="w-12 h-12 bg-slate-50 border border-slate-100 rounded-xl flex items-center justify-center text-slate-500 shrink-0">
+                <div className="w-12 h-12 bg-card-hover border border-border-soft rounded-xl flex items-center justify-center text-text-text-muted shrink-0">
                   {session.device?.toUpperCase() === "MOBILE" ? (
-                    <Smartphone className="w-6 h-6 text-slate-600" />
+                    <Smartphone className="w-6 h-6 text-text-text-muted" />
                   ) : (
-                    <Monitor className="w-6 h-6 text-slate-600" />
+                    <Monitor className="w-6 h-6 text-text-text-muted" />
                   )}
                 </div>
 
                 {/* Session Details */}
                 <div>
-                  <h3 className="text-lg font-bold text-slate-900 flex items-center gap-2">
+                  <h3 className="text-lg font-bold text-text flex items-center gap-2">
                     {session.os || "Unknown OS"}
-                    <span className="text-slate-300">/</span>
-                    <span className="text-teal-600">
+                    <span className="text-text-text-muted">/</span>
+                    <span className="text-accent">
                       {session.browser || "Unknown Browser"}
                     </span>
                   </h3>
 
                   <div className="mt-1.5 space-y-1">
-                    <p className="text-sm font-medium text-slate-500 flex items-center gap-2">
-                      <Globe className="w-4 h-4 text-slate-400" />
+                    <p className="text-sm font-medium text-text-text-muted flex items-center gap-2">
+                      <Globe className="w-4 h-4 text-text-text-muted" />
                       IP: {formatIP(session.ipAddress)}
                     </p>
-                    <p className="text-sm font-medium text-slate-500 flex items-center gap-2">
-                      <Activity className="w-4 h-4 text-slate-400" />
+                    <p className="text-sm font-medium text-text-text-muted flex items-center gap-2">
+                      <Activity className="w-4 h-4 text-text-text-muted" />
                       Est: {new Date(session.createdAt).toLocaleString()}
                     </p>
                   </div>
@@ -132,7 +132,7 @@ export default function ManageSessions() {
               <button
                 onClick={() => handleKill(session._id)}
                 disabled={updatingId === session._id}
-                className="w-full md:w-auto flex items-center justify-center gap-2 px-5 py-2.5 bg-red-50 hover:bg-red-100 text-red-600 rounded-lg text-sm font-semibold transition-colors border border-red-100 hover:border-red-200 shrink-0 disabled:opacity-50"
+                className="w-full md:w-auto flex items-center justify-center gap-2 px-5 py-2.5 bg-danger/10 hover:bg-danger/10 text-danger rounded-lg text-sm font-semibold transition-colors border border-danger/30 hover:border-danger/30 shrink-0 disabled:opacity-50"
               >
                 {updatingId === session._id ? (
                   <Loader2 className="w-4 h-4 animate-spin" />

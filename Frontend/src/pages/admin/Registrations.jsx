@@ -237,14 +237,14 @@ export default function Registrations() {
   };
 
   return (
-    <div className="p-8 lg:p-10 font-sans text-slate-900 min-h-full">
+    <div className="p-8 lg:p-10 font-sans text-text min-h-full">
       {/* Header */}
       <header className="mb-8 flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-slate-900">
+          <h1 className="text-2xl font-bold text-text">
             Registration Information
           </h1>
-          <p className="text-sm text-slate-500 mt-1">
+          <p className="text-sm text-text-text-muted mt-1">
             Manage and verify new applicant submissions.
           </p>
         </div>
@@ -252,7 +252,7 @@ export default function Registrations() {
           <button
             onClick={handleExportCSV}
             disabled={isExporting || loading || total === 0}
-            className="flex items-center gap-2 px-4 py-2 bg-slate-800 text-white rounded-lg text-sm font-medium hover:bg-slate-900 transition-colors shadow-sm disabled:opacity-50"
+            className="flex items-center gap-2 px-4 py-2 bg-panel text-text-inverse rounded-lg text-sm font-medium hover:bg-bg transition-colors shadow-sm disabled:opacity-50"
             title="Export to CSV"
           >
             {isExporting ? (
@@ -268,14 +268,14 @@ export default function Registrations() {
               setImportResult(null);
               setImportFile(null);
             }}
-            className="flex items-center gap-2 px-4 py-2 bg-slate-100 text-slate-700 rounded-lg text-sm font-medium hover:bg-slate-200 transition-colors border border-slate-200 shadow-sm"
+            className="flex items-center gap-2 px-4 py-2 bg-card-hover text-text rounded-lg text-sm font-medium hover:bg-card-hover transition-colors border border-border shadow-sm"
           >
             <Upload className="w-4 h-4" />
             <span>Bulk Import</span>
           </button>
           <button
             onClick={() => setShowAddModal(true)}
-            className="flex items-center gap-2 px-4 py-2 bg-teal-600 text-white rounded-lg text-sm font-medium hover:bg-teal-700 transition-colors shadow-sm"
+            className="flex items-center gap-2 px-4 py-2 bg-accent text-white rounded-lg text-sm font-medium hover:bg-accent transition-colors shadow-sm"
           >
             <span>+ Add Student (Cash)</span>
           </button>
@@ -295,12 +295,12 @@ export default function Registrations() {
               )
             }
             disabled={loading}
-            className="p-2 bg-white border border-slate-200 rounded-lg text-slate-500 hover:text-teal-600 hover:border-teal-200 transition-colors shadow-sm disabled:opacity-50"
+            className="p-2 bg-card border border-border rounded-lg text-text-text-muted hover:text-accent hover:border-accent transition-colors shadow-sm disabled:opacity-50"
             title="Refresh Data"
           >
             <RefreshCw
               className={`w-5 h-5 ${
-                loading ? "animate-spin text-teal-500" : ""
+                loading ? "animate-spin text-accent" : ""
               }`}
             />
           </button>
@@ -310,13 +310,13 @@ export default function Registrations() {
       {/* Control Bar */}
       <div className="flex flex-col xl:flex-row justify-between gap-4 mb-6">
         <div className="relative flex-1 max-w-md">
-          <Search className="absolute left-3 top-2.5 w-4 h-4 text-slate-400" />
+          <Search className="absolute left-3 top-2.5 w-4 h-4 text-text-text-muted" />
           <input
             type="text"
             placeholder="Search by Name, Email, or Q-ID..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full bg-white border border-slate-200 text-slate-900 rounded-lg p-2 pl-9 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 transition-colors shadow-sm"
+            className="w-full bg-card border border-border text-text rounded-lg p-2 pl-9 text-sm focus:outline-none focus:ring-2 focus:ring-accent/20 focus:border-accent transition-colors shadow-sm"
           />
         </div>
 
@@ -324,11 +324,11 @@ export default function Registrations() {
         <div className="flex flex-wrap items-center gap-3">
           {/* Course Filter */}
           <div className="relative">
-            <Filter className="absolute left-3 top-2.5 w-4 h-4 text-teal-600 pointer-events-none" />
+            <Filter className="absolute left-3 top-2.5 w-4 h-4 text-accent pointer-events-none" />
             <select
               value={courseFilter}
               onChange={(e) => setCourseFilter(e.target.value)}
-              className="appearance-none bg-white border border-slate-200 text-slate-700 rounded-lg py-2 pl-9 pr-10 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 hover:border-slate-300 transition-colors shadow-sm cursor-pointer"
+              className="appearance-none bg-card border border-border text-text rounded-lg py-2 pl-9 pr-10 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-accent/20 focus:border-accent hover:border-border transition-colors shadow-sm cursor-pointer"
             >
               <option value="ALL">All Courses</option>
               <option value="B.Tech">B.Tech</option>
@@ -340,16 +340,16 @@ export default function Registrations() {
               <option value="B.Sc">B.Sc</option>
               <option value="M.Sc">M.Sc</option>
             </select>
-            <div className="absolute right-3 top-4 w-0 h-0 border-l-[4px] border-l-transparent border-r-[4px] border-r-transparent border-t-[5px] border-t-slate-400 pointer-events-none"></div>
+            <div className="absolute right-3 top-4 w-0 h-0 border-l-[4px] border-l-transparent border-r-[4px] border-r-transparent border-t-[5px] border-t-ink-muted pointer-events-none"></div>
           </div>
 
           {/* Academic Year Filter */}
           <div className="relative">
-            <Filter className="absolute left-3 top-2.5 w-4 h-4 text-teal-600 pointer-events-none" />
+            <Filter className="absolute left-3 top-2.5 w-4 h-4 text-accent pointer-events-none" />
             <select
               value={academicYearFilter}
               onChange={(e) => setAcademicYearFilter(e.target.value)}
-              className="appearance-none bg-white border border-slate-200 text-slate-700 rounded-lg py-2 pl-9 pr-10 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 hover:border-slate-300 transition-colors shadow-sm cursor-pointer"
+              className="appearance-none bg-card border border-border text-text rounded-lg py-2 pl-9 pr-10 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-accent/20 focus:border-accent hover:border-border transition-colors shadow-sm cursor-pointer"
             >
               <option value="ALL">All Academic Years</option>
               {formAcademicYears.map((yr) => (
@@ -358,69 +358,69 @@ export default function Registrations() {
                 </option>
               ))}
             </select>
-            <div className="absolute right-3 top-4 w-0 h-0 border-l-[4px] border-l-transparent border-r-[4px] border-r-transparent border-t-[5px] border-t-slate-400 pointer-events-none"></div>
+            <div className="absolute right-3 top-4 w-0 h-0 border-l-[4px] border-l-transparent border-r-[4px] border-r-transparent border-t-[5px] border-t-ink-muted pointer-events-none"></div>
           </div>
 
           {/* Status Filter */}
           <div className="relative">
-            <Filter className="absolute left-3 top-2.5 w-4 h-4 text-teal-600 pointer-events-none" />
+            <Filter className="absolute left-3 top-2.5 w-4 h-4 text-accent pointer-events-none" />
             <select
               value={statusFilter}
               onChange={(e) => setStatusFilter(e.target.value)}
-              className="appearance-none bg-white border border-slate-200 text-slate-700 rounded-lg py-2 pl-9 pr-10 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 hover:border-slate-300 transition-colors shadow-sm cursor-pointer"
+              className="appearance-none bg-card border border-border text-text rounded-lg py-2 pl-9 pr-10 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-accent/20 focus:border-accent hover:border-border transition-colors shadow-sm cursor-pointer"
             >
               <option value="ALL">All Statuses</option>
               <option value="PENDING">Pending</option>
               <option value="APPROVED">Approved</option>
               <option value="REJECTED">Rejected</option>
             </select>
-            <div className="absolute right-3 top-4 w-0 h-0 border-l-[4px] border-l-transparent border-r-[4px] border-r-transparent border-t-[5px] border-t-slate-400 pointer-events-none"></div>
+            <div className="absolute right-3 top-4 w-0 h-0 border-l-[4px] border-l-transparent border-r-[4px] border-r-transparent border-t-[5px] border-t-ink-muted pointer-events-none"></div>
           </div>
 
           {/* Payment Mode Filter */}
           <div className="relative">
-            <Filter className="absolute left-3 top-2.5 w-4 h-4 text-teal-600 pointer-events-none" />
+            <Filter className="absolute left-3 top-2.5 w-4 h-4 text-accent pointer-events-none" />
             <select
               value={paymentModeFilter}
               onChange={(e) => setPaymentModeFilter(e.target.value)}
-              className="appearance-none bg-white border border-slate-200 text-slate-700 rounded-lg py-2 pl-9 pr-10 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 hover:border-slate-300 transition-colors shadow-sm cursor-pointer"
+              className="appearance-none bg-card border border-border text-text rounded-lg py-2 pl-9 pr-10 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-accent/20 focus:border-accent hover:border-border transition-colors shadow-sm cursor-pointer"
             >
               <option value="ALL">All Payments</option>
               <option value="ONLINE">Online</option>
               <option value="CASH">Cash</option>
             </select>
-            <div className="absolute right-3 top-4 w-0 h-0 border-l-[4px] border-l-transparent border-r-[4px] border-r-transparent border-t-[5px] border-t-slate-400 pointer-events-none"></div>
+            <div className="absolute right-3 top-4 w-0 h-0 border-l-[4px] border-l-transparent border-r-[4px] border-r-transparent border-t-[5px] border-t-ink-muted pointer-events-none"></div>
           </div>
         </div>
       </div>
 
       {/* Data Table */}
-      <div className="bg-white border border-slate-200 rounded-2xl shadow-sm overflow-hidden">
+      <div className="bg-card border border-border rounded-2xl shadow-sm overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-left text-sm whitespace-nowrap">
-            <thead className="bg-slate-50 border-b border-slate-200">
+            <thead className="bg-card-hover border-b border-border">
               <tr>
-                <th className="px-6 py-4 font-semibold text-slate-500 text-xs uppercase tracking-wider">
+                <th className="px-6 py-4 font-semibold text-text-text-muted text-xs uppercase tracking-wider">
                   Applicant
                 </th>
-                <th className="px-6 py-4 font-semibold text-slate-500 text-xs uppercase tracking-wider">
+                <th className="px-6 py-4 font-semibold text-text-text-muted text-xs uppercase tracking-wider">
                   Contact
                 </th>
-                <th className="px-6 py-4 font-semibold text-slate-500 text-xs uppercase tracking-wider">
+                <th className="px-6 py-4 font-semibold text-text-text-muted text-xs uppercase tracking-wider">
                   Academic Data
                 </th>
-                <th className="px-6 py-4 font-semibold text-slate-500 text-xs uppercase tracking-wider">
+                <th className="px-6 py-4 font-semibold text-text-text-muted text-xs uppercase tracking-wider">
                   Verification
                 </th>
-                <th className="px-6 py-4 font-semibold text-slate-500 text-xs uppercase tracking-wider">
+                <th className="px-6 py-4 font-semibold text-text-text-muted text-xs uppercase tracking-wider">
                   Status
                 </th>
-                <th className="px-6 py-4 font-semibold text-slate-500 text-xs uppercase tracking-wider text-right">
+                <th className="px-6 py-4 font-semibold text-text-text-muted text-xs uppercase tracking-wider text-right">
                   Actions
                 </th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-100">
+            <tbody className="divide-y divide-line-soft">
               {loading ? (
                 <>
                   {[1, 2, 3, 4, 5].map((i) => (
@@ -431,7 +431,7 @@ export default function Registrations() {
                 <tr>
                   <td
                     colSpan="6"
-                    className="p-12 text-center text-slate-500 font-medium"
+                    className="p-12 text-center text-text-text-muted font-medium"
                   >
                     No records found matching criteria.
                   </td>
@@ -442,39 +442,39 @@ export default function Registrations() {
                   return (
                     <tr
                       key={reg._id}
-                      className={`transition-colors ${isNew ? "bg-teal-50/40 hover:bg-teal-50/60" : "hover:bg-slate-50/50"}`}
+                      className={`transition-colors ${isNew ? "bg-accent/10 hover:bg-accent/10" : "hover:bg-card-hover/50"}`}
                     >
                       <td className="px-6 py-4">
-                        <div className="font-medium text-slate-900 flex items-center gap-2">
+                        <div className="font-medium text-text flex items-center gap-2">
                           {reg.name}
                           {isNew && (
-                            <span className="px-1.5 py-0.5 rounded text-[10px] font-bold bg-teal-100 text-teal-700 tracking-wider">
+                            <span className="px-1.5 py-0.5 rounded text-[10px] font-bold bg-accent/10 text-accent tracking-wider">
                               NEW
                             </span>
                           )}
                         </div>
-                        <div className="text-xs text-slate-500 mt-0.5">
+                        <div className="text-xs text-text-text-muted mt-0.5">
                           D/O, S/O: {reg.fatherName}
                         </div>
                       </td>
 
                       <td className="px-6 py-4">
-                        <div className="text-slate-700">{reg.email}</div>
-                        <div className="text-xs text-slate-500 mt-0.5">
+                        <div className="text-text">{reg.email}</div>
+                        <div className="text-xs text-text-text-muted mt-0.5">
                           {reg.phone}
                         </div>
                       </td>
 
                       <td className="px-6 py-4">
-                        <div className="font-medium text-slate-900">
+                        <div className="font-medium text-text">
                           {reg.course}{" "}
-                          <span className="text-slate-400 font-normal ml-1">
+                          <span className="text-text-text-muted font-normal ml-1">
                             ({reg.year})
                           </span>
                         </div>
-                        <div className="text-xs text-slate-500 mt-0.5">
+                        <div className="text-xs text-text-text-muted mt-0.5">
                           Q-ID:{" "}
-                          <span className="font-medium text-slate-600">
+                          <span className="font-medium text-text-text-muted">
                             {reg.studentId}
                           </span>{" "}
                           | Sec: {reg.section} | Set: {reg.set}
@@ -483,11 +483,11 @@ export default function Registrations() {
 
                       <td className="px-6 py-4">
                         <div className="flex flex-col gap-1">
-                          <div className="inline-flex items-center px-2 py-1 rounded bg-slate-100 border border-slate-200 text-slate-600 font-mono text-xs w-max">
+                          <div className="inline-flex items-center px-2 py-1 rounded bg-card-hover border border-border text-text-text-muted font-mono text-xs w-max">
                             UTR: {reg.transactionId}
                           </div>
                           {!reg.paymentMode || reg.paymentMode === "ONLINE" ? (
-                            <span className="text-[10px] font-bold text-blue-600 bg-blue-50 px-2 py-0.5 rounded w-max border border-blue-100">
+                            <span className="text-[10px] font-bold text-text bg-text/10 px-2 py-0.5 rounded w-max border border-text/20">
                               ONLINE
                             </span>
                           ) : (
@@ -504,7 +504,7 @@ export default function Registrations() {
 
                       <td className="px-6 py-4 text-right">
                         {updatingId === reg._id ? (
-                          <div className="flex justify-end pr-2 text-slate-400">
+                          <div className="flex justify-end pr-2 text-text-text-muted">
                             <Loader2 className="w-5 h-5 animate-spin" />
                           </div>
                         ) : (
@@ -514,7 +514,7 @@ export default function Registrations() {
                                 onClick={() =>
                                   handleStatusChange(reg._id, "APPROVED")
                                 }
-                                className="p-1.5 text-teal-600 bg-teal-50 hover:bg-teal-100 rounded-md transition-colors border border-teal-100"
+                                className="p-1.5 text-accent bg-accent/10 hover:bg-accent/20 rounded-md transition-colors border border-accent/30"
                                 title="Approve"
                               >
                                 <Check className="w-4 h-4" />
@@ -525,7 +525,7 @@ export default function Registrations() {
                                 onClick={() =>
                                   handleStatusChange(reg._id, "REJECTED")
                                 }
-                                className="p-1.5 text-red-600 bg-red-50 hover:bg-red-100 rounded-md transition-colors border border-red-100"
+                                className="p-1.5 text-danger bg-danger/10 hover:bg-danger/10 rounded-md transition-colors border border-danger/30"
                                 title="Reject"
                               >
                                 <XIcon className="w-4 h-4" />
@@ -544,17 +544,17 @@ export default function Registrations() {
 
         {/* Pagination Controls */}
         {!loading && total > 0 && (
-          <div className="flex items-center justify-between px-6 py-4 border-t border-slate-200 bg-slate-50">
-            <div className="text-sm text-slate-500">
+          <div className="flex items-center justify-between px-6 py-4 border-t border-border bg-card-hover">
+            <div className="text-sm text-text-text-muted">
               Showing{" "}
-              <span className="font-medium text-slate-900">
+              <span className="font-medium text-text">
                 {(currentPage - 1) * itemsPerPage + 1}
               </span>{" "}
               to{" "}
-              <span className="font-medium text-slate-900">
+              <span className="font-medium text-text">
                 {Math.min(currentPage * itemsPerPage, total)}
               </span>{" "}
-              of <span className="font-medium text-slate-900">{total}</span>{" "}
+              of <span className="font-medium text-text">{total}</span>{" "}
               results
             </div>
             <div className="flex gap-2">
@@ -563,11 +563,11 @@ export default function Registrations() {
                   dispatch(setCurrentPage(Math.max(1, currentPage - 1)))
                 }
                 disabled={currentPage === 1}
-                className="px-3 py-1 text-sm font-medium text-slate-600 bg-white border border-slate-300 rounded hover:bg-slate-50 disabled:opacity-50 transition-colors"
+                className="px-3 py-1 text-sm font-medium text-text-text-muted bg-card border border-border rounded hover:bg-card-hover disabled:opacity-50 transition-colors"
               >
                 Previous
               </button>
-              <div className="flex items-center px-3 text-sm font-medium text-slate-700">
+              <div className="flex items-center px-3 text-sm font-medium text-text">
                 Page {currentPage} of {totalPages}
               </div>
               <button
@@ -577,7 +577,7 @@ export default function Registrations() {
                   )
                 }
                 disabled={currentPage === totalPages}
-                className="px-3 py-1 text-sm font-medium text-slate-600 bg-white border border-slate-300 rounded hover:bg-slate-50 disabled:opacity-50 transition-colors"
+                className="px-3 py-1 text-sm font-medium text-text-text-muted bg-card border border-border rounded hover:bg-card-hover disabled:opacity-50 transition-colors"
               >
                 Next
               </button>

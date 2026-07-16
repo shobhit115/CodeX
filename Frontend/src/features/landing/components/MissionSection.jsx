@@ -7,36 +7,44 @@ const MissionSection = () => {
 
   return (
     <section
-      className="border-b border-line bg-panel text-[#f4efe6] relative overflow-hidden"
-      id="vision"
-    >
-      {/* Subtle ambient glow locked to the dark background */}
+  id="vision"
+  className="border-b border-border bg-bg relative overflow-hidden"
+>
+  <div className="max-w-[1400px] mx-auto px-4 lg:px-12 py-16 lg:py-24">
 
-      <div className="relative z-10 px-[1.15rem] py-16 lg:px-12 lg:py-24 flex flex-col lg:flex-row lg:items-end justify-between gap-12">
-        <div className="max-w-[54rem]">
-          <p className="eyebrow !text-accent mb-6">{mission.eyebrow}</p>
+    <div className="rounded-3xl border border-border bg-card shadow-brutal">
 
-          <h2 className="font-serif text-[clamp(2rem,3.5vw,3.5rem)] leading-[1.15] mb-8 text-[#f4efe6]">
+      <div className="grid lg:grid-cols-[1fr_240px] gap-12 p-8 lg:p-14">
+
+        <div>
+          <p className="eyebrow mb-5">
+            {mission.eyebrow}
+          </p>
+
+          <h2 className="font-serif text-[clamp(2rem,4vw,3.7rem)] leading-tight mb-8 text-text">
             {mission.headline}
           </h2>
 
-          <p className="font-mono text-[#f4efe6]/75 text-[0.95rem] lg:text-[1.05rem] leading-[1.8] max-w-[48rem]">
+          <p className="text-text-muted leading-8 max-w-3xl">
             {mission.description}
           </p>
         </div>
 
-        <div className="w-full lg:w-auto shrink-0 pb-2">
-          {/* Brutalist outline button adapted for dark mode */}
+        <div className="flex items-end">
           <Button
             to="/about"
             variant="outline"
-            className="button w-full lg:w-[220px] border-[#f4efe6]/30 text-[#f4efe6] hover:bg-[#f4efe6] hover:text-panel transition-colors"
+            className="button w-full"
           >
             {mission.cta}
           </Button>
         </div>
+
       </div>
-    </section>
+
+    </div>
+  </div>
+</section>
   );
 };
 

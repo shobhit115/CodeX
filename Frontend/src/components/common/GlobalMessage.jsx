@@ -19,9 +19,9 @@ function GlobalMessage() {
   if (!message) return null;
 
   const typeStyles = {
-    error: "bg-red-500 text-white",
-    success: "bg-teal-500 text-white",
-    warning: "bg-amber-500 text-white",
+    error: "bg-danger text-white",
+    success: "bg-accent text-white",
+    warning: "bg-warning text-white",
   };
 
   return (
@@ -32,8 +32,8 @@ function GlobalMessage() {
           flex items-center gap-2 w-full sm:w-auto
           break-words
           backdrop-blur-md
-          border border-white/20
-          ${typeStyles[type] || "bg-gray-800 text-white"}
+          border border-border-soft
+          ${typeStyles[type] || "bg-panel text-text-inverse"}
         `}
       >
         {message}

@@ -3,7 +3,7 @@ import Skeleton from "../Skeleton";
 
 // FAQ Skeleton
 export const FaqSkeleton = () => (
-  <div className="bg-white border border-slate-200 rounded-xl p-6 flex flex-col md:flex-row justify-between items-start gap-6">
+  <div className="bg-card border border-border rounded-xl p-6 flex flex-col md:flex-row justify-between items-start gap-6">
     <div className="flex-1 w-full gap-3 flex flex-col">
       <div className="flex gap-3 items-center">
         <Skeleton className="h-6 w-1/2" />
