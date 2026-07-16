@@ -26,42 +26,6 @@
         }
       ]
     },
-    "whyJoin": {
-      "eyebrow": "WHY CODEX",
-      "title": "Why Join CodeX?",
-      "benefits": [
-        {
-          "id": "01",
-          "title": "Hands-on Learning",
-          "description": "Learn modern technologies through practical workshops, coding sessions, and guided learning beyond the classroom."
-        },
-        {
-          "id": "02",
-          "title": "Build Real Projects",
-          "description": "Collaborate with fellow students on real-world projects that strengthen your portfolio and practical experience."
-        },
-        {
-          "id": "03",
-          "title": "Hackathons & Competitions",
-          "description": "Participate in hackathons, coding contests, and technical events to challenge yourself and showcase your skills."
-        },
-        {
-          "id": "04",
-          "title": "Mentorship & Community",
-          "description": "Connect with seniors, mentors, and like-minded peers who support your learning and technical growth."
-        },
-        {
-          "id": "05",
-          "title": "Leadership Opportunities",
-          "description": "Organize events, lead teams, and develop communication and management skills alongside technical expertise."
-        },
-        {
-          "id": "06",
-          "title": "Career Growth",
-          "description": "Build a strong portfolio, improve problem-solving skills, and prepare for internships, placements, and future careers."
-        }
-      ]
-    },
     "commitSection": {
       "eyebrow": "auth_required",
       "title": "Write the next chapter.",
@@ -75,9 +39,6 @@
         "Annual hackathon with real industry exposure",
         "Open-source project contributions and live deployments"
       ]
-    },
-    "gradientPulse": {
-      "text": "system.ready() // waiting for user_input..."
     },
     "domains": {
       "eyebrow": "explore // tech_stacks",

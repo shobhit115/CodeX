@@ -10,9 +10,9 @@ const Button = ({
   className = "",
   ...props
 }) => {
-  const baseStyle = "button";
+  const baseStyle = "inline-flex items-center w-full lg:w-fit justify-center min-h-[3.25rem] px-[1.5rem] py-[0.9rem] border font-sans text-[0.96rem] tracking-[0.2em] uppercase transition-all duration-150 rounded-lg";
   const variantStyle =
-    variant === "outline" ? "button--outline" : "button--solid";
+    variant === "outline" ? "bg-transparent text-text border-border hover:border-accent hover:text-accent" : "bg-text text-bg border-transparent hover:bg-text-muted hover:text-bg hover:-translate-y-[1px]";
   const combinedClasses = `${baseStyle} ${variantStyle} ${className}`.trim();
   if (to) {
     return (
