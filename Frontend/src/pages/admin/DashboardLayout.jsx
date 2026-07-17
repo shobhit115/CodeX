@@ -14,6 +14,7 @@ import {
   Menu,
   X,
   Ticket,
+  Settings // <-- Imported Settings icon
 } from "lucide-react";
 import axios from "axios";
 
@@ -45,7 +46,9 @@ export default function DashboardLayout() {
     { name: "Boarding Passes", path: "/admin/boarding-passes", icon: Ticket },
     { name: "Messages", path: "/admin/messages", icon: MessageSquare },
     { name: "Profile", path: "/admin/profile", icon: User },
+    { name: "Settings", path: "/admin/settings", icon: Settings }, // <-- Added Settings route
   ];
+
   const handleLogout = async () => {
     try {
       await axios.post("/api/v1/admin/logout", {}, { withCredentials: true });
@@ -58,7 +61,7 @@ export default function DashboardLayout() {
   };
 
   return (
-    <div className="flex min-h-screen bg-card-hover font-sans text-text">
+    <div className="flex min-h-screen bg-bg font-sans text-text">
       {/* Mobile Sidebar Backdrop */}
       {isSidebarOpen && (
         <div
@@ -82,7 +85,7 @@ export default function DashboardLayout() {
           </div>
           <button
             onClick={() => setIsSidebarOpen(false)}
-            className="p-2 text-text-text-muted hover:text-text-text-muted lg:hidden"
+            className="p-2 text-text-muted hover:text-text lg:hidden"
           >
             <X className="w-5 h-5" />
           </button>
@@ -97,7 +100,7 @@ export default function DashboardLayout() {
                 `flex items-center gap-3 px-4 py-3 text-sm font-medium rounded-lg transition-all ${
                   isActive
                     ? "bg-accent/10 text-accent relative before:absolute before:left-0 before:top-2 before:bottom-2 before:w-1 before:bg-accent before:rounded-r-md"
-                    : "text-text-text-muted hover:bg-card-hover hover:text-text"
+                    : "text-text-muted hover:bg-card-hover hover:text-text"
                 }`
               }
             >
@@ -109,7 +112,7 @@ export default function DashboardLayout() {
         <div className="p-4 border-t border-border-soft">
           <button
             onClick={handleLogout}
-            className="flex w-full items-center gap-3 px-4 py-3 text-sm font-medium text-text-text-muted rounded-lg transition-colors hover:bg-danger/10 hover:text-danger"
+            className="flex w-full items-center gap-3 px-4 py-3 text-sm font-medium text-text-muted rounded-lg transition-colors hover:bg-danger/10 hover:text-danger"
           >
             <LogOut className="w-5 h-5" />
             Log Out
@@ -124,7 +127,7 @@ export default function DashboardLayout() {
           <div className="flex items-center gap-3">
             <button
               onClick={() => setIsSidebarOpen(true)}
-              className="p-2 -ml-2 text-text-text-muted hover:bg-card-hover rounded-lg"
+              className="p-2 -ml-2 text-text-muted hover:bg-card-hover rounded-lg"
             >
               <Menu className="w-6 h-6" />
             </button>

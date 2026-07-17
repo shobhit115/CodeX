@@ -27,18 +27,18 @@ const Navbar = ({ layout }) => {
         aria-label="CodeX Club home"
       >
         <img
-          src="/codex-logo-icon.svg"
-          alt="CodeX Club logo"
-          className="h-8 w-8 md:h-9 md:w-9 shrink-0"
+          src="/university-logo-icon.svg"
+          alt="Quantum University logo"
+          className="h-6 w-6 md:h-7 md:w-7 shrink-0 hidden sm:block"
         />
         <span
           className="hidden sm:block w-px h-6 bg-border-soft"
           aria-hidden="true"
         />
         <img
-          src="/university-logo-icon.svg"
-          alt="Quantum University logo"
-          className="h-6 w-6 md:h-7 md:w-7 shrink-0 hidden sm:block"
+          src="/codex-logo-icon.svg"
+          alt="CodeX Club logo"
+          className="h-8 w-8 md:h-9 md:w-9 shrink-0"
         />
         <span className="font-sans text-[1.35rem] md:text-[1.55rem] tracking-[0.24em] leading-none hover:text-accent transition-colors">
           CODEX
