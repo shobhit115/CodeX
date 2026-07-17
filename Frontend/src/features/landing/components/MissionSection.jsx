@@ -17,7 +17,7 @@ const MissionSection = () => {
       <div className="grid lg:grid-cols-[1fr_240px] gap-12 p-8 lg:p-14">
 
         <div>
-          <p className="eyebrow mb-5">
+          <p className="m-0 text-accent text-[0.72rem] tracking-[0.34em] uppercase mb-5">
             {mission.eyebrow}
           </p>
 
@@ -34,7 +34,7 @@ const MissionSection = () => {
           <Button
             to="/about"
             variant="outline"
-            className="button w-full"
+            className="inline-flex items-center w-full lg:w-fit justify-center min-h-[3.25rem] px-[1.5rem] py-[0.9rem] border font-sans text-[0.96rem] tracking-[0.2em] uppercase transition-all duration-150 rounded-lg w-full"
           >
             {mission.cta}
           </Button>

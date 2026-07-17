@@ -65,7 +65,7 @@ const VerifyCertificate = () => {
   if (loading) {
     return (
       <div className="app-shell flex items-center justify-center px-6">
-        <div className="stat-card max-w-lg text-center items-center">
+        <div className="flex flex-col justify-center p-8 bg-card/40 backdrop-blur-md rounded-2xl border border-border shadow-[0_8px_30px_rgb(0,0,0,0.04)] max-w-lg text-center items-center">
           <div className="mx-auto h-16 w-16 animate-spin rounded-full border-[6px] border-border border-t-accent" />
           <h2 className="mt-8 font-sans text-2xl font-bold uppercase tracking-[0.3em] text-text">
             Verifying
@@ -82,7 +82,7 @@ const VerifyCertificate = () => {
   if (error || !certificate) {
     return (
       <div className="app-shell flex items-center justify-center px-6">
-        <div className="stat-card max-w-2xl border-danger/50 text-center">
+        <div className="flex flex-col justify-center p-8 bg-card/40 backdrop-blur-md rounded-2xl border border-border shadow-[0_8px_30px_rgb(0,0,0,0.04)] max-w-2xl border-danger/50 text-center">
           <h1 className="mt-2 font-sans text-4xl lg:text-6xl uppercase tracking-[0.05em] text-danger">
             Invalid Certificate
           </h1>
@@ -134,19 +134,19 @@ const VerifyCertificate = () => {
 
       <main
         id="certificate-overlay"
-        className="main-content min-h-screen py-12 px-4 flex flex-col items-center justify-center relative overflow-y-auto"
+        className="w-full max-w-[1400px] mx-auto flex-1 border-x border-border bg-bg-soft min-h-screen py-12 px-4 flex flex-col items-center justify-center relative overflow-y-auto"
       >
         {/* Background Ambient Glow matching the theme */}
         <div className="ambient-glow w-[600px] h-[600px] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-20 print:hidden" />
 
         {/* Action Buttons using theme components */}
         <div className="relative z-10 w-full max-w-[1000px] flex flex-wrap justify-end gap-4 mb-8 print:hidden">
-          <button onClick={handlePrint} className="button button--solid">
+          <button onClick={handlePrint} className="inline-flex items-center w-full lg:w-fit justify-center min-h-[3.25rem] px-[1.5rem] py-[0.9rem] border font-sans text-[0.96rem] tracking-[0.2em] uppercase transition-all duration-150 rounded-lg bg-text text-bg border-transparent hover:bg-text-muted hover:text-bg hover:-translate-y-[1px]">
             Download PDF
           </button>
           <button
             onClick={copyVerificationLink}
-            className="button button--secondary"
+            className="inline-flex items-center w-full lg:w-fit justify-center min-h-[3.25rem] px-[1.5rem] py-[0.9rem] border font-sans text-[0.96rem] tracking-[0.2em] uppercase transition-all duration-150 rounded-lg bg-card text-text border-border hover:bg-card-hover hover:-translate-y-[1px]"
           >
             Copy Link
           </button>

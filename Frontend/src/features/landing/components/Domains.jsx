@@ -11,12 +11,12 @@ const Domains = () => {
       id="domains"
     >
       <div className="section-header mb-12 text-center relative z-10">
-        <p className="eyebrow">{domains.eyebrow}</p>
-        <h2 className="hero-title text-reflect mb-4">
+        <p className="m-0 text-accent text-[0.72rem] tracking-[0.34em] uppercase">{domains.eyebrow}</p>
+        <h2 className="mt-4 lg:mt-6 mb-8 flex items-end gap-[0.3rem] font-sans text-[clamp(6rem,18vw,14rem)] leading-[0.88] tracking-[0.02em] text-reflect mb-4">
           <span>{domains.titlePart1} </span>
-          <span className="hero-accent">{domains.titlePart2}</span>
+          <span className="text-accent">{domains.titlePart2}</span>
         </h2>
-        <p className="hero-description max-w-2xl mx-auto">
+        <p className="m-0 text-text-muted text-[0.93rem] leading-[1.75] max-w-[36rem] max-w-2xl mx-auto">
           {domains.description}
         </p>
       </div>
@@ -25,15 +25,15 @@ const Domains = () => {
         {domains.list.map((domain, index) => (
           <article
             key={domain.title || index}
-            className="stat-card flex flex-col justify-between hover:-translate-y-1 transition-transform duration-300"
+            className="flex flex-col justify-center p-8 bg-card/40 backdrop-blur-md rounded-2xl border border-border shadow-[0_8px_30px_rgb(0,0,0,0.04)] flex flex-col justify-between hover:-translate-y-1 transition-transform duration-300"
           >
             <div>
               {/* Optional: You can add an index counter like 01, 02 to match SystemModules */}
-              <p className="stat-label mb-2 text-xs opacity-50">
+              <p className="m-0 text-accent text-[0.72rem] tracking-[0.34em] uppercase mb-2 text-xs opacity-50">
                 {`domain_0${index + 1}`}
               </p>
-              <h3 className="stat-value text-xl mb-3">{domain.title}</h3>
-              <p className="stat-text text-sm leading-relaxed text-text-text-muted">
+              <h3 className="mt-[0.45rem] mb-[0.8rem] font-sans text-[clamp(4rem,6vw,7rem)] leading-[0.92] tracking-[0.02em] text-xl mb-3">{domain.title}</h3>
+              <p className="m-0 text-text-muted text-[0.93rem] leading-[1.75] text-sm leading-relaxed text-text-text-muted">
                 {domain.description}
               </p>
             </div>

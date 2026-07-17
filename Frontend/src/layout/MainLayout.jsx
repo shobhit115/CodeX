@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
-import Navbar from "./Navbar"; // Adjust path if you placed it elsewhere
+import Navbar from "./Navbar";
 import contentData from "../data/content.json";
 
 const MainLayout = () => {
@@ -22,15 +22,15 @@ const MainLayout = () => {
       {/* 1. Inject the new Navbar here */}
       <Navbar layout={layout} />
 
-      <div className="ticker-bar">
-        <div className="ticker-track">
+      <div className="border-b border-border bg-accent overflow-hidden">
+        <div className="flex items-center gap-12 min-h-[2.5rem] px-4 whitespace-nowrap uppercase font-sans tracking-[0.28em] text-text-inverse">
           {layout.ticker.map((item, index) => (
-            <span key={index}>{item}</span>
+            <span key={index} className="before:content-['+'] before:mr-[1.1rem]">{item}</span>
           ))}
         </div>
       </div>
 
-      <main className="main-content">
+      <main className="w-full max-w-[1400px] mx-auto flex-1 border-x border-border bg-bg-soft">
         <Outlet />
       </main>
 
