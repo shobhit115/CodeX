@@ -20,6 +20,7 @@ import Home from "./pages/Home";
 // Public pages
 const Team = lazy(() => import("./pages/Team"));
 const Events = lazy(() => import("./pages/Events"));
+const EventDetails = lazy(() => import("./pages/EventDetails")); // <-- Added EventDetails import
 const Faqs = lazy(() => import("./pages/Faqs"));
 const Register = lazy(() => import("./pages/Register"));
 const About = lazy(() => import("./pages/About"));
@@ -50,6 +51,7 @@ const router = createBrowserRouter([
       { path: "/about", element: <About /> },
       { path: "/team", element: <Team /> },
       { path: "/events", element: <Events /> },
+      { path: "/events/:id", element: <EventDetails /> }, // <-- Added EventDetails route
       { path: "/faqs", element: <Faqs /> },
       { path: "/register", element: <Register /> },
       {

@@ -28,7 +28,7 @@ const EventsHero = () => {
             {eventsHero.description}
           </p>
           <div className="flex flex-wrap items-center gap-6">
-            <Button to="#upcoming" variant="solid">
+            <Button to="/events" variant="solid">
               Explore Events →
             </Button>
           </div>
