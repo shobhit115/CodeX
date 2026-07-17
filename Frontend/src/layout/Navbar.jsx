@@ -27,25 +27,25 @@ const Navbar = ({ layout }) => {
         aria-label="CodeX Club home"
       >
         <img
-          src="/codex-logo-icon.svg"
-          alt="CodeX Club logo"
-          className="h-8 w-8 md:h-9 md:w-9 shrink-0"
+          src="/university-logo-icon.svg"
+          alt="Quantum University logo"
+          className="h-6 w-6 md:h-7 md:w-7 shrink-0 hidden sm:block"
         />
         <span
           className="hidden sm:block w-px h-6 bg-border-soft"
           aria-hidden="true"
         />
         <img
-          src="/university-logo-icon.svg"
-          alt="Quantum University logo"
-          className="h-6 w-6 md:h-7 md:w-7 shrink-0 hidden sm:block"
+          src="/codex-logo-icon.svg"
+          alt="CodeX Club logo"
+          className="h-8 w-8 md:h-9 md:w-9 shrink-0"
         />
         <span className="font-sans text-[1.35rem] md:text-[1.55rem] tracking-[0.24em] leading-none hover:text-accent transition-colors">
           CODEX
         </span>
       </Link>
 
-      {/* 2. Desktop Navigation (FIXED: justify-center aligns it perfectly in the middle) */}
+      {/* 2. Desktop Navigation */}
       <nav className="hidden lg:flex items-center justify-center flex-1 h-[4.25rem] overflow-hidden">
         {layout.nav.map((item) => (
           <Link
@@ -58,15 +58,15 @@ const Navbar = ({ layout }) => {
         ))}
       </nav>
 
-      {/* 3. Meta, Desktop CTA, and Mobile Toggle Container */}
+      {/* 3. Meta, Theme Toggle, Desktop CTA, and Mobile Toggle */}
       <div className="flex items-center h-[4.25rem] pl-2 lg:pl-0 lg:border-l border-border shrink-0">
         
-        {/* Meta Kicker - Hidden below XL screens to save space */}
+        {/* Meta Kicker - Hidden below XL screens */}
         <span className="hidden xl:inline-block px-5 border-r border-border-soft text-text-muted text-[0.75rem] tracking-[0.22em] uppercase whitespace-nowrap">
           {layout.meta}
         </span>
 
-        {/* Theme Toggle - Visible Everywhere */}
+        {/* Theme Toggle */}
         <button
           onClick={toggleTheme}
           className="w-10 h-10 mx-2 lg:mx-4 text-text-muted hover:text-text hover:bg-card-hover rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-accent flex items-center justify-center shrink-0"
@@ -75,7 +75,7 @@ const Navbar = ({ layout }) => {
           {theme === "light" ? <Moon className="w-5 h-5" /> : <Sun className="w-5 h-5" />}
         </button>
 
-        {/* DESKTOP CTA BUTTON (FIXED: Swapped text-text-inverse for text-bg to fix dark mode contrast) */}
+        {/* Desktop CTA Button */}
         <Button
           onClick={() => navigate("/register")}
           variant="solid"
@@ -84,37 +84,39 @@ const Navbar = ({ layout }) => {
           {layout.cta}
         </Button>
 
-        {/* MOBILE HAMBURGER TOGGLE: Visible below LG breakpoint */}
+        {/* Mobile Hamburger Toggle (Refined Animation) */}
         <button
-          className="lg:hidden flex flex-col justify-center items-center gap-[5px] w-14 h-[4.25rem] border-l border-border hover:bg-card-hover transition-colors focus:outline-none"
+          className="lg:hidden flex justify-center items-center w-[4.25rem] h-[4.25rem] border-l border-border hover:bg-card-hover transition-colors focus:outline-none"
           onClick={toggleMenu}
           aria-label="Toggle menu"
           aria-expanded={isMobileMenuOpen}
         >
-          <span
-            className={`block w-6 h-[2px] bg-current transition-all duration-300 origin-center ${
-              isMobileMenuOpen ? "rotate-45 translate-y-[7px]" : ""
-            }`}
-          ></span>
-          <span
-            className={`block w-6 h-[2px] bg-current transition-all duration-300 ${
-              isMobileMenuOpen ? "opacity-0 translate-x-2" : ""
-            }`}
-          ></span>
-          <span
-            className={`block w-6 h-[2px] bg-current transition-all duration-300 origin-center ${
-              isMobileMenuOpen ? "-rotate-45 -translate-y-[7px]" : ""
-            }`}
-          ></span>
+          <div className="relative w-6 h-5 text-text">
+            <span
+              className={`absolute block w-6 h-[2px] bg-current transition-all duration-300 ease-in-out ${
+                isMobileMenuOpen ? "top-2 rotate-45" : "top-0"
+              }`}
+            />
+            <span
+              className={`absolute block w-6 h-[2px] bg-current transition-all duration-300 ease-in-out top-2 ${
+                isMobileMenuOpen ? "opacity-0 translate-x-2" : "opacity-100 translate-x-0"
+              }`}
+            />
+            <span
+              className={`absolute block w-6 h-[2px] bg-current transition-all duration-300 ease-in-out ${
+                isMobileMenuOpen ? "top-2 -rotate-45" : "top-4"
+              }`}
+            />
+          </div>
         </button>
       </div>
 
       {/* 4. Mobile Menu Dropdown */}
       <div
-        className={`lg:hidden absolute top-full left-0 w-full bg-bg/95 backdrop-blur-md border-b border-border transition-all duration-300 ease-in-out overflow-hidden shadow-brutal ${
+        className={`lg:hidden absolute top-full left-0 w-full bg-bg/95 backdrop-blur-md border-b border-border transition-all duration-300 ease-in-out overflow-hidden ${
           isMobileMenuOpen
-            ? "max-h-[500px] opacity-100"
-            : "max-h-0 opacity-0 border-transparent"
+            ? "max-h-[500px] opacity-100 shadow-lg"
+            : "max-h-0 opacity-0 shadow-none border-transparent"
         }`}
       >
         <nav className="flex flex-col">
@@ -128,12 +130,12 @@ const Navbar = ({ layout }) => {
             </Link>
           ))}
 
-          {/* MOBILE CTA BUTTON */}
-          <div className="p-6 bg-bg-soft">
+          {/* Mobile CTA Button (Cleaned up to prevent "double" rendering) */}
+          <div className="p-4 sm:p-6 bg-bg border-b border-border">
             <Button
               onClick={() => navigate("/register")}
               variant="solid"
-              className="w-full flex justify-center items-center py-4 font-sans text-sm tracking-[0.2em] uppercase bg-text text-bg hover:bg-text-muted hover:text-bg"
+              className="w-full flex justify-center items-center h-12 m-0 rounded-md font-sans text-sm tracking-[0.2em] uppercase bg-text text-bg hover:bg-text-muted hover:text-bg transition-colors"
             >
               {layout.cta}
             </Button>

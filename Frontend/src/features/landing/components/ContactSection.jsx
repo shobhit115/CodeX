@@ -29,7 +29,7 @@ const ContactSection = () => {
               <Button
                 to="/contact"
                 variant="solid"
-                className="button button--solid w-full sm:w-auto"
+                className="inline-flex items-center w-full lg:w-fit justify-center min-h-[3.25rem] px-[1.5rem] py-[0.9rem] border font-sans text-[0.96rem] tracking-[0.2em] uppercase transition-all duration-150 rounded-lg bg-text text-bg border-transparent hover:bg-text-muted hover:text-bg hover:-translate-y-[1px] w-full sm:w-auto"
               >
                 {contactSection.ctaPrimary}
               </Button>
