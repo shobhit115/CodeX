@@ -176,16 +176,16 @@ export default function BulkBoardingPasses() {
   };
 
   return (
-    <div className="p-8 lg:p-10 font-sans text-slate-900 min-h-full">
+    <div className="p-8 lg:p-10 font-sans text-text bg-bg min-h-full">
       <header className="flex items-start justify-between mb-8 gap-4">
         <div>
           <h1 className="text-2xl font-bold">Boarding Pass Forge</h1>
-          <p className="text-sm text-slate-500 mt-1">
+          <p className="text-sm text-text-muted mt-1">
             Bulk generate and email boarding passes.
           </p>
         </div>
-        <div className="hidden sm:block p-3 rounded-xl bg-teal-50">
-          <Ticket className="w-8 h-8 text-teal-600" />
+        <div className="hidden sm:block p-3 rounded-xl bg-accent/10 border border-border-soft">
+          <Ticket className="w-8 h-8 text-accent" />
         </div>
       </header>
 
@@ -194,25 +194,25 @@ export default function BulkBoardingPasses() {
         className="grid grid-cols-1 lg:grid-cols-12 gap-8"
       >
         {/* Left Panel : Event Details */}
-        <div className="lg:col-span-4 bg-white border border-slate-200 rounded-2xl shadow-sm p-6 sm:p-8 h-fit space-y-6">
-          <h2 className="flex items-center gap-2 text-lg font-bold border-b border-slate-100 pb-4">
-            <Calendar className="w-5 h-5 text-teal-600" />
+        <div className="lg:col-span-4 bg-card border border-border rounded-2xl shadow-sm p-6 sm:p-8 h-fit space-y-6">
+          <h2 className="flex items-center gap-2 text-lg font-bold border-b border-border-soft pb-4">
+            <Calendar className="w-5 h-5 text-accent" />
             Event Details
           </h2>
 
           {/* Event Name */}
           <div>
-            <label className="block text-sm font-semibold text-slate-700 mb-2">
+            <label className="block text-sm font-semibold text-text mb-2">
               Event Name
             </label>
             <input
               type="text"
               {...register("eventName", { required: "Event name is required" })}
               placeholder="CodeX 2026"
-              className="w-full rounded-lg border border-slate-300 p-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500"
+              className="w-full rounded-lg border border-border bg-card text-text p-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-accent"
             />
             {errors.eventName && (
-              <p className="mt-1 text-xs text-red-500">
+              <p className="mt-1 text-xs text-danger">
                 {errors.eventName.message}
               </p>
             )}
@@ -220,20 +220,20 @@ export default function BulkBoardingPasses() {
 
           {/* Event Description */}
           <div>
-            <label className="block text-sm font-semibold text-slate-700 mb-2">
+            <label className="block text-sm font-semibold text-text mb-2">
               Event Description
             </label>
             <div className="relative">
-              <Info className="absolute left-3 top-3 w-4 h-4 text-slate-400" />
+              <Info className="absolute left-3 top-3 w-4 h-4 text-text-muted" />
               <textarea
                 {...register("eventDescription", { required: "Description is required" })}
                 placeholder="Join us for the ultimate coding showdown..."
                 rows="3"
-                className="w-full rounded-lg border border-slate-300 pl-10 p-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500 resize-none"
+                className="w-full rounded-lg border border-border bg-card text-text pl-10 p-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-accent resize-none"
               ></textarea>
             </div>
             {errors.eventDescription && (
-              <p className="mt-1 text-xs text-red-500">
+              <p className="mt-1 text-xs text-danger">
                 {errors.eventDescription.message}
               </p>
             )}
@@ -241,37 +241,37 @@ export default function BulkBoardingPasses() {
 
           {/* QID */}
           <div>
-            <label className="block text-sm font-semibold text-slate-700 mb-2">
+            <label className="block text-sm font-semibold text-text mb-2">
               QID
             </label>
             <div className="relative">
-              <Hash className="absolute left-3 top-3 w-4 h-4 text-slate-400" />
+              <Hash className="absolute left-3 top-3 w-4 h-4 text-text-muted" />
               <input
                 type="text"
                 {...register("qid", { required: "QID is required" })}
                 placeholder="e.g. QID-12345"
-                className="w-full rounded-lg border border-slate-300 pl-10 p-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500"
+                className="w-full rounded-lg border border-border bg-card text-text pl-10 p-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-accent"
               />
             </div>
             {errors.qid && (
-              <p className="mt-1 text-xs text-red-500">
+              <p className="mt-1 text-xs text-danger">
                 {errors.qid.message}
               </p>
             )}
           </div>
 
-          <div className="flex flex-col gap-4 border-b border-slate-100 pb-4 pt-4">
+          <div className="flex flex-col gap-4 border-b border-border-soft pb-4 pt-4">
             <h2 className="flex items-center gap-2 text-lg font-bold">
-              <KeyRound className="w-5 h-5 text-teal-600" />
+              <KeyRound className="w-5 h-5 text-accent" />
               Credentials (Optional)
             </h2>
             <div className="flex items-center gap-6">
-              <label className="flex items-center gap-2 text-sm font-semibold text-slate-700 cursor-pointer">
-                <input type="checkbox" {...register("includeWifi")} className="w-4 h-4 text-teal-600 rounded focus:ring-teal-500" />
+              <label className="flex items-center gap-2 text-sm font-semibold text-text cursor-pointer">
+                <input type="checkbox" {...register("includeWifi")} className="w-4 h-4 text-accent bg-card border-border rounded focus:ring-accent" />
                 Include Event WiFi
               </label>
-              <label className="flex items-center gap-2 text-sm font-semibold text-slate-700 cursor-pointer">
-                <input type="checkbox" {...register("includeLogin")} className="w-4 h-4 text-teal-600 rounded focus:ring-teal-500" />
+              <label className="flex items-center gap-2 text-sm font-semibold text-text cursor-pointer">
+                <input type="checkbox" {...register("includeLogin")} className="w-4 h-4 text-accent bg-card border-border rounded focus:ring-accent" />
                 Include Event Login
               </label>
             </div>
@@ -279,35 +279,35 @@ export default function BulkBoardingPasses() {
 
           {/* WiFi Credentials */}
           {watchIncludeWifi && (
-            <div className="space-y-4 bg-slate-50 p-4 rounded-xl border border-slate-100">
-              <p className="text-xs font-bold text-slate-400 uppercase tracking-widest flex items-center gap-1.5">
+            <div className="space-y-4 bg-bg-soft p-4 rounded-xl border border-border-soft">
+              <p className="text-xs font-bold text-text-muted uppercase tracking-widest flex items-center gap-1.5">
                 <Wifi className="w-3.5 h-3.5" /> Event WiFi
               </p>
               <div>
-                <label className="block text-sm font-semibold text-slate-700 mb-2">
+                <label className="block text-sm font-semibold text-text mb-2">
                   WiFi User / ID
                 </label>
                 <div className="relative">
-                  <User className="absolute left-3 top-3 w-4 h-4 text-slate-400" />
+                  <User className="absolute left-3 top-3 w-4 h-4 text-text-muted" />
                   <input
                     type="text"
                     {...register("wifiUser")}
                     placeholder="guest_user"
-                    className="w-full rounded-lg border border-slate-300 pl-10 p-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500"
+                    className="w-full rounded-lg border border-border bg-card text-text pl-10 p-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-accent"
                   />
                 </div>
               </div>
               <div>
-                <label className="block text-sm font-semibold text-slate-700 mb-2">
+                <label className="block text-sm font-semibold text-text mb-2">
                   WiFi Password
                 </label>
                 <div className="relative">
-                  <KeyRound className="absolute left-3 top-3 w-4 h-4 text-slate-400" />
+                  <KeyRound className="absolute left-3 top-3 w-4 h-4 text-text-muted" />
                   <input
                     type="text"
                     {...register("wifiPass")}
                     placeholder="guest_pass123"
-                    className="w-full rounded-lg border border-slate-300 pl-10 p-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500"
+                    className="w-full rounded-lg border border-border bg-card text-text pl-10 p-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-accent"
                   />
                 </div>
               </div>
@@ -316,35 +316,35 @@ export default function BulkBoardingPasses() {
 
           {/* Login Credentials */}
           {watchIncludeLogin && (
-            <div className="space-y-4 bg-slate-50 p-4 rounded-xl border border-slate-100">
-              <p className="text-xs font-bold text-slate-400 uppercase tracking-widest flex items-center gap-1.5">
+            <div className="space-y-4 bg-bg-soft p-4 rounded-xl border border-border-soft">
+              <p className="text-xs font-bold text-text-muted uppercase tracking-widest flex items-center gap-1.5">
                 <KeyRound className="w-3.5 h-3.5" /> Event Login
               </p>
               <div>
-                <label className="block text-sm font-semibold text-slate-700 mb-2">
+                <label className="block text-sm font-semibold text-text mb-2">
                   Login ID
                 </label>
                 <div className="relative">
-                  <User className="absolute left-3 top-3 w-4 h-4 text-slate-400" />
+                  <User className="absolute left-3 top-3 w-4 h-4 text-text-muted" />
                   <input
                     type="text"
                     {...register("loginUser")}
                     placeholder="login_id123"
-                    className="w-full rounded-lg border border-slate-300 pl-10 p-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500"
+                    className="w-full rounded-lg border border-border bg-card text-text pl-10 p-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-accent"
                   />
                 </div>
               </div>
               <div>
-                <label className="block text-sm font-semibold text-slate-700 mb-2">
+                <label className="block text-sm font-semibold text-text mb-2">
                   Login Password
                 </label>
                 <div className="relative">
-                  <KeyRound className="absolute left-3 top-3 w-4 h-4 text-slate-400" />
+                  <KeyRound className="absolute left-3 top-3 w-4 h-4 text-text-muted" />
                   <input
                     type="text"
                     {...register("loginPass")}
                     placeholder="secure_pass456"
-                    className="w-full rounded-lg border border-slate-300 pl-10 p-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500"
+                    className="w-full rounded-lg border border-border bg-card text-text pl-10 p-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-accent"
                   />
                 </div>
               </div>
@@ -353,15 +353,15 @@ export default function BulkBoardingPasses() {
         </div>
 
         {/* Right Panel : Student Details */}
-        <div className="lg:col-span-8 bg-white border border-slate-200 rounded-2xl shadow-sm p-6 sm:p-8">
-          <div className="flex items-center justify-between border-b border-slate-100 pb-4 mb-6">
+        <div className="lg:col-span-8 bg-card border border-border rounded-2xl shadow-sm p-6 sm:p-8">
+          <div className="flex items-center justify-between border-b border-border-soft pb-4 mb-6">
             <h2 className="flex items-center gap-2 text-lg font-bold">
-              <Users className="w-5 h-5 text-teal-600" />
+              <Users className="w-5 h-5 text-accent" />
               Attendee Details
             </h2>
 
             <div className="flex items-center gap-4">
-              <span className="text-xs font-semibold bg-teal-50 text-teal-700 px-3 py-1 rounded-full">
+              <span className="text-xs font-semibold bg-accent/10 text-accent px-3 py-1 rounded-full">
                 {fields.length} Attendee(s)
               </span>
 
@@ -399,21 +399,21 @@ export default function BulkBoardingPasses() {
             {fields.map((field, index) => (
               <div
                 key={field.id}
-                className="grid grid-cols-1 md:grid-cols-12 gap-3 items-start bg-slate-50 border border-slate-200 rounded-xl p-4"
+                className="grid grid-cols-1 md:grid-cols-12 gap-3 items-start bg-bg-soft border border-border rounded-xl p-4"
               >
                 {/* Name */}
                 <div className="md:col-span-5 relative">
-                  <User className="absolute left-3 top-3 w-4 h-4 text-slate-400" />
+                  <User className="absolute left-3 top-3 w-4 h-4 text-text-muted" />
                   <input
                     type="text"
                     placeholder="Attendee Name"
                     {...register(`students.${index}.name`, {
                       required: "Name is required",
                     })}
-                    className="w-full rounded-lg border border-slate-300 pl-10 p-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500"
+                    className="w-full rounded-lg border border-border bg-card text-text pl-10 p-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-accent"
                   />
                   {errors.students?.[index]?.name && (
-                    <p className="mt-1 text-xs text-red-500">
+                    <p className="mt-1 text-xs text-danger">
                       {errors.students[index].name.message}
                     </p>
                   )}
@@ -421,7 +421,7 @@ export default function BulkBoardingPasses() {
 
                 {/* Email */}
                 <div className="md:col-span-6 relative">
-                  <Mail className="absolute left-3 top-3 w-4 h-4 text-slate-400" />
+                  <Mail className="absolute left-3 top-3 w-4 h-4 text-text-muted" />
                   <input
                     type="email"
                     placeholder="attendee@email.com"
@@ -432,10 +432,10 @@ export default function BulkBoardingPasses() {
                         message: "Invalid email address",
                       },
                     })}
-                    className="w-full rounded-lg border border-slate-300 pl-10 p-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500"
+                    className="w-full rounded-lg border border-border bg-card text-text pl-10 p-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-accent"
                   />
                   {errors.students?.[index]?.email && (
-                    <p className="mt-1 text-xs text-red-500">
+                    <p className="mt-1 text-xs text-danger">
                       {errors.students[index].email.message}
                     </p>
                   )}
@@ -447,7 +447,7 @@ export default function BulkBoardingPasses() {
                     type="button"
                     onClick={() => remove(index)}
                     disabled={fields.length === 1}
-                    className="text-slate-400 hover:text-red-600 disabled:opacity-40 mt-2"
+                    className="text-text-muted hover:text-danger disabled:opacity-40 mt-2 transition-colors"
                   >
                     <Trash2 className="w-5 h-5" />
                   </button>
@@ -457,13 +457,13 @@ export default function BulkBoardingPasses() {
           </div>
 
           {/* Action Buttons */}
-          <div className="border-t border-slate-200 mt-6 pt-6 flex flex-col sm:flex-row gap-4">
+          <div className="border-t border-border mt-6 pt-6 flex flex-col sm:flex-row gap-4">
             <button
               type="button"
               onClick={() =>
                 append({ name: "", email: "" })
               }
-              className="flex-1 flex items-center justify-center gap-2 px-6 py-3 rounded-xl border border-slate-300 bg-slate-50 hover:bg-slate-100 transition-all font-medium"
+              className="flex-1 flex items-center justify-center gap-2 px-6 py-3 rounded-xl border border-border bg-card hover:bg-card-hover text-text transition-all font-medium"
             >
               <Plus className="w-4 h-4" />
               Add Attendee
@@ -471,7 +471,7 @@ export default function BulkBoardingPasses() {
             <button
               type="submit"
               disabled={loading}
-              className="flex-[2] flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-teal-600 text-white hover:bg-teal-700 transition-all disabled:opacity-60 disabled:cursor-not-allowed font-semibold"
+              className="flex-[2] flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-accent text-text-inverse hover:opacity-90 transition-all disabled:opacity-60 disabled:cursor-not-allowed font-semibold"
             >
               {loading ? (
                 <>

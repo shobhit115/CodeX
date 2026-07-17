@@ -24,7 +24,7 @@ const CommitSection = () => {
         <p className="m-0 text-accent text-[0.72rem] tracking-[0.34em] uppercase text-accent/80 mb-[2.1rem]">{commitSection.kicker}</p>
         <ul className="list-none p-0 m-0">
           {commitSection.benefits.map((benefit) => (
-            <li className="m-0 text-text-muted text-[0.93rem] leading-[1.75] relative py-4 pl-[1.35rem] border-t border-border-soft text-text-inverse/75 last:border-b before:content-['↳'] before:absolute before:left-0 before:text-accent" key={benefit}>
+            <li className="m-0 text-[0.93rem] leading-[1.75] relative py-4 pl-[1.35rem] border-t border-border-soft text-[#ffffff] last:border-b before:content-['↳'] before:absolute before:left-0 before:text-accent" key={benefit}>
               {benefit}
             </li>
           ))}

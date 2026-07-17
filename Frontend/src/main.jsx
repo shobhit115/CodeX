@@ -38,6 +38,7 @@ const BulkBoardingPasses = lazy(() => import("./pages/admin/BulkBoardingPasses")
 const ManageSessions = lazy(() => import("./pages/admin/ManageSessions"));
 const ManageContacts = lazy(() => import("./pages/admin/ManageContacts"));
 const AdminProfile = lazy(() => import("./pages/admin/AdminProfile"));
+const AdminSettings = lazy(() => import("./pages/admin/AdminSettings"));
 
 const router = createBrowserRouter([
   {
@@ -85,6 +86,7 @@ const router = createBrowserRouter([
           { path: "sessions", element: <ManageSessions /> },
           { path: "messages", element: <ManageContacts /> },
           { path: "profile", element: <AdminProfile /> },
+          { path: "settings", element: <AdminSettings /> },
         ],
       },
     ],
