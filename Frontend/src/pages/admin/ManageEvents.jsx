@@ -1,12 +1,11 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom"; // <-- Added import
 import {
   Loader2,
-  AlertCircle,
   Edit,
   Trash2,
   Calendar,
   Image as ImageIcon,
-  Eye,
 } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import { useConfirm } from "../../context/ConfirmContext";
@@ -17,7 +16,6 @@ import {
 
 import EventHeader from "../../components/admin/events/EventHeader";
 import EmptyState from "../../components/admin/events/EmptyState";
-import EventCard from "../../components/common/EventCard";
 import EventModal from "../../components/admin/events/EventModal";
 
 export default function ManageEvents() {
@@ -26,13 +24,9 @@ export default function ManageEvents() {
   );
   const dispatch = useDispatch();
   const confirm = useConfirm();
-
-  // State for Create/Edit Modal
+  const navigate = useNavigate(); 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingEvent, setEditingEvent] = useState(null);
-
-  // State for the Enlarged Detailed View (Event Card)
-  const [selectedEvent, setSelectedEvent] = useState(null);
 
   useEffect(() => {
     if (!isLoaded) {
@@ -87,7 +81,7 @@ export default function ManageEvents() {
             {events.map((event) => (
               <li
                 key={event._id}
-                onClick={() => setSelectedEvent(event)}
+                onClick={() => navigate(`/events/${event._id}`)} // <-- Navigate to new route
                 className="p-4 sm:p-5 hover:bg-card-hover flex flex-col sm:flex-row sm:items-center justify-between gap-4 transition-colors cursor-pointer group"
               >
                 {/* Event Info (Left Side) */}
@@ -127,7 +121,7 @@ export default function ManageEvents() {
                 {/* Actions (Right Side) */}
                 <div
                   className="flex items-center gap-2 sm:ml-auto"
-                  onClick={(e) => e.stopPropagation()} // Prevents clicking buttons from opening the detailed view
+                  onClick={(e) => e.stopPropagation()} // Prevents clicking buttons from routing
                 >
                   <button
                     onClick={() => openEditModal(event)}
@@ -155,14 +149,6 @@ export default function ManageEvents() {
         <EventModal
           setIsModalOpen={setIsModalOpen}
           editingEvent={editingEvent}
-        />
-      )}
-
-      {/* Detailed View Modal (The new Event Card) */}
-      {selectedEvent && (
-        <EventCard
-          event={selectedEvent}
-          onClose={() => setSelectedEvent(null)}
         />
       )}
     </div>

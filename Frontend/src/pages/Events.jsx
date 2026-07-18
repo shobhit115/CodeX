@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { eventService } from "../services/eventService";
 
-import EventsHero from "../features/events/components/EventsHero";
 import EventList from "../features/events/components/EventList";
 
 const Events = () => {
@@ -34,10 +33,18 @@ const Events = () => {
         }}
       />
 
-      <div className="relative z-10">
-        <EventsHero events={events} loading={loading} />
+      <div className="relative z-10 pt-10">
+        <section className="w-full max-w-[1400px] mx-auto px-4 lg:px-12 ">
+          
+          <div>
+            <h1 className="text-2xl font-bold text-text tracking-tight ">
+              Events
+            </h1>
+            <p className="text-sm text-text-text-muted mt-1 pb-4">
+              Discover our timeline of upcoming workshops, hackathons, and technical sessions, and browse through our past activities.
+            </p>
+          </div>
 
-        <section className="w-full max-w-[1400px] mx-auto px-4 lg:px-12 py-12 lg:py-20 border-t-2 border-border">
           <div className="w-full">
             <EventList events={events} loading={loading} />
           </div>
