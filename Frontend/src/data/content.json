@@ -193,6 +193,11 @@
         "path": "/contact"
       }
     ],
+    "socials": [
+      { "name": "GitHub", "url": "https://github.com/QuCodeXClub" },
+      { "name": "LinkedIn", "url": "https://linkedin.com/company/qucodex" },
+      { "name": "Instagram", "url": "https://instagram.com/qu_codex/" }
+    ],
     "meta": "EST. 2018 — VOL.07",
     "cta": "JOIN US"
   },

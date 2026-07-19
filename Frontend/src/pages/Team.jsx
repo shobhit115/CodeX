@@ -31,13 +31,13 @@ const Team = () => {
   return (
     <div className="team-page min-h-screen bg-bg-soft relative font-jetbrains selection:bg-accent selection:text-white pb-24">
       <div
-        className="absolute inset-0 pointer-events-none opacity-[0.03] z-0"
+        className="absolute inset-0 pointer-events-none opacity-[0.04] z-0"
         style={{
           backgroundImage:
-            "linear-gradient(#000 1px, transparent 1px), linear-gradient(90deg, #000 1px, transparent 1px)",
+            "linear-gradient(var(--color-text) 1px, transparent 1px), linear-gradient(90deg, var(--color-text) 1px, transparent 1px)",
           backgroundSize: "40px 40px",
         }}
-      ></div>
+      />
 
       <div className="relative z-10 max-w-[1920px] mx-auto px-6 pt-8 lg:pt-12">
         <header className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-12">

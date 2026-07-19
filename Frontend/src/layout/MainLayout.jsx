@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 import Navbar from "./Navbar";
+import Footer from "./Footer"; // Import the new component
 import contentData from "../data/content.json";
 
 const MainLayout = () => {
@@ -19,9 +20,9 @@ const MainLayout = () => {
 
   return (
     <div className="app-shell">
-      {/* 1. Inject the new Navbar here */}
       <Navbar layout={layout} />
 
+      {/* Ticker Section */}
       <div className="border-b border-border bg-accent overflow-hidden">
         <div className="flex items-center gap-12 min-h-[2.5rem] px-4 whitespace-nowrap uppercase font-sans tracking-[0.28em] text-text-inverse">
           {layout.ticker.map((item, index) => (
@@ -34,14 +35,7 @@ const MainLayout = () => {
         <Outlet />
       </main>
 
-      <footer className="border-t border-border p-6 font-mono text-xs text-text/40 text-center uppercase tracking-widest bg-bg">
-        <span
-          onClick={handleFooterClick}
-          className="cursor-default select-none"
-        >
-          {layout.footerText.replace("2026", new Date().getFullYear())}
-        </span>
-      </footer>
+      <Footer layout={layout} onFooterClick={handleFooterClick} />
     </div>
   );
 };
