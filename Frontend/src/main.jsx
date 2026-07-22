@@ -1,10 +1,6 @@
 import React, { lazy } from "react";
 import ReactDOM from "react-dom/client";
-import {
-  createBrowserRouter,
-  RouterProvider,
-  Navigate,
-} from "react-router-dom";
+import { createBrowserRouter, RouterProvider, Navigate } from "react-router-dom";
 import { Provider } from "react-redux";
 import store from "./store/store";
 
@@ -20,13 +16,20 @@ import Home from "./pages/Home";
 // Public pages
 const Team = lazy(() => import("./pages/Team"));
 const Events = lazy(() => import("./pages/Events"));
-const EventDetails = lazy(() => import("./pages/EventDetails")); // <-- Added EventDetails import
+const EventDetails = lazy(() => import("./pages/EventDetails")); 
 const Faqs = lazy(() => import("./pages/Faqs"));
 const Register = lazy(() => import("./pages/Register"));
 const About = lazy(() => import("./pages/About"));
 const VerifyCertificate = lazy(() => import("./pages/VerifyCertificate"));
 const VerifyBoardingPass = lazy(() => import("./pages/VerifyBoardingPass"));
 const Contact = lazy(() => import("./pages/Contact"));
+
+// New Policy Pages
+const PrivacyPolicy = lazy(() => import("./pages/PrivacyPolicy"));
+const TermsConditions = lazy(() => import("./pages/TermsConditions"));
+const CommunityGuidelines = lazy(() => import("./pages/CommunityGuidelines"));
+const EventPolicy = lazy(() => import("./pages/EventPolicy"));
+const Accessibility = lazy(() => import("./pages/Accessibility"));
 
 // Admin only pages
 const AdminLogin = lazy(() => import("./pages/admin/AdminLogin"));
@@ -52,18 +55,18 @@ const router = createBrowserRouter([
       { path: "/about", element: <About /> },
       { path: "/team", element: <Team /> },
       { path: "/events", element: <Events /> },
-      { path: "/events/:id", element: <EventDetails /> }, // <-- Added EventDetails route
+      { path: "/events/:id", element: <EventDetails /> },
       { path: "/faqs", element: <Faqs /> },
       { path: "/register", element: <Register /> },
-      {
-        path: "/verify-certificate/:certificateId",
-        element: <VerifyCertificate />,
-      },
-      {
-        path: "/verify-boarding-pass/:boardingPassId",
-        element: <VerifyBoardingPass />,
-      },
+      { path: "/verify-certificate/:certificateId", element: <VerifyCertificate /> },
+      { path: "/verify-boarding-pass/:boardingPassId", element: <VerifyBoardingPass /> },
       { path: "/contact", element: <Contact /> },
+      
+      { path: "/privacy-policy", element: <PrivacyPolicy /> },
+      { path: "/terms-conditions", element: <TermsConditions /> },
+      { path: "/community-guidelines", element: <CommunityGuidelines /> },
+      { path: "/event-policy", element: <EventPolicy /> },
+      { path: "/accessibility", element: <Accessibility /> },
     ],
   },
   {
@@ -71,10 +74,7 @@ const router = createBrowserRouter([
     element: <AdminLayout />,
     errorElement: <GlobalError />,
     children: [
-      {
-        path: "login",
-        element: <AdminLogin />,
-      },
+      { path: "login", element: <AdminLogin /> },
       {
         path: "",
         element: <DashboardLayout />,

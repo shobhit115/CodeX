@@ -31,7 +31,7 @@ const MainLayout = () => {
         </div>
       </div>
 
-      <main className="w-full max-w-[1400px] mx-auto flex-1 border-x border-border bg-bg-soft">
+      <main className="w-full  mx-auto flex-1 border-x border-border bg-bg-soft">
         <Outlet />
       </main>
 
