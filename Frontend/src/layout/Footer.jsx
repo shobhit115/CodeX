@@ -24,13 +24,6 @@ const getSocialIcon = (name) => {
   return <span className="text-xs font-bold uppercase tracking-wider group-hover:text-accent transition-colors">{name}</span>;
 };
 
-const handleLinkClick = () => {
-  window.scrollTo({
-    top: 0,
-    behavior: "smooth",
-  });
-};
-
 const Footer = ({ layout, onFooterClick }) => {
   const currentYear = new Date().getFullYear();
   const footerText = layout?.footerText 
@@ -88,11 +81,11 @@ const Footer = ({ layout, onFooterClick }) => {
               Quick Links
             </h3>
             <div className="flex flex-col gap-3">
-              <Link to="/about" onClick={handleLinkClick} className="text-sm text-text-muted hover:text-accent transition-colors">About Us</Link>
-              <Link to="/events" onClick={handleLinkClick} className="text-sm text-text-muted hover:text-accent transition-colors">Events</Link>
-              <Link to="/team" onClick={handleLinkClick} className="text-sm text-text-muted hover:text-accent transition-colors">Team</Link>
-              <Link to="/faqs" onClick={handleLinkClick} className="text-sm text-text-muted hover:text-accent transition-colors">FAQs</Link>
-              <Link to="/contact" onClick={handleLinkClick} className="text-sm text-text-muted hover:text-accent transition-colors">Contact</Link>
+              <Link to="/about" className="text-sm text-text-muted hover:text-accent transition-colors">About Us</Link>
+              <Link to="/events" className="text-sm text-text-muted hover:text-accent transition-colors">Events</Link>
+              <Link to="/team" className="text-sm text-text-muted hover:text-accent transition-colors">Team</Link>
+              <Link to="/faqs" className="text-sm text-text-muted hover:text-accent transition-colors">FAQs</Link>
+              <Link to="/contact" className="text-sm text-text-muted hover:text-accent transition-colors">Contact</Link>
             </div>
           </div>
 
@@ -102,9 +95,9 @@ const Footer = ({ layout, onFooterClick }) => {
               Legal & Privacy
             </h3>
             <div className="flex flex-col gap-3">
-              <Link to="/privacy-policy" onClick={handleLinkClick} className="text-sm text-text-muted hover:text-accent transition-colors">Privacy Policy</Link>
-              <Link to="/terms-conditions" onClick={handleLinkClick} className="text-sm text-text-muted hover:text-accent transition-colors">Terms & Conditions</Link>
-              <Link to="/accessibility" onClick={handleLinkClick} className="text-sm text-text-muted hover:text-accent transition-colors">Accessibility</Link>
+              <Link to="/privacy-policy" className="text-sm text-text-muted hover:text-accent transition-colors">Privacy Policy</Link>
+              <Link to="/terms-conditions" className="text-sm text-text-muted hover:text-accent transition-colors">Terms & Conditions</Link>
+              <Link to="/accessibility" className="text-sm text-text-muted hover:text-accent transition-colors">Accessibility</Link>
             </div>
           </div>
 
@@ -114,8 +107,8 @@ const Footer = ({ layout, onFooterClick }) => {
               Community
             </h3>
             <div className="flex flex-col gap-3">
-              <Link to="/community-guidelines" onClick={handleLinkClick} className="text-sm text-text-muted hover:text-accent transition-colors">Guidelines</Link>
-              <Link to="/event-policy" onClick={handleLinkClick} className="text-sm text-text-muted hover:text-accent transition-colors">Event Policy</Link>
+              <Link to="/community-guidelines" className="text-sm text-text-muted hover:text-accent transition-colors">Guidelines</Link>
+              <Link to="/event-policy" className="text-sm text-text-muted hover:text-accent transition-colors">Event Policy</Link>
             </div>
           </div>
           
